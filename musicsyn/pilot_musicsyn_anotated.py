@@ -7,7 +7,7 @@ from numpy.random import default_rng
 import matplotlib.pyplot as plt
 import pandas
 import slab
-from balanced_sequence import balanced_sequence
+from musicsyn.balanced_sequence import balanced_sequence
 from subject_data import subject_data
 import random
 import os
