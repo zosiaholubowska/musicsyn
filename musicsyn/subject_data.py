@@ -1,6 +1,7 @@
 import slab
 import pandas
 import numpy
+import os
 
 
 def subject_data(subject, file, melody_file):
@@ -10,7 +11,7 @@ def subject_data(subject, file, melody_file):
 
     file_name = file.name
     data = slab.ResultsFile.read_file(
-           f"/Users/zofiaholubowska/Documents/PhD/3_experiment/musicsyn/Results/{subject}/{file_name}"
+          os.getcwd() + f"/Results/{subject}/{file_name}"
         )
 
     timestamps = [float(list(d.keys())[0]) for d in data]
@@ -51,7 +52,7 @@ def subject_data(subject, file, melody_file):
 
 
     seq = pandas.read_csv(
-        f"/Users/zofiaholubowska/Documents/PhD/3_experiment/musicsyn/Results/{subject}/{subject}_seq_{melody_file}"
+      os.getcwd() + f"/Results/{subject}/{subject}_seq_{melody_file}"
     )
 
     data = seq.join(freq["Responses"])
@@ -72,5 +73,5 @@ def subject_data(subject, file, melody_file):
     )
 
     data.to_csv(
-        f"/Users/zofiaholubowska/Documents/PhD/3_experiment/musicsyn/Results/{subject}/{subject}_data_{melody_file}",
+       os.getcwd() +  f"/Results/{subject}/{subject}_data_{melody_file}",
     )

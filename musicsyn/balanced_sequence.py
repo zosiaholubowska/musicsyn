@@ -24,6 +24,7 @@ def read_melody(file):
 onsets, frequencies, durations, boundaries, changable_notes = read_melody(file)
 
 """
+path = 'C:\\projects\\musicsyn'
 
 def balanced_sequence(boundaries, changable_notes, subject, melody_file):
     """
@@ -165,7 +166,7 @@ def balanced_sequence(boundaries, changable_notes, subject, melody_file):
     final = sequence.sort_values(by='idx', ascending=True)
 
     final.to_csv(
-        f"/Users/zofiaholubowska/Documents/PhD/3_experiment/musicsyn/Results/{subject}/{subject}_seq_{melody_file}",
+       path + f"/musicsyn/Results/{subject}/{subject}_seq_{melody_file}",
     )
     #print(final.to_string())
     print("Total visual cues:")

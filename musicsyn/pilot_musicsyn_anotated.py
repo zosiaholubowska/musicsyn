@@ -8,14 +8,15 @@ import matplotlib.pyplot as plt
 import pandas
 import slab
 from musicsyn.balanced_sequence import balanced_sequence
-from subject_data import subject_data
+from musicsyn.subject_data import subject_data
 import random
 import os
-
-os.chdir('/Users/zofiaholubowska/Documents/PhD/3_experiment/musicsyn')
+import freefield
+path = 'C:\\projects\\musicsyn'
+# os.chdir('C:\\projects\\musicsyn')
 plt.ion()  # enable interactive mode - interactive mode will be on, figures will automatically be shown
 randgenerator = default_rng()  # generator of random numbers
-ils = pickle.load(open("ils.pickle", "rb"))  # load interaural level spectrum ???
+ils = pickle.load(open(path + "/musicsyn/ils.pickle", "rb"))  # load interaural level spectrum ???
 
 
 def read_melody(file):
@@ -71,14 +72,18 @@ def run(melody_file, subject):
     )  # here we name the results folder with subject name
     file_name = file.name
 
-    onsets, frequencies, durations, boundaries, changable_notes = read_melody(f"/Users/zofiaholubowska/Documents/PhD/3_experiment/stimuli/{melody_file}")  # reading the csv file with the information about the notes
+    onsets, frequencies, durations, boundaries, changable_notes = read_melody(path + f"/stimuli/{melody_file}")  # reading the csv file with the information about the notes
     seq = balanced_sequence(boundaries, changable_notes, subject, melody_file)
     # depending of number of boundaries, we are creating a sequence
     directions = itertools.cycle(
         [0, 20]
-    )  # iterator, which will return the numbers from 0 to 20 in a infinite loop
+    )
+    directions = itertools.cycle(
+        [0, 17.5, -17.5]
+    )
+    # iterator, which will return the numbers from 0 to 20 in a infinite loop
     # but this iterator does only 0 and 20, shouldn't we have -20, as well?
-    direction_jitter = 5
+    # direction_jitter = 5
     start_time = time.time()  # creates a timestamp in Unix format
     # setup the figure for button capture
     fig = plt.figure("stairs")  # I cannot see the figure - for check later
@@ -112,17 +117,24 @@ def run(melody_file, subject):
                     print("visual cue!")
                     print("########")
                     print("########")
-                direction_addon = randgenerator.uniform(low=-direction_jitter / 2, high=direction_jitter / 2)
+                # direction_addon = randgenerator.uniform(low=-direction_jitter / 2, high=direction_jitter / 2)
                 # it creates jitter for the change of the location ranging from -2,5 to 2,5
                 #print(direction + direction_addon)
-                stim = stim.at_azimuth(
-                    direction + direction_addon, ils
-                )  # this matches the azimuth with the ils values
-                stim = (
-                    stim.externalize()
-                )  # smooths the sound with HRTF, to simulate external sound source
-                file.write(frequencies[i], tag=f"{time.time() - start_time:.3f}")
-                play(stim)
+                # stim = stim.at_azimuth(
+                #     direction + direction_addon, ils
+                # )  # this matches the azimuth with the ils values
+                # stim = (
+                #     stim.externalize()
+                # )  # smooths the sound with HRTF, to simulate external sound source
+                # file.write(frequencies[i], tag=f"{time.time() - start_time:.3f}")
+                speaker = (direction, 0)
+                # dont do this online
+                stim.level = 70
+                stim = stim.resample(samplerate=48828)
+
+                freefield.set_signal_and_speaker(signal=stim.channel(0), speaker=speaker, equalize=False)
+                freefield.play()
+                # play(stim)
                 i += 1
             plt.pause(0.01)
     except IndexError:
@@ -144,4 +156,6 @@ def select_file():
             print("Continuing...")
 
 if __name__ == "__main__":
+    freefield.initialize('dome', default='play_rec')
+
     select_file()
