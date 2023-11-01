@@ -12,7 +12,7 @@ from subject_data import subject_data
 import random
 import os
 
-os.chdir('/Users/zofiaholubowska/Documents/PhD/3_experiment/musicsyn')
+os.chdir('/Users/zofiaholubowska/Documents/PhD/3_experiment/experiment/musicsyn')
 plt.ion()  # enable interactive mode - interactive mode will be on, figures will automatically be shown
 randgenerator = default_rng()  # generator of random numbers
 ils = pickle.load(open("ils.pickle", "rb"))  # load interaural level spectrum ???
