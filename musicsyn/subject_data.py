@@ -52,7 +52,7 @@ def subject_data(subject, file, melody_file):
 
 
     seq = pandas.read_csv(
-      os.getcwd() + f"/Results/{subject}/{subject}_seq_{melody_file}"
+      path + f"/musicsyn/Results/{subject}/{subject}_seq_{melody_file}.csv"
     )
 
     data = seq.join(freq["Responses"])
@@ -73,5 +73,5 @@ def subject_data(subject, file, melody_file):
     )
 
     data.to_csv(
-       os.getcwd() +  f"/Results/{subject}/{subject}_data_{melody_file}",
+      path +  f"/musicsyn/Results/{subject}/{subject}_data_{melody_file}.csv",
     )

@@ -12,12 +12,22 @@ from musicsyn.subject_data import subject_data
 import random
 import os
 import freefield
+import win32com.client
+
 path = 'C:\\projects\\musicsyn'
 # os.chdir('C:\\projects\\musicsyn')
 plt.ion()  # enable interactive mode - interactive mode will be on, figures will automatically be shown
 randgenerator = default_rng()  # generator of random numbers
 ils = pickle.load(open(path + "/musicsyn/ils.pickle", "rb"))  # load interaural level spectrum ???
 
+samplerate = 44828
+
+rp = win32com.client.Dispatch('RPco.X')
+zb = win32com.client.Dispatch('ZBUS.x')
+rp.ConnectRX8('GB', 1)
+
+rp.ClearCOF()
+rp.LoadCOF(path + f'data/rcx/proto_.rcx')
 
 def read_melody(file):
     """
@@ -126,14 +136,17 @@ def run(melody_file, subject):
                 # stim = (
                 #     stim.externalize()
                 # )  # smooths the sound with HRTF, to simulate external sound source
-                # file.write(frequencies[i], tag=f"{time.time() - start_time:.3f}")
-                speaker = (direction, 0)
-                # dont do this online
-                stim.level = 70
-                stim = stim.resample(samplerate=48828)
+                file.write(frequencies[i], tag=f"{time.time() - start_time:.3f}")
 
-                freefield.set_signal_and_speaker(signal=stim.channel(0), speaker=speaker, equalize=False)
-                freefield.play()
+                rp.Run()
+
+                rp.SetTagVal('f0', frequencies[i])  # write value to tag
+                duration = durations[i] # duration in seconds
+                rp.SetTagVal('len', int(duration * samplerate))
+
+                rp.Halt()
+
+                zb.zBusTrigA(0, 0, 20)  # trigger zbus
                 # play(stim)
                 i += 1
             plt.pause(0.01)
