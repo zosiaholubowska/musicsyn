@@ -15,8 +15,18 @@ rp.Run()
 
 rp.SetTagVal('f0', 493.88)  # write value to tag
 duration = 2  # duration in seconds
-rp.SetTagVal('len', int(duration*samplerate))
+n_samples = int(duration*samplerate)
+rp.SetTagVal('len', n_samples)
+
 
 rp.Halt()
 
 zb.zBusTrigA(0, 0, 20)  # trigger zbus
+
+import numpy
+import slab
+
+played = numpy.asarray(rp.ReadTagV('played', 0, n_samples))
+played = slab.Sound(played, samplerate=samplerate)
+played.waveform()
+
