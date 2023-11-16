@@ -14,7 +14,7 @@ import os
 import freefield
 import win32com.client
 
-path = 'C:\\projects\\musicsyn'
+path = 'C://projects//musicsyn'
 # os.chdir('C:\\projects\\musicsyn')
 plt.ion()  # enable interactive mode - interactive mode will be on, figures will automatically be shown
 randgenerator = default_rng()  # generator of random numbers
@@ -22,12 +22,8 @@ ils = pickle.load(open(path + "/musicsyn/ils.pickle", "rb"))  # load interaural 
 
 samplerate = 44828
 
-rp = win32com.client.Dispatch('RPco.X')
-zb = win32com.client.Dispatch('ZBUS.x')
-rp.ConnectRX8('GB', 1)
 
-rp.ClearCOF()
-rp.LoadCOF(path + f'data/rcx/proto_.rcx')
+
 
 def read_melody(file):
     """
@@ -82,19 +78,22 @@ def run(melody_file, subject):
     )  # here we name the results folder with subject name
     file_name = file.name
 
-    onsets, frequencies, durations, boundaries, changable_notes = read_melody(path + f"/stimuli/{melody_file}")  # reading the csv file with the information about the notes
+    onsets, frequencies, durations, boundaries, changable_notes = read_melody(path + f"\stimuli\{melody_file}")  # reading the csv file with the information about the notes
     seq = balanced_sequence(boundaries, changable_notes, subject, melody_file)
     # depending of number of boundaries, we are creating a sequence
-    directions = itertools.cycle(
-        [0, 20]
-    )
-    directions = itertools.cycle(
-        [0, 17.5, -17.5]
-    )
+    # directions = itertools.cycle(
+    #     [0, 20]
+    # )
+    directions = [(-17.5, 0), 23, 31]
+    [speaker1] = freefield.pick_speakers(directions[0])
+    [speaker2] = freefield.pick_speakers(directions[1])
+    [speaker3] = freefield.pick_speakers(directions[2])
+    speakers = itertools.cycle([speaker1, speaker2, speaker3])
+    # directions = itertools.cycle(directions) # ([0, 17.5, -17.5])
+
     # iterator, which will return the numbers from 0 to 20 in a infinite loop
     # but this iterator does only 0 and 20, shouldn't we have -20, as well?
     # direction_jitter = 5
-    start_time = time.time()  # creates a timestamp in Unix format
     # setup the figure for button capture
     fig = plt.figure("stairs")  # I cannot see the figure - for check later
 
@@ -110,18 +109,26 @@ def run(melody_file, subject):
     )  # add a dummy onset so that the if statement below works during the last note
     # durations.append(0.1)  ###
     i = 0
-    direction = next(directions)
+    curr_speaker = next(speakers)
+    start_time = time.time()  # creates a timestamp in Unix format
+    led = False
     try:
         while time.time() - start_time < onsets[-1] + durations[-1]:
+            if led:
+                if time.time() - led_on > 1:
+                    freefield.write(tag='bitmask', value=0, processors='RX81')  # turn off LED
             if time.time() - start_time > onsets[i]:  # play the next note
                 #print(i)
-                stim = note(frequencies[i], durations[i])
+                # stim = note(frequencies[i], durations[i])
                 if seq["sequence"][i] == 1:
-                    direction = next(directions)  # toggle direction
+                    curr_speaker = next(speakers)  # toggle direction
                     print("direction change")
                 if seq["boundary"][i]:  # so if there is 1 in the boundaries list
                     print("at boundary!")
                 if seq["cue"][i] == 1:
+                    led_on = time.time()
+                    freefield.write(tag='bitmask', value=1, processors='RX81')  # illuminate LED
+                    led = True
                     print("########")
                     print("########")
                     print("visual cue!")
@@ -137,16 +144,27 @@ def run(melody_file, subject):
                 #     stim.externalize()
                 # )  # smooths the sound with HRTF, to simulate external sound source
                 file.write(frequencies[i], tag=f"{time.time() - start_time:.3f}")
+                freefield.write('f0', frequencies[i], ['RX81', 'RX82'])
 
-                rp.Run()
-
-                rp.SetTagVal('f0', frequencies[i])  # write value to tag
+                # rp.SetTagVal('f0', frequencies[i])  # write value to tag
                 duration = durations[i] # duration in seconds
-                rp.SetTagVal('len', int(duration * samplerate))
+                freefield.write('len', int(duration * samplerate * 0.85), ['RX81', 'RX82'])
+                # rp.SetTagVal('len', int(duration * samplerate * 0.85))
 
-                rp.Halt()
+                freefield.write('chan', curr_speaker.analog_channel, curr_speaker.analog_proc)
+                [other_proc] = [item for item in [proc_list[0][0], proc_list[1][0]] if item != curr_speaker.analog_proc]
+                freefield.write('chan', 99, other_proc)
 
-                zb.zBusTrigA(0, 0, 20)  # trigger zbus
+                freefield.play()
+
+                while True:
+                    response = freefield.read('response', 'RP2', 0)
+                    if response != 0:
+                        file.write(
+                            'p', tag=f"{time.time() - start_time:.3f}"
+                        )  # logs the key that was pressed on a specified time
+                    if time.time() - start_time > onsets[i]:
+                        break
                 # play(stim)
                 i += 1
             plt.pause(0.01)
@@ -158,9 +176,9 @@ def select_file():
     files = ["stim_maj_1.csv", "stim_maj_2.csv", "stim_maj_3.csv"]
     random.shuffle(files)
 
-    for file in files:
-        print(file)
-        run(file, 'FH')
+    for melody_file in files:
+        print(melody_file)
+        run(melody_file, 'FH')
 
         user_input = input("Do you want to continue? (y/n): ")
         if user_input.lower() == 'n':
@@ -169,6 +187,25 @@ def select_file():
             print("Continuing...")
 
 if __name__ == "__main__":
-    freefield.initialize('dome', default='play_rec')
+    # freefield.initialize('dome', default='play_rec')
+    proc_list = [['RX81', 'RX8',  path + f'/data/rcx/piano.rcx'],
+                 ['RX82', 'RX8',  path + f'/data/rcx/piano.rcx'],
+                 ['RP2', 'RP2',  path + f'/data/rcx/button.rcx']]
+    freefield.initialize('dome', device=proc_list)
+    freefield.set_logger('debug')
+
+    # [led_speaker] = freefield.pick_speakers(23)  # get object for center speaker LED
+    # freefield.write(tag='bitmask', value=led_speaker.digital_channel, processors=led_speaker.digital_proc)  # illuminate LED
+
+    # rp = win32com.client.Dispatch('RPco.X')
+    # zb = win32com.client.Dispatch('ZBUS.x')
+    # rp.ConnectRX8('GB', 1)
+    # rp.ClearCOF()
+    # # rp.LoadCOF(path + f'/data/rcx/proto_.rcx')
+    # rp.LoadCOF(path + f'/data/rcx/proto_.rcx')
+    # rp.Run()
 
     select_file()
+
+    freefield.halt()
+    # rp.Halt()

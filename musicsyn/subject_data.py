@@ -3,7 +3,7 @@ import pandas
 import numpy
 import os
 
-
+path = os.getcwd()
 def subject_data(subject, file, melody_file):
     """
     This is to create a dataframe with results and the sequence
@@ -11,7 +11,7 @@ def subject_data(subject, file, melody_file):
 
     file_name = file.name
     data = slab.ResultsFile.read_file(
-          os.getcwd() + f"/Results/{subject}/{file_name}"
+          path + f"/Results/{subject}/{file_name}"
         )
 
     timestamps = [float(list(d.keys())[0]) for d in data]
@@ -52,7 +52,7 @@ def subject_data(subject, file, melody_file):
 
 
     seq = pandas.read_csv(
-      path + f"/musicsyn/Results/{subject}/{subject}_seq_{melody_file}.csv"
+      path + f"/Results/{subject}/{subject}_seq_{melody_file}"
     )
 
     data = seq.join(freq["Responses"])
@@ -73,5 +73,5 @@ def subject_data(subject, file, melody_file):
     )
 
     data.to_csv(
-      path +  f"/musicsyn/Results/{subject}/{subject}_data_{melody_file}.csv",
+      path +  f"/Results/{subject}/{subject}_data_{melody_file}",
     )
