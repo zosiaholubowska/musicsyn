@@ -6,14 +6,14 @@ import os
 We can use the file of one of the stimuli to test the function
 """
 """
-file = ("stim_maj_2.csv")
-os.chdir('/Users/zofiaholubowska/Documents/PhD/3_experiment/stimuli')
+file = ("stim_maj_1.csv")
+os.chdir('C://projects//musicsyn/stimuli')
 
 def read_melody(file):
-    score_data = pandas.read_csv(file, sep=";")  # open the csv file with notes
+    score_data = pandas.read_csv(file, sep=",")  # open the csv file with notes
     onsets = score_data.onset_sec.to_list()  # list of onsets of consecutive notes
     frequencies = score_data.freq.to_list()  # frequencies of consecutive notes
-    durations = score_data.duration_sec.to_list()  # note durations
+    durations = score_data.duration.to_list()  # note durations
     boundaries = score_data.boundary.to_list()  # 0 or 1 indication if the note is the beginning of a new phrase
     changable_notes = score_data.changable_note.to_list() #if at note is possible to change direction
     onsets.append(onsets[-1] + durations[-1] + 0.1)  # I add a dummy note here
@@ -108,6 +108,8 @@ def balanced_sequence(boundaries, changable_notes, subject, melody_file):
 
     if len(seq_boundaries_change_cues) > len(yes_boundaries_change):
         seq_boundaries_change_cues = seq_boundaries_change_cues[:len(yes_boundaries_change)]
+    elif len(seq_boundaries_change_cues) < len(yes_boundaries_change):
+        seq_boundaries_change_cues.append(1)
     yes_boundaries_change.insert(1, 'cue', seq_boundaries_change_cues)
 
     yes_boundaries_nochange = yes_boundaries.loc[temp_seq['sequence'] == 0]
