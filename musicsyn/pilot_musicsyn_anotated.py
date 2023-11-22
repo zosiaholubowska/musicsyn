@@ -75,7 +75,7 @@ def run(melody_file, subject):
     [speaker1] = freefield.pick_speakers(directions[0])
     [speaker2] = freefield.pick_speakers(directions[1])
     [speaker3] = freefield.pick_speakers(directions[2])
-    speakers = itertools.cycle([speaker1, speaker2, speaker3])
+    speakers = itertools.cycle([speaker1, speaker2, speaker3, speaker2])
 
     onsets.append(
         onsets[-1] + durations[-1] + 0.1
@@ -95,10 +95,11 @@ def run(melody_file, subject):
 
                 if seq["sequence"][i] == 1:
                     curr_speaker = next(speakers)  # toggle direction
-                    print("direction change")
                     file.write(curr_speaker.analog_channel, tag=f"{time.time() - start_time:.3f}")
+                    print(f"direction change")
+
                 if seq["boundary"][i]:  # so if there is 1 in the boundaries list
-                    print("at boundary!")
+                    print(f"at boundary!")
                 if seq["cue"][i] == 1:
                     led_on = time.time()
                     freefield.write(tag='bitmask', value=1, processors='RX81')  # illuminate LED
@@ -114,7 +115,7 @@ def run(melody_file, subject):
 
 
                 duration = durations[i] # duration in seconds
-                freefield.write('len', int(duration * samplerate * 0.85), ['RX81', 'RX82'])
+                freefield.write('len', int(duration * samplerate * 0.95), ['RX81', 'RX82'])
 
 
                 freefield.write('chan', curr_speaker.analog_channel, curr_speaker.analog_proc)
@@ -148,7 +149,7 @@ def select_file():
 
     for melody_file in files:
         print(melody_file)
-        run(melody_file, 'test')
+        run(melody_file, 'p03a') ########### PARTICIPANT HERE ############
 
         user_input = input("Do you want to continue? (y/n): ")
         if user_input.lower() == 'n':
