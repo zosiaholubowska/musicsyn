@@ -4,6 +4,7 @@ import numpy
 import os
 
 path = os.getcwd()
+
 def subject_data(subject, file, melody_file):
     """
     This is to create a dataframe with results and the sequence
@@ -11,7 +12,7 @@ def subject_data(subject, file, melody_file):
 
     file_name = file.name
     data = slab.ResultsFile.read_file(
-          path + f"/Results/{subject}/{file_name}"
+          path + f"/musicsyn/Results/{subject}/{file_name}"
         )
 
     timestamps = [float(list(d.keys())[0]) for d in data]

@@ -1,0 +1,290 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="AutoImportSettings">
+    <option name="autoReloadType" value="SELECTIVE" />
+  </component>
+  <component name="ChangeListManager">
+    <list default="true" id="6a537621-e967-4204-8ef8-693965092810" name="Changes" comment="">
+      <change afterPath="$PROJECT_DIR$/musicsyn/piano.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/musicsyn/pilot_piano.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/musicsyn/read_data.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/musicsyn/read_pilot.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/.gitignore" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/.name" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/experiment.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/experiment.iml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/modules.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/modules.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/musicsyn.iml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/other.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/vcs.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/vcs.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/musicsyn/Results/AP/AP_2023-10-14-13-32-55.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/musicsyn/Results/AP/AP_2023-10-14-13-59-33.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/musicsyn/Results/AP/AP_2023-10-14-23-11-47.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/musicsyn/Results/AP/AP_2023-10-19-08-10-38.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/musicsyn/Results/AP/AP_2023-10-24-09-27-14.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/musicsyn/Results/AP/AP_data.csv" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/musicsyn/Results/AP/AP_seq.csv" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/musicsyn/Results/FH/FH_2023-10-24-12-12-54.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/musicsyn/Results/FH/FH_2023-10-24-12-16-03.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/musicsyn/Results/FH/FH_2023-10-24-13-35-43.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/musicsyn/Results/FH/FH_2023-10-24-13-36-55.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/musicsyn/Results/FH/FH_2023-10-24-16-02-20.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/musicsyn/Results/FH/FH_2023-10-24-17-13-39.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/musicsyn/Results/FH/FH_2023-10-24-17-17-36.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/musicsyn/Results/FH/FH_2023-10-24-17-21-39.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/musicsyn/Results/FH/FH_2023-10-24-17-44-49.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/musicsyn/Results/FH/FH_2023-10-24-17-53-26.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/musicsyn/Results/FH/FH_2023-10-24-17-54-34.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/musicsyn/Results/FH/FH_2023-10-24-17-55-43.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/musicsyn/Results/FH/FH_2023-10-29-16-24-12.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/musicsyn/Results/FH/FH_2023-10-29-16-25-20.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/musicsyn/Results/FH/FH_2023-10-29-16-26-27.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/musicsyn/Results/FH/FH_2023-11-06-17-15-47.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/musicsyn/Results/FH/FH_2023-11-06-17-17-52.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/musicsyn/Results/FH/FH_2023-11-06-17-20-03.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/musicsyn/Results/FH/FH_2023-11-06-17-23-31.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/musicsyn/Results/FH/FH_2023-11-06-17-24-44.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/musicsyn/Results/FH/FH_2023-11-06-17-26-03.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/musicsyn/Results/FH/FH_2023-11-06-17-54-30.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/musicsyn/Results/FH/FH_2023-11-06-17-55-42.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/musicsyn/Results/FH/FH_2023-11-06-17-57-13.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/musicsyn/Results/FH/FH_2023-11-06-17-58-33.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/musicsyn/Results/FH/FH_2023-11-09-17-44-59.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/musicsyn/Results/FH/FH_2023-11-09-17-46-43.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/musicsyn/Results/FH/FH_2023-11-09-17-48-33.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/musicsyn/Results/FH/FH_2023-11-09-17-56-40.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/musicsyn/Results/FH/FH_2023-11-09-18-00-58.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/musicsyn/Results/FH/FH_2023-11-09-18-05-52.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/musicsyn/Results/FH/FH_2023-11-10-08-15-42.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/musicsyn/Results/FH/FH_2023-11-10-08-16-34.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/musicsyn/Results/FH/FH_2023-11-10-08-17-30.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/musicsyn/Results/FH/FH_2023-11-10-08-24-28.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/musicsyn/Results/FH/FH_2023-11-10-08-24-44.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/musicsyn/Results/FH/FH_2023-11-10-08-49-50.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/musicsyn/Results/FH/FH_2023-11-10-08-50-26.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/musicsyn/Results/FH/FH_2023-11-10-08-52-45.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/musicsyn/Results/FH/FH_2023-11-10-09-04-04.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/musicsyn/Results/FH/FH_2023-11-10-09-04-37.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/musicsyn/Results/FH/FH_2023-11-10-09-05-30.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/musicsyn/Results/FH/FH_2023-11-10-13-18-00.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/musicsyn/Results/FH/FH_2023-11-10-13-22-10.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/musicsyn/Results/FH/FH_2023-11-10-13-23-23.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/musicsyn/Results/FH/FH_2023-11-16-11-24-56.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/musicsyn/Results/FH/FH_2023-11-16-11-52-17.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/musicsyn/Results/FH/FH_2023-11-16-12-04-00.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/musicsyn/Results/FH/FH_2023-11-16-12-08-28.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/musicsyn/Results/FH/FH_2023-11-16-12-35-16.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/musicsyn/Results/FH/FH_2023-11-16-13-10-06.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/musicsyn/Results/FH/FH_2023-11-17-14-34-18.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/musicsyn/Results/FH/FH_data.csv" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/musicsyn/Results/FH/FH_data_stim_maj_1" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/musicsyn/Results/FH/FH_data_stim_maj_1.csv" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/musicsyn/Results/FH/FH_data_stim_maj_2.csv" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/musicsyn/Results/FH/FH_data_stim_maj_3.csv" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/musicsyn/Results/FH/FH_seq.csv" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/musicsyn/Results/FH/FH_seq_stim_maj_1" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/musicsyn/Results/FH/FH_seq_stim_maj_1.csv" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/musicsyn/Results/FH/FH_seq_stim_maj_2.csv" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/musicsyn/Results/FH/FH_seq_stim_maj_3.csv" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/musicsyn/Results/MS/MS_2023-03-13-10-03-02.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/musicsyn/Results/MS/MS_2023-03-13-10-03-26.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/musicsyn/Results/MS/MS_2023-03-14-15-34-56.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/musicsyn/Results/MS/MS_2023-03-14-15-39-43.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/musicsyn/Results/MS/MS_2023-03-14-15-47-07.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/musicsyn/Results/MS/MS_2023-03-14-15-48-32.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/musicsyn/Results/MS/MS_2023-03-14-15-51-21.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/musicsyn/Results/MS/MS_2023-03-14-15-53-51.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/musicsyn/Results/MS/MS_2023-03-14-17-31-25.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/musicsyn/Results/MS/MS_2023-03-14-17-37-42.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/musicsyn/Results/MS/MS_2023-03-14-17-41-34.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/musicsyn/Results/MS/MS_2023-03-18-15-10-38.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/musicsyn/Results/MS/MS_2023-03-18-15-23-40.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/musicsyn/Results/MS/MS_2023-10-10-15-01-37.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/musicsyn/Results/MS/MS_2023-10-11-09-22-40.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/musicsyn/Results/MS/MS_2023-10-11-11-14-17.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/musicsyn/Results/MS/MS_2023-10-11-11-17-06.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/musicsyn/Results/MS/MS_2023-10-11-11-21-49.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/musicsyn/Results/MS/MS_2023-10-11-11-24-33.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/musicsyn/Results/MS/MS_2023-10-11-11-47-29.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/musicsyn/Results/MS/MS_2023-10-11-11-51-04.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/musicsyn/Results/MS/MS_2023-10-11-15-44-33.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/musicsyn/Results/MS/MS_2023-10-11-15-53-13.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/musicsyn/Results/MS/MS_2023-10-11-15-58-19.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/musicsyn/Results/MS/MS_2023-10-12-09-43-25.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/musicsyn/Results/MS/MS_2023-10-12-11-11-21.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/musicsyn/Results/MS/MS_2023-10-12-12-43-26.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/musicsyn/Results/MS/MS_2023-10-12-17-07-29.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/musicsyn/Results/MS/open_data.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/musicsyn/Results/MS/tempCodeRunnerFile.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/musicsyn/Results/ZH/ZH_2023-10-12-18-16-33.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/musicsyn/Results/ZH/ZH_2023-10-12-18-35-17.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/musicsyn/Results/ZH/ZH_2023-10-12-18-39-00.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/musicsyn/Results/ZH/ZH_2023-10-13-08-13-04.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/musicsyn/Results/ZH/ZH_2023-10-13-10-11-28.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/musicsyn/Results/ZH/ZH_2023-10-13-10-12-03.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/musicsyn/Results/ZH/ZH_2023-10-13-10-18-21.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/musicsyn/Results/ZH/ZH_2023-10-13-10-21-22.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/musicsyn/Results/ZH/ZH_2023-10-13-10-25-34.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/musicsyn/Results/ZH/ZH_2023-10-13-10-26-02.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/musicsyn/Results/ZH/ZH_2023-10-13-10-28-23.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/musicsyn/Results/ZH/ZH_2023-10-13-10-34-09.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/musicsyn/Results/ZH/ZH_2023-10-13-10-36-30.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/musicsyn/Results/ZH/ZH_2023-10-13-10-48-27.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/musicsyn/Results/ZH/ZH_2023-10-13-12-20-13.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/musicsyn/Results/ZH/ZH_2023-10-13-12-47-50.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/musicsyn/Results/ZH/ZH_2023-10-14-12-59-01.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/musicsyn/Results/ZH/ZH_2023-10-14-13-19-37.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/musicsyn/Results/ZH/ZH_data.csv" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/musicsyn/Results/ZH/ZH_seq.csv" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/musicsyn/Results/fail/fail_2023-11-17-16-15-39.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/musicsyn/Results/fail/fail_data_stim_min_1.csv" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/musicsyn/Results/fail/fail_seq_stim_min_1.csv" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/musicsyn/Results/p02a/p02a_data_stim_maj_1.csv" beforeDir="false" afterPath="$PROJECT_DIR$/musicsyn/Results/p02a/p02a_data_stim_maj_1.csv" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/musicsyn/Results/p02a/p02a_data_stim_maj_2.csv" beforeDir="false" afterPath="$PROJECT_DIR$/musicsyn/Results/p02a/p02a_data_stim_maj_2.csv" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/musicsyn/Results/p02a/p02a_data_stim_maj_3.csv" beforeDir="false" afterPath="$PROJECT_DIR$/musicsyn/Results/p02a/p02a_data_stim_maj_3.csv" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/musicsyn/Results/p02a/p02a_data_stim_min_1.csv" beforeDir="false" afterPath="$PROJECT_DIR$/musicsyn/Results/p02a/p02a_data_stim_min_1.csv" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/musicsyn/Results/p02a/p02a_data_stim_min_2.csv" beforeDir="false" afterPath="$PROJECT_DIR$/musicsyn/Results/p02a/p02a_data_stim_min_2.csv" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/musicsyn/Results/p02a/p02a_data_stim_min_3.csv" beforeDir="false" afterPath="$PROJECT_DIR$/musicsyn/Results/p02a/p02a_data_stim_min_3.csv" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/musicsyn/Results/p03/p03_data_stim_maj_1.csv" beforeDir="false" afterPath="$PROJECT_DIR$/musicsyn/Results/p03/p03_data_stim_maj_1.csv" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/musicsyn/Results/p03/p03_data_stim_maj_2.csv" beforeDir="false" afterPath="$PROJECT_DIR$/musicsyn/Results/p03/p03_data_stim_maj_2.csv" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/musicsyn/Results/p03/p03_data_stim_maj_3.csv" beforeDir="false" afterPath="$PROJECT_DIR$/musicsyn/Results/p03/p03_data_stim_maj_3.csv" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/musicsyn/Results/p03/p03_data_stim_min_1.csv" beforeDir="false" afterPath="$PROJECT_DIR$/musicsyn/Results/p03/p03_data_stim_min_1.csv" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/musicsyn/Results/p03/p03_data_stim_min_2.csv" beforeDir="false" afterPath="$PROJECT_DIR$/musicsyn/Results/p03/p03_data_stim_min_2.csv" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/musicsyn/Results/p03/p03_data_stim_min_3.csv" beforeDir="false" afterPath="$PROJECT_DIR$/musicsyn/Results/p03/p03_data_stim_min_3.csv" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/musicsyn/Results/p03a/p03a_data_stim_maj_1.csv" beforeDir="false" afterPath="$PROJECT_DIR$/musicsyn/Results/p03a/p03a_data_stim_maj_1.csv" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/musicsyn/Results/p03a/p03a_data_stim_maj_2.csv" beforeDir="false" afterPath="$PROJECT_DIR$/musicsyn/Results/p03a/p03a_data_stim_maj_2.csv" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/musicsyn/Results/p03a/p03a_data_stim_maj_3.csv" beforeDir="false" afterPath="$PROJECT_DIR$/musicsyn/Results/p03a/p03a_data_stim_maj_3.csv" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/musicsyn/Results/p03a/p03a_data_stim_min_1.csv" beforeDir="false" afterPath="$PROJECT_DIR$/musicsyn/Results/p03a/p03a_data_stim_min_1.csv" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/musicsyn/Results/p03a/p03a_data_stim_min_2.csv" beforeDir="false" afterPath="$PROJECT_DIR$/musicsyn/Results/p03a/p03a_data_stim_min_2.csv" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/musicsyn/Results/p03a/p03a_data_stim_min_3.csv" beforeDir="false" afterPath="$PROJECT_DIR$/musicsyn/Results/p03a/p03a_data_stim_min_3.csv" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/musicsyn/Results/test/test_2023-11-17-15-55-15.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/musicsyn/Results/test/test_2023-11-17-16-07-21.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/musicsyn/Results/test/test_2023-11-17-16-21-14.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/musicsyn/Results/test/test_2023-11-17-17-17-59.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/musicsyn/Results/test/test_2023-11-17-17-22-24.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/musicsyn/Results/test/test_2023-11-17-17-37-14.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/musicsyn/Results/test/test_2023-11-17-17-38-30.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/musicsyn/Results/test/test_2023-11-17-17-39-47.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/musicsyn/Results/test/test_2023-11-17-17-41-02.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/musicsyn/Results/test/test_2023-11-17-17-54-44.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/musicsyn/Results/test/test_2023-11-17-17-55-53.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/musicsyn/Results/test/test_2023-11-17-17-57-05.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/musicsyn/Results/test/test_2023-11-17-17-58-12.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/musicsyn/Results/test/test_2023-11-17-17-59-21.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/musicsyn/Results/test/test_2023-11-17-18-00-35.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/musicsyn/Results/test/test_2023-11-21-08-02-25.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/musicsyn/Results/test/test_2023-11-21-08-04-52.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/musicsyn/Results/test/test_2023-11-21-08-12-06.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/musicsyn/Results/test/test_2023-11-21-08-29-28.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/musicsyn/Results/test/test_2023-11-21-08-31-34.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/musicsyn/Results/test/test_2023-11-21-08-37-39.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/musicsyn/Results/test/test_2023-11-21-08-39-01.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/musicsyn/Results/test/test_2023-11-21-08-40-20.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/musicsyn/Results/test/test_2023-11-21-08-45-26.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/musicsyn/Results/test/test_2023-11-21-08-46-43.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/musicsyn/Results/test/test_2023-11-21-08-54-33.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/musicsyn/Results/test/test_2023-11-21-08-55-43.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/musicsyn/Results/test/test_2023-11-21-08-57-02.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/musicsyn/Results/test/test_2023-11-21-08-58-23.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/musicsyn/Results/test/test_2023-11-21-08-59-53.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/musicsyn/Results/test/test_2023-11-21-09-01-12.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/musicsyn/Results/test/test_2023-11-21-15-16-33.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/musicsyn/Results/test/test_2023-11-22-15-11-22.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/musicsyn/Results/test/test_2023-11-22-15-13-17.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/musicsyn/Results/test/test_2023-11-22-15-17-52.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/musicsyn/Results/test/test_2023-11-22-15-21-01.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/musicsyn/Results/test/test_2023-11-22-15-23-09.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/musicsyn/Results/test/test_2023-11-22-15-24-28.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/musicsyn/Results/test/test_2023-11-22-15-31-45.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/musicsyn/Results/test/test_2023-11-22-15-32-56.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/musicsyn/Results/test/test_2023-11-22-15-34-04.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/musicsyn/Results/test/test_2023-11-22-15-35-13.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/musicsyn/Results/test/test_2023-11-22-15-36-20.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/musicsyn/Results/test/test_2023-11-22-15-37-27.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/musicsyn/Results/test/test_2023-11-22-15-39-32.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/musicsyn/Results/test/test_2023-11-22-15-40-39.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/musicsyn/Results/test/test_2023-11-22-15-41-48.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/musicsyn/Results/test/test_2023-11-22-15-42-55.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/musicsyn/Results/test/test_2023-11-22-15-44-02.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/musicsyn/Results/test/test_2023-11-22-15-45-11.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/musicsyn/Results/test/test_data_stim_maj_1.csv" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/musicsyn/Results/test/test_data_stim_maj_2.csv" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/musicsyn/Results/test/test_data_stim_maj_3.csv" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/musicsyn/Results/test/test_data_stim_min_1.csv" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/musicsyn/Results/test/test_data_stim_min_2.csv" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/musicsyn/Results/test/test_data_stim_min_3.csv" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/musicsyn/Results/test/test_seq_stim_maj_1.csv" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/musicsyn/Results/test/test_seq_stim_maj_2.csv" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/musicsyn/Results/test/test_seq_stim_maj_3.csv" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/musicsyn/Results/test/test_seq_stim_min_1.csv" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/musicsyn/Results/test/test_seq_stim_min_2.csv" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/musicsyn/Results/test/test_seq_stim_min_3.csv" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/musicsyn/Results/test00/test00_2023-11-22-16-02-58.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/musicsyn/Results/test00/test00_2023-11-22-16-11-49.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/musicsyn/Results/test00/test00_2023-11-22-16-13-01.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/musicsyn/Results/test00/test00_2023-11-22-16-14-08.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/musicsyn/Results/test00/test00_2023-11-22-16-15-16.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/musicsyn/Results/test00/test00_2023-11-22-16-16-25.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/musicsyn/Results/test00/test00_data_stim_maj_1.csv" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/musicsyn/Results/test00/test00_data_stim_maj_2.csv" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/musicsyn/Results/test00/test00_data_stim_maj_3.csv" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/musicsyn/Results/test00/test00_data_stim_min_1.csv" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/musicsyn/Results/test00/test00_data_stim_min_2.csv" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/musicsyn/Results/test00/test00_data_stim_min_3.csv" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/musicsyn/Results/test00/test00_seq_stim_maj_1.csv" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/musicsyn/Results/test00/test00_seq_stim_maj_2.csv" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/musicsyn/Results/test00/test00_seq_stim_maj_3.csv" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/musicsyn/Results/test00/test00_seq_stim_min_1.csv" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/musicsyn/Results/test00/test00_seq_stim_min_2.csv" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/musicsyn/Results/test00/test00_seq_stim_min_3.csv" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/musicsyn/subject_data.py" beforeDir="false" afterPath="$PROJECT_DIR$/musicsyn/subject_data.py" afterDir="false" />
+    </list>
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="FileTemplateManagerImpl">
+    <option name="RECENT_TEMPLATES">
+      <list>
+        <option value="Python Script" />
+      </list>
+    </option>
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+  </component>
+  <component name="ProjectColorInfo">{
+  &quot;customColor&quot;: &quot;&quot;,
+  &quot;associatedIndex&quot;: 6
+}</component>
+  <component name="ProjectId" id="2YZ7dxuD20hiRarmBKolkMrH7PX" />
+  <component name="ProjectViewState">
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showExcludedFiles" value="false" />
+    <option name="showLibraryContents" value="true" />
+  </component>
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "RunOnceActivity.OpenProjectViewOnStart": "true",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "git-widget-placeholder": "main"
+  },
+  "keyToStringList": {
+    "com.intellij.ide.scratch.ScratchImplUtil$2/New Scratch File": [
+      "Python"
+    ]
+  }
+}]]></component>
+  <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="6a537621-e967-4204-8ef8-693965092810" name="Changes" comment="" />
+      <created>1700721339354</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1700721339354</updated>
+    </task>
+    <servers />
+  </component>
+</project>
