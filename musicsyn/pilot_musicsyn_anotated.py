@@ -148,7 +148,7 @@ def select_file():
     i = 0
     for melody_file in files:
         print(melody_file)
-        run(melody_file, 'test') ########### PARTICIPANT HERE ############
+        run(melody_file, 'p07a') ########### PARTICIPANT HERE ############
         print(f'That was melody {i+1}.')
         user_input = input("Do you want to continue? (y/n): ")
         if user_input.lower() == 'n':
