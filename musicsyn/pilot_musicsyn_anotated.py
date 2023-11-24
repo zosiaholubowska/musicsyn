@@ -1,20 +1,19 @@
 import time
 import subprocess
 import itertools
-import pickle
 import numpy
 from numpy.random import default_rng
 import matplotlib.pyplot as plt
 import pandas
 import slab
-from musicsyn.balanced_sequence import balanced_sequence
-from musicsyn.subject_data import subject_data
+from balanced_sequence import balanced_sequence
+from good_luck import good_luck
 import random
 import freefield
 
 path = 'C://projects//musicsyn'
 randgenerator = default_rng()
-ils = pickle.load(open(path + "/musicsyn/ils.pickle", "rb"))
+
 
 samplerate = 44828
 
@@ -136,9 +135,9 @@ def run(melody_file, subject):
                 i += 1
             plt.pause(0.01)
     except IndexError:
-        subject_data(subject, file, melody_file)
+        good_luck()
     except KeyError:
-        subject_data(subject, file, melody_file)
+        good_luck()
 
 
 
@@ -146,16 +145,18 @@ def select_file():
     files = ["stim_maj_1.csv", "stim_maj_2.csv", "stim_maj_3.csv",
              "stim_min_1.csv", "stim_min_2.csv", "stim_min_3.csv"]
     random.shuffle(files)
-
+    i = 0
     for melody_file in files:
         print(melody_file)
-        run(melody_file, 'p03a') ########### PARTICIPANT HERE ############
-
+        run(melody_file, 'test') ########### PARTICIPANT HERE ############
+        print(f'That was melody {i+1}.')
         user_input = input("Do you want to continue? (y/n): ")
         if user_input.lower() == 'n':
             break
         elif user_input.lower() == 'y':
             print("Continuing...")
+
+        i += 1
 
 if __name__ == "__main__":
 

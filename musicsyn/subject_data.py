@@ -1,19 +1,15 @@
 import slab
 import pandas
 import numpy
-import os
 
-path = os.getcwd()
 
 def subject_data(subject, file, melody_file):
     """
     This is to create a dataframe with results and the sequence
-    """
+
 
     file_name = file.name
-    data = slab.ResultsFile.read_file(
-          path + f"/musicsyn/Results/{subject}/{file_name}"
-        )
+    data = slab.ResultsFile.read_file(f'C:\projects\musicsyn\musicsyn\Results\{subject}\{file_name}')
 
     timestamps = [float(list(d.keys())[0]) for d in data]
     frequencies = [list(d.values())[0] for d in data]
@@ -52,9 +48,7 @@ def subject_data(subject, file, melody_file):
 
 
 
-    seq = pandas.read_csv(
-      path + f"/Results/{subject}/{subject}_seq_{melody_file}"
-    )
+    seq = pandas.read_csv(f'C:\projects\musicsyn\musicsyn\Results/{subject}/{subject}_seq_{melody_file}')
 
     data = seq.join(freq["Responses"])
     data = data.join(freq["Frequency"])
@@ -73,6 +67,8 @@ def subject_data(subject, file, melody_file):
         }
     )
 
-    data.to_csv(
-      path +  f"/Results/{subject}/{subject}_data_{melody_file}",
-    )
+    data.to_csv(f'C:\projects\musicsyn\musicsyn\Results\{subject}\{subject}_data_{melody_file}')
+
+    """
+
+    print('Good luck!')

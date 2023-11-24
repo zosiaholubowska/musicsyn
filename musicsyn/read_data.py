@@ -4,7 +4,7 @@ import numpy
 import os
 
 path = os.getcwd()
-def subject_data(subject, file):
+def read_data(subject, file):
     """
     This is to create a dataframe with results and the sequence
     """
