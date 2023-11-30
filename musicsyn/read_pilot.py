@@ -1,10 +1,9 @@
 import slab
 import pandas
-import numpy
 import os
 
 path = os.getcwd()
-subjects = ['p01', 'p02', 'p02a', 'p03', 'p03a']
+subjects = [f for f in os.listdir(f"{path}/musicsyn/Results") if f.startswith("p")]
 
 def subject_data(subject, file):
     """
@@ -16,8 +15,6 @@ def subject_data(subject, file):
     )
 
     stimulus = data[0]['0'][:-4]
-
-    initial_channel = data[1]['0']
 
     timestamps = [float(list(d.keys())[0]) for d in data]
     frequencies = [list(d.values())[0] for d in data]
