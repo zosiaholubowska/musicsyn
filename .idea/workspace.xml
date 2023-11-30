@@ -4,28 +4,9 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="6a537621-e967-4204-8ef8-693965092810" name="Changes" comment="analysis of the pilot">
-      <change afterPath="$PROJECT_DIR$/musicsyn/power_analysis.py" afterDir="false" />
+    <list default="true" id="6a537621-e967-4204-8ef8-693965092810" name="Changes" comment="second round of pilot">
+      <change afterPath="$PROJECT_DIR$/musicsyn/random_generator.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/musicsyn/Results/test/test_2023-11-24-13-29-55.txt" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/musicsyn/Results/test/test_2023-11-24-13-31-23.txt" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/musicsyn/Results/test/test_2023-11-24-13-32-36.txt" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/musicsyn/Results/test/test_2023-11-24-13-33-48.txt" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/musicsyn/Results/test/test_2023-11-24-13-34-59.txt" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/musicsyn/Results/test/test_2023-11-24-13-36-13.txt" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/musicsyn/Results/test/test_seq_stim_maj_1.csv" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/musicsyn/Results/test/test_seq_stim_maj_2.csv" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/musicsyn/Results/test/test_seq_stim_maj_3.csv" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/musicsyn/Results/test/test_seq_stim_min_1.csv" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/musicsyn/Results/test/test_seq_stim_min_2.csv" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/musicsyn/Results/test/test_seq_stim_min_3.csv" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/musicsyn/analysis_pilot.py" beforeDir="false" afterPath="$PROJECT_DIR$/musicsyn/analysis_pilot.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/musicsyn/main_plots.R" beforeDir="false" afterPath="$PROJECT_DIR$/musicsyn/main_plots.R" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/musicsyn/midi_extract.py" beforeDir="false" afterPath="$PROJECT_DIR$/musicsyn/midi_extract.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/musicsyn/questions_after_pilot.xlsx" beforeDir="false" afterPath="$PROJECT_DIR$/musicsyn/questions_after_pilot.xlsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/musicsyn/read_pilot.py" beforeDir="false" afterPath="$PROJECT_DIR$/musicsyn/read_pilot.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/musicsyn/results.csv" beforeDir="false" afterPath="$PROJECT_DIR$/musicsyn/results.csv" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/old files/tmp.wav" beforeDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -82,7 +63,15 @@
       <option name="project" value="LOCAL" />
       <updated>1700809303751</updated>
     </task>
-    <option name="localTasksCounter" value="2" />
+    <task id="LOCAL-00002" summary="second round of pilot">
+      <option name="closed" value="true" />
+      <created>1701363456265</created>
+      <option name="number" value="00002" />
+      <option name="presentableId" value="LOCAL-00002" />
+      <option name="project" value="LOCAL" />
+      <updated>1701363456265</updated>
+    </task>
+    <option name="localTasksCounter" value="3" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -98,6 +87,7 @@
   </component>
   <component name="VcsManagerConfiguration">
     <MESSAGE value="analysis of the pilot" />
-    <option name="LAST_COMMIT_MESSAGE" value="analysis of the pilot" />
+    <MESSAGE value="second round of pilot" />
+    <option name="LAST_COMMIT_MESSAGE" value="second round of pilot" />
   </component>
 </project>
