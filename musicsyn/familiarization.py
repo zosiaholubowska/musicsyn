@@ -6,7 +6,6 @@ from numpy.random import default_rng
 import matplotlib.pyplot as plt
 import pandas
 import slab
-from balanced_sequence import balanced_sequence
 from good_luck import good_luck
 import random
 import freefield
@@ -17,7 +16,7 @@ randgenerator = default_rng()
 samplerate = 44828
 
 
-def read_melody(file):
+def read_sample(file):
     """
     This function reads a csv file with the description of notes
     - score data (from csv file)
@@ -30,9 +29,7 @@ def read_melody(file):
     onsets = score_data.onset_sec.to_list()  # list of onsets of consecutive notes
     frequencies = score_data.freq.to_list()  # frequencies of consecutive notes
     durations = score_data.duration.to_list()  # note durations
-    changable_notes = score_data.changable_note.to_list()  # if at note is possible to change direction
-    boundaries = (score_data.boundary.to_list())  # 0 or 1 indication if the note is the beginning of a new phrase
-    return onsets, frequencies, durations, boundaries, changable_notes
+    return onsets, frequencies, durations
 
 
 def expenv(n_samples):
@@ -63,16 +60,16 @@ def play(stim):
     subprocess.Popen(["afplay", "tmp.wav"])
 
 
-def run(melody_file, subject):
+
+def play_run(melody_file, subject):
     file = slab.ResultsFile(
         subject
     )  # here we name the results folder with subject name
     file.write(melody_file, tag=0)
-    onsets, frequencies, durations, boundaries, changable_notes = read_melody(
+    onsets, frequencies, durations, = read_sample(
         path + f"\stimuli\{melody_file}")  # reading the csv file with the information about the notes
-    seq = balanced_sequence(boundaries, changable_notes, subject, melody_file)
 
-    directions = [(-35, 0), (0, 0), (35, 0)]
+    directions = [23, 23, 23]
     [speaker1] = freefield.pick_speakers(directions[0])
     [speaker2] = freefield.pick_speakers(directions[1])
     [speaker3] = freefield.pick_speakers(directions[2])
@@ -86,30 +83,11 @@ def run(melody_file, subject):
     curr_speaker = next(speakers)
     file.write(curr_speaker.analog_channel, tag=0)
     start_time = time.time()  # creates a timestamp in Unix format
-    led = False
+
     try:
         while time.time() - start_time < onsets[-1] + durations[-1]:
-            if led:
-                if time.time() - led_on > 1:
-                    freefield.write(tag='bitmask', value=0, processors='RX81')  # turn off LED
+
             if time.time() - start_time > onsets[i]:  # play the next note
-
-                if seq["sequence"][i] == 1:
-                    curr_speaker = next(speakers)  # toggle direction
-                    file.write(curr_speaker.analog_channel, tag=f"{time.time() - start_time:.3f}")
-                    print(f"direction change")
-
-                if seq["boundary"][i]:  # so if there is 1 in the boundaries list
-                    print(f"at boundary!")
-                if seq["cue"][i] == 1:
-                    led_on = time.time()
-                    freefield.write(tag='bitmask', value=1, processors='RX81')  # illuminate LED
-                    led = True
-                    print("########")
-                    print("########")
-                    print("visual cue!")
-                    print("########")
-                    print("########")
 
                 file.write(frequencies[i], tag=f"{time.time() - start_time:.3f}")
                 freefield.write('f0', frequencies[i], ['RX81', 'RX82'])
@@ -123,15 +101,6 @@ def run(melody_file, subject):
 
                 freefield.play()
 
-                while True:
-                    response = freefield.read('response', 'RP2', 0)
-                    if response != 0:
-                        file.write(
-                            'p', tag=f"{time.time() - start_time:.3f}"
-                        )  # logs the key that was pressed on a specified time
-                    if time.time() - start_time > onsets[i]:
-                        break
-
                 i += 1
             plt.pause(0.01)
     except IndexError:
@@ -140,47 +109,24 @@ def run(melody_file, subject):
         good_luck()
 
 
-
-
 def select_file():
-    # training
-    #train = ['output_1.csv', 'output_2.csv', 'output_3.csv', 'output_4.csv', 'output_5.csv']
-    #random.shuffle(train)
-    train = ['output_1.csv', 'output_2.csv']
+    # sound familiarisation
+    fam = ['sample_major.csv', 'sample_minor.csv']
+    random.shuffle(fam)
 
-    # main task
-    main = ["stim_maj_1_a.csv", "stim_maj_2_a.csv", "stim_maj_3_a.csv",
-            "stim_min_1_a.csv", "stim_min_2_a.csv", "stim_min_3_a.csv",
-            "stim_maj_1_b.csv", "stim_maj_2_b.csv", "stim_maj_3_b.csv",
-            "stim_min_1_b.csv", "stim_min_2_b.csv", "stim_min_3_b.csv"
-            ]
-    random.shuffle(main)
+    i = 0
 
-    music = [train, main]
-
-    for m in music:
-        files = m
-        i = 0
-
-        user_input = input("Do you want to start the new task? (y/n): ")
+    for melody_file in fam:
+        print(melody_file)
+        play_run(melody_file, 'p07a')  ########### PARTICIPANT HERE ############
+        print(f'That was melody {i + 1}.')
+        user_input = input("Do you want to continue? (y/n): ")
         if user_input.lower() == 'n':
             break
         elif user_input.lower() == 'y':
             print("Continuing...")
 
-        for melody_file in files:
-            print(melody_file)
-            run(melody_file, 'test')  ########### PARTICIPANT HERE ############
-            print(f'That was melody {i + 1}.')
-            user_input = input("Do you want to continue? (y/n): ")
-            if user_input.lower() == 'n':
-                break
-            elif user_input.lower() == 'y':
-                print("Continuing...")
-
-                i += 1
-
-
+            i += 1
 
 
 if __name__ == "__main__":
