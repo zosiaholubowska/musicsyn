@@ -4,7 +4,34 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="6a537621-e967-4204-8ef8-693965092810" name="Changes" comment="second round of pilot" />
+    <list default="true" id="6a537621-e967-4204-8ef8-693965092810" name="Changes" comment="second round of pilot">
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/musicsyn/Results/p07a/p07a_2023-11-24-13-48-33.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/musicsyn/Results/p07a/p07a_2023-11-24-13-49-46.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/musicsyn/Results/p07a/p07a_2023-11-24-13-50-56.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/musicsyn/Results/p07a/p07a_2023-11-24-13-52-08.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/musicsyn/Results/p07a/p07a_2023-11-24-13-53-19.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/musicsyn/Results/p07a/p07a_2023-11-24-13-54-31.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/musicsyn/Results/p07a/p07a_data_stim_maj_1.csv" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/musicsyn/Results/p07a/p07a_data_stim_maj_2.csv" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/musicsyn/Results/p07a/p07a_data_stim_maj_3.csv" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/musicsyn/Results/p07a/p07a_data_stim_min_1.csv" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/musicsyn/Results/p07a/p07a_data_stim_min_2.csv" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/musicsyn/Results/p07a/p07a_data_stim_min_3.csv" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/musicsyn/Results/p07a/p07a_seq_stim_maj_1.csv" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/musicsyn/Results/p07a/p07a_seq_stim_maj_2.csv" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/musicsyn/Results/p07a/p07a_seq_stim_maj_3.csv" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/musicsyn/Results/p07a/p07a_seq_stim_min_1.csv" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/musicsyn/Results/p07a/p07a_seq_stim_min_2.csv" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/musicsyn/Results/p07a/p07a_seq_stim_min_3.csv" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/musicsyn/balanced_sequence.py" beforeDir="false" afterPath="$PROJECT_DIR$/musicsyn/balanced_sequence.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/musicsyn/random_generator.py" beforeDir="false" afterPath="$PROJECT_DIR$/musicsyn/random_generator.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/stimuli/random_1.csv" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/stimuli/random_2.csv" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/stimuli/random_3.csv" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/stimuli/random_4.csv" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/stimuli/random_5.csv" beforeDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -76,7 +103,15 @@
       <option name="project" value="LOCAL" />
       <updated>1701364891672</updated>
     </task>
-    <option name="localTasksCounter" value="4" />
+    <task id="LOCAL-00004" summary="second round of pilot">
+      <option name="closed" value="true" />
+      <created>1701423230792</created>
+      <option name="number" value="00004" />
+      <option name="presentableId" value="LOCAL-00004" />
+      <option name="project" value="LOCAL" />
+      <updated>1701423230792</updated>
+    </task>
+    <option name="localTasksCounter" value="5" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
