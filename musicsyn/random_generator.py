@@ -40,6 +40,6 @@ def save_to_csv(data, filename):
 # Generate and save 5 sets of random sequences
 for i in range(5):
     data = generate_data()
-    filename = f'output_{i + 1}.csv'
+    filename = f'test{i + 1}.csv'
     save_to_csv(data, filename)
     print(f'Saved {filename}')

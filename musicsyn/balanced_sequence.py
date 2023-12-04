@@ -27,7 +27,7 @@ onsets, frequencies, durations, boundaries, changable_notes = read_melody(file)
 path = 'C:\\projects\\musicsyn'
 
 
-def balanced_sequence(boundaries, changable_notes, subject, melody_file):
+def balanced_sequence(boundaries, changable_notes, subject, melody_file, cond):
     """
     Here we define a df, to which we will append all the sequence values
 
@@ -36,9 +36,14 @@ def balanced_sequence(boundaries, changable_notes, subject, melody_file):
                                      columns=['boundary', 'changable_notes'])
     boundaries_df['idx'] = range(len(boundaries_df))
 
+    if cond == 'train':
+        percent = 0.4
+    elif cond == 'main':
+        percent = 0.2
+
     n_boundaries = sum(boundaries)  # number of boundaries in stimulus
     n_changable = sum(changable_notes)  # number of changable notes in stimulus
-    n_changes = round(0.2 * n_changable)  # 20% of notes has to have a location/cue change
+    n_changes = round(percent * n_changable)  # 20% of notes has to have a location/cue change
 
     # This part is to calculate the sequence for location changes
     temp_arr = np.array([0] * round((0.4 * n_boundaries)) + [1] * round((0.6 * n_boundaries)))

@@ -12,7 +12,7 @@ def read_data(subject, file):
     file_name = file.name
 
     data = slab.ResultsFile.read_file(
-        path + f"/musicsyn/Results/{subject}/{file_name}"
+        path + f"/Results/{subject}/{file_name}"
     )
 
     stimulus = data[0]['0'][:-4]
@@ -43,7 +43,7 @@ def read_data(subject, file):
     df_filtered["subject"] = subject
 
     seq = pandas.read_csv(
-          path + f"/musicsyn/Results/{subject}/{subject}_seq_{stimulus}.csv"
+          path + f"/Results/{subject}/{subject}_seq_{stimulus}.csv"
         )
 
 
@@ -62,5 +62,5 @@ def read_data(subject, file):
             df_filtered["channel"][idx] = df_filtered["channel"][idx-1]
 
     df_filtered.to_csv(
-        path + f"/musicsyn/Results/{subject}/{subject}_data_{stimulus}_test.csv",
+        path + f"/Results/{subject}/{subject}_data_{stimulus}.csv",
     )

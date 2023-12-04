@@ -7,7 +7,7 @@ import matplotlib.pyplot as plt
 import pandas
 import slab
 from balanced_sequence import balanced_sequence
-from good_luck import good_luck
+from read_data import read_data
 import random
 import freefield
 
@@ -35,42 +35,14 @@ def read_melody(file):
     return onsets, frequencies, durations, boundaries, changable_notes
 
 
-def expenv(n_samples):
-    """
-    It is to create more natural sound
-    """
-    t = numpy.linspace(
-        start=0, stop=1, num=n_samples
-    )  # returns evenly spaced numbers over a specified interval
-    return slab.Signal(numpy.exp(-(0.69 * 5) * t))  # what these numbers specify?
-
-
-def note(f0, duration):
-    """
-    This is to create actual sound
-    """
-    sig = slab.Sound.harmoniccomplex(f0, duration)
-    env = expenv(sig.n_samples)
-    sig = sig * env
-    return slab.Binaural(sig.ramp())
-
-
-def play(stim):
-    """
-    Plays a created note
-    """
-    stim.write("tmp.wav")
-    subprocess.Popen(["afplay", "tmp.wav"])
-
-
-def run(melody_file, subject):
+def run(melody_file, subject, cond):
     file = slab.ResultsFile(
         subject
     )  # here we name the results folder with subject name
     file.write(melody_file, tag=0)
     onsets, frequencies, durations, boundaries, changable_notes = read_melody(
         path + f"\stimuli\{melody_file}")  # reading the csv file with the information about the notes
-    seq = balanced_sequence(boundaries, changable_notes, subject, melody_file)
+    seq = balanced_sequence(boundaries, changable_notes, subject, melody_file, cond)
 
     directions = [(-35, 0), (0, 0), (35, 0)]
     [speaker1] = freefield.pick_speakers(directions[0])
@@ -135,18 +107,18 @@ def run(melody_file, subject):
                 i += 1
             plt.pause(0.01)
     except IndexError:
-        good_luck()
+       read_data(subject, file)
     except KeyError:
-        good_luck()
+        read_data(subject, file)
 
 
 
 
 def select_file():
     # training
-    #train = ['output_1.csv', 'output_2.csv', 'output_3.csv', 'output_4.csv', 'output_5.csv']
-    #random.shuffle(train)
-    train = ['output_1.csv', 'output_2.csv']
+    train = ['output_1.csv', 'output_2.csv', 'output_3.csv', 'output_4.csv', 'output_5.csv']
+    random.shuffle(train)
+
 
     # main task
     main = ["stim_maj_1_a.csv", "stim_maj_2_a.csv", "stim_maj_3_a.csv",
@@ -170,7 +142,7 @@ def select_file():
 
         for melody_file in files:
             print(melody_file)
-            run(melody_file, 'test')  ########### PARTICIPANT HERE ############
+            run(melody_file, 'test', m)  ########### PARTICIPANT HERE ############
             print(f'That was melody {i + 1}.')
             user_input = input("Do you want to continue? (y/n): ")
             if user_input.lower() == 'n':

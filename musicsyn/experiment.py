@@ -15,12 +15,12 @@ import freefield
 path = os.getcwd()
 # ============ FAMILIARIZATION WITH THE SOUND =============
 
-with open(f"{path}/musicsyn/familiarization.py") as f:
+with open('familiarization.py') as f:
     exec(f.read())
 
 
 # =============== TRAINING + MAIN EXPERIMENT ===============
 
-with open(f"{path}/musicsyn/pilot_musicsyn_anotated.py") as f:
+with open("pilot_musicsyn_anotated.py") as f:
     exec(f.read())
 
