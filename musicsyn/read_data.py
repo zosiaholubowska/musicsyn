@@ -30,7 +30,7 @@ def read_data(subject, file):
 
 
     for idx in df1.index:
-        if (df1["frequencies"][idx] == 1) or (df1["frequencies"][idx] == 9) or (df1["frequencies"][idx] == 18):
+        if (df1["frequencies"][idx] == 1) or (df1["frequencies"][idx] == 23) or (df1["frequencies"][idx] == 18):
             df1["channel"][idx+1] = df1["frequencies"][idx]
         elif (df1["frequencies"][idx] == "p"):
             df1["answer"][idx - 1] = 1

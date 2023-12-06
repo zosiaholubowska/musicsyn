@@ -36,18 +36,18 @@ def balanced_sequence(boundaries, changable_notes, subject, melody_file, cond):
                                      columns=['boundary', 'changable_notes'])
     boundaries_df['idx'] = range(len(boundaries_df))
 
-    percent = 0.2
+    p = 0
 
     if cond == 'train':
-        percent = 0.4
+        p = 0.5
     elif cond == 'main':
-        percent = 0.2
+        p = 0.2
 
 
     n_boundaries = sum(boundaries)  # number of boundaries in stimulus
     n_changable = sum(changable_notes)
     # number of changable notes in stimulus
-    n_changes = round(percent * n_changable)  # 20% of notes has to have a location/cue change
+    n_changes = round(p * n_changable)  # 20% of notes has to have a location/cue change
 
     # This part is to calculate the sequence for location changes
     temp_arr = np.array([0] * round((0.4 * n_boundaries)) + [1] * round((0.6 * n_boundaries)))
@@ -205,4 +205,4 @@ def balanced_sequence(boundaries, changable_notes, subject, melody_file, cond):
             final['cue'] == 1)].shape[0])
     return final
 
-# balanced_sequence(boundaries, changable_notes, "FH", file)
+# balanced_sequence(boundaries, changable_notes, "test", file, cond)

@@ -27,13 +27,15 @@ def subject_data(subject, file):
 
 
     for idx in df1.index:
-        if (df1["frequencies"][idx] == 1) or (df1["frequencies"][idx] == 9) or (df1["frequencies"][idx] == 18):
+        if (df1["frequencies"][idx] == 35.0) or (df1["frequencies"][idx] == -35) or (df1["frequencies"][idx] == 1) or (df1["frequencies"][idx] == 23):
             df1["channel"][idx+1] = df1["frequencies"][idx]
         elif (df1["frequencies"][idx] == "p"):
             df1["answer"][idx - 1] = 1
             df1["prec_time"][idx - 1] = df1["time"][idx]
+        elif (df1["frequencies"][idx] == 0.0):
+            df1["channel"][idx + 1] = 1
 
-    df_filtered = df1[~df['frequencies'].isin([1, 9, 18, 'p'])]
+    df_filtered = df1[~df['frequencies'].isin([1, 0.0, 23, 35, -35, 'p'])]
     df_filtered.reset_index(drop=True, inplace=True) #reset the index
 
     df_filtered["stimulus"] = stimulus

@@ -36,6 +36,8 @@ df2["time_difference"] = df2["prec_time"] - df2["time"]
 
 #### PRINT DISTRIBUTION OF SIGNAL THEORY PER CONDITION
 
+df2 = df2[df2['stimulus'].str.match('out')]
+
 condition_1 = df2[df2['boundary'] == 1]
 condition_0 = df2[df2['boundary'] == 0]
 
@@ -77,12 +79,17 @@ no_boundary = vc_data[vc_data['boundary'] == 0]
 at_boundary_grouped = at_boundary.groupby(['subject', 'signal_theory']).size().unstack(fill_value=0)
 at_boundary_grouped.reset_index(inplace=True)
 at_boundary_grouped.columns.name = None
-at_boundary_grouped.columns = ['subject', 'corr', 'fa', 'hit', 'miss']
+### add false alarms = 0
+at_boundary_grouped['fa'] = 0
+no_boundary_grouped = at_boundary_grouped[['subject', 'corr', 'fa', 'hit', 'miss']]
+#at_boundary_grouped.columns = ['subject', 'corr', 'fa', 'hit', 'miss']
 
 no_boundary_grouped = no_boundary.groupby(['subject', 'signal_theory']).size().unstack(fill_value=0)
 no_boundary_grouped.reset_index(inplace=True)
 no_boundary_grouped.columns.name = None
-no_boundary_grouped.columns = ['subject', 'corr', 'fa', 'hit', 'miss']
+### add false alarms = 0
+no_boundary_grouped['fa'] = 0
+no_boundary_grouped = no_boundary_grouped[['subject', 'corr', 'fa', 'hit', 'miss']]
 
 score_columns = ['corr', 'fa', 'hit', 'miss']
 
@@ -93,7 +100,6 @@ no_boundary_grouped["condition"] = "no_boundary"
 main = pandas.concat([at_boundary_grouped, no_boundary_grouped])
 main = main.reset_index(drop=True)
 
-main['participant'] = main['subject'].str.replace(r'a.*', '', regex=True)
 
 # CALCULATE HIT RATE AND FALSE RATE
 
@@ -263,7 +269,7 @@ ax2.set_xticklabels([labels[category] for category in categories])
 
 ax1.set_xticks(bar_positions_boundary + bar_width / 2)
 ax1.set_xticklabels([labels[category] for category in categories])
-plt.savefig('distrib_by_condition.png', dpi=300)
+#plt.savefig('distrib_by_condition.png', dpi=300)
 plt.show()
 
 #### ALL VALUES #####
@@ -307,7 +313,7 @@ categories = ['hit', 'miss', 'corr', 'fa']
 bar_width = 0.5
 
 fig, ax = plt.subplots(figsize=(10, 8))
-sub = vc_data[(vc_data['subject'] == 'p04')| (vc_data['subject'] == 'p04a')]
+sub = vc_data[(vc_data['subject'] == 'p01')]
 counts = sub['signal_theory'].value_counts()
 total = len(sub)
 
