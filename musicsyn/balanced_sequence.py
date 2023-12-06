@@ -27,7 +27,7 @@ onsets, frequencies, durations, boundaries, changable_notes = read_melody(file)
 path = 'C:\\projects\\musicsyn'
 
 
-def balanced_sequence(boundaries, changable_notes, subject, melody_file, cond):
+def balanced_sequence(boundaries, changable_notes, subject, melody_file):
     """
     Here we define a df, to which we will append all the sequence values
 
@@ -36,14 +36,12 @@ def balanced_sequence(boundaries, changable_notes, subject, melody_file, cond):
                                      columns=['boundary', 'changable_notes'])
     boundaries_df['idx'] = range(len(boundaries_df))
 
-    if cond == 'train':
-        percent = 0.4
-    elif cond == 'main':
-        percent = 0.2
+
 
     n_boundaries = sum(boundaries)  # number of boundaries in stimulus
-    n_changable = sum(changable_notes)  # number of changable notes in stimulus
-    n_changes = round(percent * n_changable)  # 20% of notes has to have a location/cue change
+    n_changable = sum(changable_notes)
+    # number of changable notes in stimulus
+    n_changes = round(0.2 * n_changable)  # 20% of notes has to have a location/cue change
 
     # This part is to calculate the sequence for location changes
     temp_arr = np.array([0] * round((0.4 * n_boundaries)) + [1] * round((0.6 * n_boundaries)))
@@ -162,7 +160,7 @@ def balanced_sequence(boundaries, changable_notes, subject, melody_file, cond):
     semi_final = semi_final.reset_index(drop=True)
 
     # control for consecutive ones in cue
-    for i in range(len(semi_final)-4):
+    for i in range(len(semi_final) - 4):
         if (semi_final['cue'][i] == 1) and (semi_final['cue'][i + 1] == 1):
             semi_final['cue'][i + 1] = 0
             semi_final['cue'][i + 4] = 1
@@ -177,7 +175,6 @@ def balanced_sequence(boundaries, changable_notes, subject, melody_file, cond):
     sequence = pandas.concat(sequence)
     final = sequence.sort_values(by='idx', ascending=True)
     final = final.reset_index(drop=True)
-
 
     final.to_csv(
         path + f"/musicsyn/Results/{subject}/{subject}_seq_{melody_file}",
@@ -199,7 +196,7 @@ def balanced_sequence(boundaries, changable_notes, subject, melody_file, cond):
     print("No boundary with no change:")
     print(final[(final['boundary'] == 0) & (final['changable_notes'] == 1) & (final['sequence'] == 0)].shape[0])
     print(final[(final['boundary'] == 0) & (final['changable_notes'] == 1) & (final['sequence'] == 0) & (
-                final['cue'] == 1)].shape[0])
+            final['cue'] == 1)].shape[0])
     return final
 
 # balanced_sequence(boundaries, changable_notes, "FH", file)

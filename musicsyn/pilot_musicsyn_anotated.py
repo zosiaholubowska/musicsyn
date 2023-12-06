@@ -42,7 +42,7 @@ def run(melody_file, subject, cond):
     file.write(melody_file, tag=0)
     onsets, frequencies, durations, boundaries, changable_notes = read_melody(
         path + f"\stimuli\{melody_file}")  # reading the csv file with the information about the notes
-    seq = balanced_sequence(boundaries, changable_notes, subject, melody_file, cond)
+    seq = balanced_sequence(boundaries, changable_notes, subject, melody_file)
 
     directions = [(-35, 0), (0, 0), (35, 0)]
     [speaker1] = freefield.pick_speakers(directions[0])
@@ -142,7 +142,7 @@ def select_file():
 
         for melody_file in files:
             print(melody_file)
-            run(melody_file, 'test', m)  ########### PARTICIPANT HERE ############
+            run(melody_file, 'p01', m)  ########### PARTICIPANT HERE ############
             print(f'That was melody {i + 1}.')
             user_input = input("Do you want to continue? (y/n): ")
             if user_input.lower() == 'n':
