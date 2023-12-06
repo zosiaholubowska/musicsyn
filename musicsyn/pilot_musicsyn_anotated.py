@@ -7,7 +7,7 @@ import matplotlib.pyplot as plt
 import pandas
 import slab
 from balanced_sequence import balanced_sequence
-from read_data import read_data
+from good_luck import good_luck
 import random
 import freefield
 
@@ -42,7 +42,7 @@ def run(melody_file, subject, cond):
     file.write(melody_file, tag=0)
     onsets, frequencies, durations, boundaries, changable_notes = read_melody(
         path + f"\stimuli\{melody_file}")  # reading the csv file with the information about the notes
-    seq = balanced_sequence(boundaries, changable_notes, subject, melody_file)
+    seq = balanced_sequence(boundaries, changable_notes, subject, melody_file, cond)
 
     directions = [(-35, 0), (0, 0), (35, 0)]
     [speaker1] = freefield.pick_speakers(directions[0])
@@ -56,7 +56,7 @@ def run(melody_file, subject, cond):
     # durations.append(0.1)  ###
     i = 0
     curr_speaker = next(speakers)
-    file.write(curr_speaker.analog_channel, tag=0)
+    file.write(curr_speaker.azimuth, tag=0)
     start_time = time.time()  # creates a timestamp in Unix format
     led = False
     try:
@@ -68,7 +68,7 @@ def run(melody_file, subject, cond):
 
                 if seq["sequence"][i] == 1:
                     curr_speaker = next(speakers)  # toggle direction
-                    file.write(curr_speaker.analog_channel, tag=f"{time.time() - start_time:.3f}")
+                    file.write(curr_speaker.azimuth, tag=f"{time.time() - start_time:.3f}")
                     print(f"direction change")
 
                 if seq["boundary"][i]:  # so if there is 1 in the boundaries list
@@ -107,9 +107,9 @@ def run(melody_file, subject, cond):
                 i += 1
             plt.pause(0.01)
     except IndexError:
-       read_data(subject, file)
+        good_luck()
     except KeyError:
-        read_data(subject, file)
+        good_luck()
 
 
 
@@ -142,7 +142,7 @@ def select_file():
 
         for melody_file in files:
             print(melody_file)
-            run(melody_file, 'p01', m)  ########### PARTICIPANT HERE ############
+            run(melody_file, 'p03', m)  ########### PARTICIPANT HERE ############
             print(f'That was melody {i + 1}.')
             user_input = input("Do you want to continue? (y/n): ")
             if user_input.lower() == 'n':
