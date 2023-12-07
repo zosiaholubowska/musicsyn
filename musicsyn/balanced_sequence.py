@@ -6,7 +6,7 @@ import os
 We can use the file of one of the stimuli to test the function
 """
 """
-file = ("/Users/zofiaholubowska/Documents/PhD/3_experiment/experiment/stimuli/stim_maj_1.csv")
+file = ("stim_min_3_a.csv")
 os.chdir('C://projects//musicsyn/stimuli')
 
 def read_melody(file):
@@ -27,7 +27,7 @@ onsets, frequencies, durations, boundaries, changable_notes = read_melody(file)
 path = 'C:\\projects\\musicsyn'
 
 
-def balanced_sequence(boundaries, changable_notes, subject, melody_file, cond):
+def balanced_sequence(boundaries, changable_notes, subject, melody_file, p):
     """
     Here we define a df, to which we will append all the sequence values
 
@@ -36,12 +36,6 @@ def balanced_sequence(boundaries, changable_notes, subject, melody_file, cond):
                                      columns=['boundary', 'changable_notes'])
     boundaries_df['idx'] = range(len(boundaries_df))
 
-    p = 0
-
-    if cond == 'train':
-        p = 0.5
-    elif cond == 'main':
-        p = 0.2
 
 
     n_boundaries = sum(boundaries)  # number of boundaries in stimulus

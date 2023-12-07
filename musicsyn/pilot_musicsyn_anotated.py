@@ -1,7 +1,5 @@
 import time
-import subprocess
 import itertools
-import numpy
 from numpy.random import default_rng
 import matplotlib.pyplot as plt
 import pandas
@@ -35,14 +33,18 @@ def read_melody(file):
     return onsets, frequencies, durations, boundaries, changable_notes
 
 
-def run(melody_file, subject, cond):
+
+
+def run(melody_file, subject,p):
     file = slab.ResultsFile(
         subject
     )  # here we name the results folder with subject name
     file.write(melody_file, tag=0)
     onsets, frequencies, durations, boundaries, changable_notes = read_melody(
-        path + f"\stimuli\{melody_file}")  # reading the csv file with the information about the notes
-    seq = balanced_sequence(boundaries, changable_notes, subject, melody_file, cond)
+        path + f"\stimuli\{melody_file}")
+    print(boundaries)
+    print(changable_notes)# reading the csv file with the information about the notes
+    seq = balanced_sequence(boundaries, changable_notes, subject, melody_file,p)
 
     directions = [(-35, 0), (0, 0), (35, 0)]
     [speaker1] = freefield.pick_speakers(directions[0])
@@ -58,20 +60,19 @@ def run(melody_file, subject, cond):
     curr_speaker = next(speakers)
     file.write(curr_speaker.azimuth, tag=0)
     start_time = time.time()  # creates a timestamp in Unix format
+
     led = False
     try:
         while time.time() - start_time < onsets[-1] + durations[-1]:
             if led:
                 if time.time() - led_on > 1:
-                    freefield.write(tag='bitmask', value=0, processors='RX81')
-                    # turn off LED
+                    freefield.write(tag='bitmask', value=0, processors='RX81')  # turn off LED
+
             # button
+
             response = freefield.read('response', 'RP2', 0)
             if response != 0:
-                file.write(
-                    'p', tag=f"{time.time() - start_time:.3f}"
-                )  # logs the key that was pressed on a specified time
-                
+                file.write('p', tag=f'{time.time() - start_time:.3f}')
 
 
             if time.time() - start_time > onsets[i]:  # play the next note
@@ -105,7 +106,9 @@ def run(melody_file, subject, cond):
 
                 freefield.play()
 
+
                 i += 1
+            plt.pause(0.01)
 
     except IndexError:
         good_luck()
@@ -117,7 +120,7 @@ def run(melody_file, subject, cond):
 
 def select_file():
     # training
-    train = ['output_1.csv', 'output_2.csv', 'output_3.csv', 'output_4.csv', 'output_5.csv']
+    train = ['test1.csv', 'test2.csv', 'test3.csv', 'test4.csv', 'test5.csv']
     random.shuffle(train)
 
 
@@ -131,6 +134,8 @@ def select_file():
 
     music = [train, main]
 
+    time.sleep(6)
+
     for m in music:
         files = m
         i = 0
@@ -143,7 +148,11 @@ def select_file():
 
         for melody_file in files:
             print(melody_file)
-            run(melody_file, 'p04', m)  ########### PARTICIPANT HERE ############
+            p = 0.2
+            if melody_file.startswith('test'):
+                p = 0.35
+            print(p)
+            run(melody_file, 'p00', p)  ########### PARTICIPANT HERE ############
             print(f'That was melody {i + 1}.')
             user_input = input("Do you want to continue? (y/n): ")
             if user_input.lower() == 'n':
@@ -161,7 +170,7 @@ if __name__ == "__main__":
                  ['RX82', 'RX8', path + f'/data/rcx/piano.rcx'],
                  ['RP2', 'RP2', path + f'/data/rcx/button.rcx']]
     freefield.initialize('dome', device=proc_list)
-    freefield.set_logger('debug')
+    #freefield.set_logger('debug')
 
     select_file()
 
