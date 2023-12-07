@@ -63,7 +63,17 @@ def run(melody_file, subject, cond):
         while time.time() - start_time < onsets[-1] + durations[-1]:
             if led:
                 if time.time() - led_on > 1:
-                    freefield.write(tag='bitmask', value=0, processors='RX81')  # turn off LED
+                    freefield.write(tag='bitmask', value=0, processors='RX81')
+                    # turn off LED
+            # button
+            response = freefield.read('response', 'RP2', 0)
+            if response != 0:
+                file.write(
+                    'p', tag=f"{time.time() - start_time:.3f}"
+                )  # logs the key that was pressed on a specified time
+                
+
+
             if time.time() - start_time > onsets[i]:  # play the next note
 
                 if seq["sequence"][i] == 1:
@@ -95,17 +105,8 @@ def run(melody_file, subject, cond):
 
                 freefield.play()
 
-                while True:
-                    response = freefield.read('response', 'RP2', 0)
-                    if response != 0:
-                        file.write(
-                            'p', tag=f"{time.time() - start_time:.3f}"
-                        )  # logs the key that was pressed on a specified time
-                    if time.time() - start_time > onsets[i]:
-                        break
-
                 i += 1
-            plt.pause(0.01)
+
     except IndexError:
         good_luck()
     except KeyError:
