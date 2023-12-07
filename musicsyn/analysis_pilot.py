@@ -36,7 +36,7 @@ df2["time_difference"] = df2["prec_time"] - df2["time"]
 
 #### PRINT DISTRIBUTION OF SIGNAL THEORY PER CONDITION
 
-df2 = df2[df2['stimulus'].str.match('out')]
+df2 = df2[df2['stimulus'].str.match('test')]
 
 condition_1 = df2[df2['boundary'] == 1]
 condition_0 = df2[df2['boundary'] == 0]
@@ -80,16 +80,17 @@ at_boundary_grouped = at_boundary.groupby(['subject', 'signal_theory']).size().u
 at_boundary_grouped.reset_index(inplace=True)
 at_boundary_grouped.columns.name = None
 ### add false alarms = 0
-at_boundary_grouped['fa'] = 0
-no_boundary_grouped = at_boundary_grouped[['subject', 'corr', 'fa', 'hit', 'miss']]
-#at_boundary_grouped.columns = ['subject', 'corr', 'fa', 'hit', 'miss']
+#at_boundary_grouped['fa'] = 0
+#no_boundary_grouped = at_boundary_grouped[['subject', 'corr', 'fa', 'hit', 'miss']]
+at_boundary_grouped.columns = ['subject', 'corr', 'fa', 'hit', 'miss']
 
 no_boundary_grouped = no_boundary.groupby(['subject', 'signal_theory']).size().unstack(fill_value=0)
 no_boundary_grouped.reset_index(inplace=True)
 no_boundary_grouped.columns.name = None
 ### add false alarms = 0
-no_boundary_grouped['fa'] = 0
-no_boundary_grouped = no_boundary_grouped[['subject', 'corr', 'fa', 'hit', 'miss']]
+#no_boundary_grouped['fa'] = 0
+#no_boundary_grouped = no_boundary_grouped[['subject', 'corr', 'fa', 'hit', 'miss']]
+no_boundary_grouped.columns = ['subject', 'corr', 'fa', 'hit', 'miss']
 
 score_columns = ['corr', 'fa', 'hit', 'miss']
 
@@ -136,8 +137,7 @@ for i in range(len(main)):
 #### SAVE D-PRIME and F-SCORE INTO CSV
 main.to_csv("main.csv", index=False)
 
-##remove the outlier
-main = main[main["subject"]!="p07a"]
+
 
 #### RESHAPE THE DF FOR THE PAIR-WISE COMPARISON
 pairwise_d_prime = main.pivot(index='subject', columns='condition', values='d_prime')
@@ -146,8 +146,6 @@ pairwise_hit_rate = main.pivot(index='subject', columns='condition', values='hit
 vc_data_filtered = vc_data[vc_data['answer'] == 1]
 vc_data_filtered['condition'] = numpy.where(vc_data_filtered['boundary'] == 0, 'no_boundary', 'boundary')
 mean_time_diff = vc_data_filtered.groupby(['subject', 'condition'])['time_difference'].mean().reset_index()
-##remove the outlier
-mean_time_diff = mean_time_diff[mean_time_diff["subject"]!="p07a"]
 pairwise_time_difference = mean_time_diff.pivot(index='subject', columns='condition', values='time_difference')
 
 #-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-
@@ -196,7 +194,7 @@ plot_avg(axes[1, 1], mean_time_diff,'condition', 'time_difference', 'Time differ
 
 
 plt.tight_layout(rect=[0, 0.03, 1, 0.95])
-plt.savefig('first_pilot_results_out.png', dpi=300)
+plt.savefig('second_pilot_results_test.png', dpi=300)
 plt.show()
 
 #### PLOT - SIGNAL THEORY DISTRIBUTION
@@ -304,7 +302,7 @@ labels = {'hit': 'Hit', 'fa': 'False Alarm', 'corr': 'Correct Rejection', 'miss'
 ax.set_ylabel('Raw Values')
 ax.set_xticks(bar_positions)
 ax.set_xticklabels([labels[category] for category in categories])
-plt.savefig('combined_plot.png', dpi=300)
+plt.savefig('combined_plot_test.png', dpi=300)
 plt.show()
 
 
@@ -313,7 +311,7 @@ categories = ['hit', 'miss', 'corr', 'fa']
 bar_width = 0.5
 
 fig, ax = plt.subplots(figsize=(10, 8))
-sub = vc_data[(vc_data['subject'] == 'p01')]
+sub = vc_data[(vc_data['subject'] == 'p05')]
 counts = sub['signal_theory'].value_counts()
 total = len(sub)
 
@@ -339,7 +337,51 @@ labels = {'hit': 'Hit Rate', 'fa': 'False Alarm', 'corr': 'Correct Rejection', '
 ax.set_ylabel('Raw Values')
 ax.set_xticks(bar_positions)
 ax.set_xticklabels([labels[category] for category in categories])
-plt.savefig('single_plot.png', dpi=300)
+plt.savefig('p05_plot.png', dpi=300)
+plt.show()
+
+
+#### PARAMETERS
+sub_vc_data = vc_data[(vc_data['subject'] == 'p05')]
+sub_main = main[(main['subject'] == 'p05')]
+
+#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-
+
+palette = sns.color_palette(['#a4e0f5'], len(main['subject'].unique()))
+def plot_sub(ax, data_plot, x, y, title):
+    sns.lineplot(ax=ax, x=x, y=y, data=data_plot, hue='subject', palette=palette, marker='o', legend=False)
+    ax.set_xticks([0, 1])
+    ax.set_xticklabels(['boundary', 'no_boundary'])
+    ax.set_xlim(-0.2, 1.2)
+    ax.set_title(title)
+
+
+# Set up subplots
+fig, axes = plt.subplots(2, 2, figsize=(12, 10))
+fig.suptitle('Pilot - preliminary results')
+main['ff1'] = pandas.to_numeric(main['ff1'], errors='coerce')
+main['d_prime'] = pandas.to_numeric(main['d_prime'], errors='coerce')
+
+# Hit rate plot
+plot_sub(axes[0, 0], sub_main,'condition', 'hit_rate', 'Hit Rate')
+
+
+# D-prime plot
+plot_sub(axes[0, 1], sub_main,'condition', 'd_prime', 'D-prime')
+
+
+# F-score plot
+plot_sub(axes[1, 0], sub_main,'condition', 'ff1', 'F-score')
+
+
+# Time difference plot
+
+plot_sub(axes[1, 1], mean_time_diff,'condition', 'time_difference', 'Time difference')
+
+
+
+plt.tight_layout(rect=[0, 0.03, 1, 0.95])
+plt.savefig('p05_second_pilot_results_out.png', dpi=300)
 plt.show()
 
 

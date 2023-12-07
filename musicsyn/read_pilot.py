@@ -25,7 +25,24 @@ def subject_data(subject, file):
     df1["answer"] = 0
     df1["prec_time"] = 0
 
+    # for idx in df1.index:
+    #    if type(df1["frequencies"][idx]) == str:
+    #         if (type(df1["frequencies"][idx-1]) != str) and (type(df1["frequencies"][idx]) == str) and (type(df1["frequencies"][idx+1]) == str):
+    #             df1["answer"][idx] = 1
 
+    # df1 = df1.drop(df1[(df1["answer"] == 0) & ((df1["frequencies"] == 'p'))].index)
+    # time1 = 0
+    # time2 = 0
+    # for idx in df1.index:
+
+    #     if df1["frequencies"][idx] == 'p':
+    #         time2 = df1["time"][idx]
+    #         if (time2 - time1 < 0.2):
+    #             df1["answer"][idx] = 100
+
+    #     time1 = time2
+
+    # df1 = df1.drop(df1[(df1["answer"] == 100) & ((df1["frequencies"] == 'p')) ].index)
     for idx in df1.index:
         if (df1["frequencies"][idx] == 35.0) or (df1["frequencies"][idx] == -35) or (df1["frequencies"][idx] == 1) or (df1["frequencies"][idx] == 23):
             df1["channel"][idx+1] = df1["frequencies"][idx]
@@ -35,7 +52,7 @@ def subject_data(subject, file):
         elif (df1["frequencies"][idx] == 0.0):
             df1["channel"][idx + 1] = 1
 
-    df_filtered = df1[~df['frequencies'].isin([1, 0.0, 23, 35, -35, 'p'])]
+    df_filtered = df1[~df['frequencies'].isin([1, 0.0, 23, 35.0, -35.0, 'p'])]
     df_filtered.reset_index(drop=True, inplace=True) #reset the index
 
     df_filtered["stimulus"] = stimulus
