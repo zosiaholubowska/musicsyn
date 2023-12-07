@@ -7,7 +7,7 @@ def generate_data():
     freq_range = [440 * 2 ** (n / 12) for n in range(-12, 13)]
     data = []
 
-    loc_change_sequence = random.sample([1] * 8 + [0] * 52, 60)
+    loc_change_sequence = random.sample([1] * 16 + [0] * 44, 60)
 
     if loc_change_sequence[0] == 1:
         loc_change_sequence[0] = 0
@@ -22,18 +22,21 @@ def generate_data():
             loc_change_sequence[i + 1] = 0
             loc_change_sequence[i + 2] = 1
 
-    for onset_sec, loc_change in zip(range(60), loc_change_sequence):
+    boundaries = [0, 0, 0, 1] * int(60/4)
+    changable_notes = [0,1,0,1,1,0,1,1] * int(60/8)
+
+
+    for onset_sec, loc_change, boundary, changable in zip(range(60), loc_change_sequence, boundaries, changable_notes):
         freq = random.choice(freq_range)
         offset = onset_sec + duration
-        data.append([onset_sec, duration, freq, offset, loc_change])
+        data.append([onset_sec, duration, freq, offset, loc_change, boundary, changable])
 
     return data
-
 
 def save_to_csv(data, filename):
     with open(filename, 'w', newline='') as csvfile:
         csv_writer = csv.writer(csvfile)
-        csv_writer.writerow(['onset_sec', 'duration', 'freq', 'offset', 'loc_change'])
+        csv_writer.writerow(['onset_sec', 'duration', 'freq', 'offset', 'loc_change', 'boundary', 'changable_note'])
         csv_writer.writerows(data)
 
 
