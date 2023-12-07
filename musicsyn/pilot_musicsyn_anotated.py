@@ -1,7 +1,6 @@
 import time
 import itertools
 from numpy.random import default_rng
-import matplotlib.pyplot as plt
 import pandas
 import slab
 from balanced_sequence import balanced_sequence
@@ -33,9 +32,7 @@ def read_melody(file):
     return onsets, frequencies, durations, boundaries, changable_notes
 
 
-
-
-def run(melody_file, subject,p):
+def run(melody_file, subject, p):
     file = slab.ResultsFile(
         subject
     )  # here we name the results folder with subject name
@@ -43,8 +40,8 @@ def run(melody_file, subject,p):
     onsets, frequencies, durations, boundaries, changable_notes = read_melody(
         path + f"\stimuli\{melody_file}")
     print(boundaries)
-    print(changable_notes)# reading the csv file with the information about the notes
-    seq = balanced_sequence(boundaries, changable_notes, subject, melody_file,p)
+    print(changable_notes)  # reading the csv file with the information about the notes
+    seq = balanced_sequence(boundaries, changable_notes, subject, melody_file, p)
 
     directions = [(-35, 0), (0, 0), (35, 0)]
     [speaker1] = freefield.pick_speakers(directions[0])
@@ -73,7 +70,6 @@ def run(melody_file, subject,p):
             response = freefield.read('response', 'RP2', 0)
             if response != 0:
                 file.write('p', tag=f'{time.time() - start_time:.3f}')
-
 
             if time.time() - start_time > onsets[i]:  # play the next note
 
@@ -106,9 +102,8 @@ def run(melody_file, subject,p):
 
                 freefield.play()
 
-
                 i += 1
-            plt.pause(0.01)
+
 
     except IndexError:
         good_luck()
@@ -116,13 +111,10 @@ def run(melody_file, subject,p):
         good_luck()
 
 
-
-
 def select_file():
     # training
     train = ['test1.csv', 'test2.csv', 'test3.csv', 'test4.csv', 'test5.csv']
     random.shuffle(train)
-
 
     # main task
     main = ["stim_maj_1_a.csv", "stim_maj_2_a.csv", "stim_maj_3_a.csv",
@@ -163,14 +155,12 @@ def select_file():
                 i += 1
 
 
-
-
 if __name__ == "__main__":
     proc_list = [['RX81', 'RX8', path + f'/data/rcx/piano.rcx'],
                  ['RX82', 'RX8', path + f'/data/rcx/piano.rcx'],
                  ['RP2', 'RP2', path + f'/data/rcx/button.rcx']]
     freefield.initialize('dome', device=proc_list)
-    #freefield.set_logger('debug')
+    # freefield.set_logger('debug')
 
     select_file()
 
