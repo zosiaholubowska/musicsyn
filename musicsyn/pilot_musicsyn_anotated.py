@@ -57,6 +57,7 @@ def run(melody_file, subject, p):
     curr_speaker = next(speakers)
     file.write(curr_speaker.azimuth, tag=0)
     start_time = time.time()  # creates a timestamp in Unix format
+    prev_response = 0
 
     led = False
     try:
@@ -68,8 +69,12 @@ def run(melody_file, subject, p):
             # button
 
             response = freefield.read('response', 'RP2', 0)
-            if response != 0:
+
+            if response > prev_response:
+                print('good')
                 file.write('p', tag=f'{time.time() - start_time:.3f}')
+
+            prev_response = response
 
             if time.time() - start_time > onsets[i]:  # play the next note
 
@@ -126,7 +131,7 @@ def select_file():
 
     music = [train, main]
 
-    time.sleep(6)
+
 
     for m in music:
         files = m
@@ -144,7 +149,7 @@ def select_file():
             if melody_file.startswith('test'):
                 p = 0.35
             print(p)
-            run(melody_file, 'p00', p)  ########### PARTICIPANT HERE ############
+            run(melody_file, 'p06', p)  ########### PARTICIPANT HERE ############
             print(f'That was melody {i + 1}.')
             user_input = input("Do you want to continue? (y/n): ")
             if user_input.lower() == 'n':
