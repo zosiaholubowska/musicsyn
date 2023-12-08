@@ -43,7 +43,7 @@ def run(melody_file, subject, p):
     print(changable_notes)  # reading the csv file with the information about the notes
     seq = balanced_sequence(boundaries, changable_notes, subject, melody_file, p)
 
-    directions = [(-35, 0), (0, 0), (35, 0)]
+    directions = [(-17.5, 0), (0, 0), (17, 0)]
     [speaker1] = freefield.pick_speakers(directions[0])
     [speaker2] = freefield.pick_speakers(directions[1])
     [speaker3] = freefield.pick_speakers(directions[2])
@@ -149,7 +149,7 @@ def select_file():
             if melody_file.startswith('test'):
                 p = 0.35
             print(p)
-            run(melody_file, 'p06', p)  ########### PARTICIPANT HERE ############
+            run(melody_file, 'p07', p)  ########### PARTICIPANT HERE ############
             print(f'That was melody {i + 1}.')
             user_input = input("Do you want to continue? (y/n): ")
             if user_input.lower() == 'n':
