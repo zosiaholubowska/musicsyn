@@ -311,7 +311,7 @@ categories = ['hit', 'miss', 'corr', 'fa']
 bar_width = 0.5
 
 fig, ax = plt.subplots(figsize=(10, 8))
-sub = vc_data[(vc_data['subject'] == 'p08')]
+sub = vc_data[(vc_data['subject'] == 'p09')]
 counts = sub['signal_theory'].value_counts()
 total = len(sub)
 
@@ -337,13 +337,87 @@ labels = {'hit': 'Hit Rate', 'fa': 'False Alarm', 'corr': 'Correct Rejection', '
 ax.set_ylabel('Raw Values')
 ax.set_xticks(bar_positions)
 ax.set_xticklabels([labels[category] for category in categories])
-plt.savefig('p08_plot.png', dpi=300)
+plt.savefig('p09_plot.png', dpi=300)
 plt.show()
 
+#### CONDITION DIVISION
+
+
+counts_boundary = sub[sub['boundary'] == 1]['signal_theory'].value_counts()
+print(counts_boundary)
+s
+counts_noboundary = sub[sub['boundary'] == 0]['signal_theory'].value_counts()
+print(counts_noboundary)
+
+# Calculate percentages
+total_boundary = len(sub[sub['boundary'] == 1])
+total_noboundary = len(sub[sub['boundary'] == 0])
+
+percentages_boundary = counts_boundary / total_boundary * 100
+percentages_noboundary = counts_noboundary / total_noboundary * 100
+
+categories = ['hit', 'miss', 'corr', 'fa']
+bar_width = 0.35
+
+fig, (ax1, ax2) = plt.subplots(2, 1, figsize=(10, 12), sharex=False)
+
+bar_positions_boundary = numpy.arange(len(categories))
+bar_positions_noboundary = bar_positions_boundary + bar_width
+
+# Updated color names
+colors = {'boundary': 'skyblue', 'noboundary': 'cornflowerblue'}
+
+for category_index, category in enumerate(categories):
+    counts_boundary_1 = counts_boundary[category] if category in counts_boundary else 0
+    counts_noboundary_1 = counts_noboundary[category] if category in counts_noboundary else 0
+
+    # Plot raw values on the upper subplot
+    ax1.bar(bar_positions_boundary[category_index], counts_boundary_1, width=bar_width, label=f'{category} - Boundary',
+            color=colors['boundary'])
+    ax1.bar(bar_positions_noboundary[category_index], counts_noboundary_1, width=bar_width,
+            label=f'{category} - No Boundary', color=colors['noboundary'])
+
+    percentages_boundary_1 = percentages_boundary[category] if category in percentages_boundary else 0
+    percentages_noboundary_1 = percentages_noboundary[category] if category in percentages_noboundary else 0
+
+    # Plot percentage values on the lower subplot
+    ax2.bar(bar_positions_boundary[category_index], percentages_boundary_1, width=bar_width,
+            label=f'{category} - Boundary', color=colors['boundary'])
+    ax2.bar(bar_positions_noboundary[category_index], percentages_noboundary_1, width=bar_width,
+            label=f'{category} - No Boundary', color=colors['noboundary'])
+
+    # Add labels above each bar with the exact values
+    ax1.text(bar_positions_boundary[category_index], counts_boundary_1, f'{counts_boundary_1}', ha='center',
+             va='bottom')
+    ax1.text(bar_positions_noboundary[category_index], counts_noboundary_1, f'{counts_noboundary_1}', ha='center',
+             va='bottom')
+
+    ax2.text(bar_positions_boundary[category_index], percentages_boundary_1, f'{percentages_boundary_1:.2f}%',
+             ha='center', va='bottom')
+    ax2.text(bar_positions_noboundary[category_index], percentages_noboundary_1, f'{percentages_noboundary_1:.2f}%',
+             ha='center', va='bottom')
+
+# Rename labels
+labels = {'hit': 'Hit Rate', 'fa': 'False Alarm', 'corr': 'Correct Rejection', 'miss': 'Miss'}
+
+ax1.legend(labels=['Boundary', 'No Boundary'])
+ax1.set_ylabel('Raw Values')
+
+ax2.legend(labels=['Boundary', 'No Boundary'])
+ax2.set_ylabel('Percentage')
+
+ax2.set_xticks(bar_positions_boundary + bar_width / 2)
+ax2.set_xticklabels([labels[category] for category in categories])
+
+ax1.set_xticks(bar_positions_boundary + bar_width / 2)
+ax1.set_xticklabels([labels[category] for category in categories])
+plt.savefig('p09_plot_2.png', dpi=300)
+plt.show()
 
 #### PARAMETERS
-sub_vc_data = vc_data[(vc_data['subject'] == 'p07')]
-sub_main = main[(main['subject'] == 'p07')]
+sub_vc_data = vc_data[(vc_data['subject'] == 'p09')]
+sub_main = main[(main['subject'] == 'p09')]
+sub_time = mean_time_diff[(mean_time_diff['subject'] == 'p09')]
 
 #-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-
 
@@ -376,13 +450,13 @@ plot_sub(axes[1, 0], sub_main,'condition', 'ff1', 'F-score')
 
 # Time difference plot
 
-plot_sub(axes[1, 1], mean_time_diff,'condition', 'time_difference', 'Time difference')
+plot_sub(axes[1, 1], sub_time,'condition', 'time_difference', 'Time difference')
 
 
 
 
 plt.tight_layout(rect=[0, 0.03, 1, 0.95])
-plt.savefig('p07_second_pilot_results_out.png', dpi=300)
+plt.savefig('p09_second_pilot_results_out.png', dpi=300)
 plt.show()
 
 
