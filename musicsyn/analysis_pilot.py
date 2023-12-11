@@ -36,7 +36,7 @@ df2["time_difference"] = df2["prec_time"] - df2["time"]
 
 #### PRINT DISTRIBUTION OF SIGNAL THEORY PER CONDITION
 
-df2 = df2[df2['stimulus'].str.match('test')]
+df2 = df2[df2['stimulus'].str.match('stim')]
 
 condition_1 = df2[df2['boundary'] == 1]
 condition_0 = df2[df2['boundary'] == 0]
@@ -194,7 +194,7 @@ plot_avg(axes[1, 1], mean_time_diff,'condition', 'time_difference', 'Time differ
 
 
 plt.tight_layout(rect=[0, 0.03, 1, 0.95])
-plt.savefig('second_pilot_results_test.png', dpi=300)
+plt.savefig('second_pilot_results.png', dpi=300)
 plt.show()
 
 #### PLOT - SIGNAL THEORY DISTRIBUTION
@@ -311,7 +311,7 @@ categories = ['hit', 'miss', 'corr', 'fa']
 bar_width = 0.5
 
 fig, ax = plt.subplots(figsize=(10, 8))
-sub = vc_data[(vc_data['subject'] == 'p05')]
+sub = vc_data[(vc_data['subject'] == 'p08')]
 counts = sub['signal_theory'].value_counts()
 total = len(sub)
 
@@ -337,13 +337,13 @@ labels = {'hit': 'Hit Rate', 'fa': 'False Alarm', 'corr': 'Correct Rejection', '
 ax.set_ylabel('Raw Values')
 ax.set_xticks(bar_positions)
 ax.set_xticklabels([labels[category] for category in categories])
-plt.savefig('p05_plot.png', dpi=300)
+plt.savefig('p08_plot.png', dpi=300)
 plt.show()
 
 
 #### PARAMETERS
-sub_vc_data = vc_data[(vc_data['subject'] == 'p05')]
-sub_main = main[(main['subject'] == 'p05')]
+sub_vc_data = vc_data[(vc_data['subject'] == 'p07')]
+sub_main = main[(main['subject'] == 'p07')]
 
 #-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-
 
@@ -380,8 +380,9 @@ plot_sub(axes[1, 1], mean_time_diff,'condition', 'time_difference', 'Time differ
 
 
 
+
 plt.tight_layout(rect=[0, 0.03, 1, 0.95])
-plt.savefig('p05_second_pilot_results_out.png', dpi=300)
+plt.savefig('p07_second_pilot_results_out.png', dpi=300)
 plt.show()
 
 

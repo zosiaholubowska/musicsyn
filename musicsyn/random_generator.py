@@ -24,6 +24,7 @@ def generate_data():
 
     boundaries = [0, 0, 0, 1] * int(60/4)
     changable_notes = [0,1,0,1,1,0,1,1] * int(60/8)
+    changable_notes[-1] = 0
 
 
     for onset_sec, loc_change, boundary, changable in zip(range(60), loc_change_sequence, boundaries, changable_notes):

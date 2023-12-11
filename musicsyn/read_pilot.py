@@ -5,10 +5,13 @@ import os
 path = os.getcwd()
 subjects = [f for f in os.listdir(f"{path}/musicsyn/Results") if f.startswith("p")]
 
+#results_df = pandas.DataFrame(columns=['time', 'frequencies', 'channel', 'answer', 'prec_time', 'stimulus', 'subject', 'visual_cue','boundary', 'loc_change', 'changable_notes'])
+#results_df = pandas.read_csv("results_df.csv")
 def subject_data(subject, file):
     """
     This is to create a dataframe with results and the sequence
     """
+    #results_df = pandas.read_csv("results_df.csv")
 
     data = slab.ResultsFile.read_file(
         path + f"/musicsyn/Results/{subject}/{file}"
@@ -44,7 +47,7 @@ def subject_data(subject, file):
 
     # df1 = df1.drop(df1[(df1["answer"] == 100) & ((df1["frequencies"] == 'p')) ].index)
     for idx in df1.index:
-        if (df1["frequencies"][idx] == 35.0) or (df1["frequencies"][idx] == -35) or (df1["frequencies"][idx] == 1) or (df1["frequencies"][idx] == 23):
+        if (df1["frequencies"][idx] == 17.5) or (df1["frequencies"][idx] == -17.5):
             df1["channel"][idx+1] = df1["frequencies"][idx]
         elif (df1["frequencies"][idx] == "p"):
             df1["answer"][idx - 1] = 1
@@ -52,7 +55,7 @@ def subject_data(subject, file):
         elif (df1["frequencies"][idx] == 0.0):
             df1["channel"][idx + 1] = 1
 
-    df_filtered = df1[~df['frequencies'].isin([1, 0.0, 23, 35.0, -35.0, 'p'])]
+    df_filtered = df1[~df['frequencies'].isin([1, 0.0, 23, 17.5, -17.5, 'p'])]
     df_filtered.reset_index(drop=True, inplace=True) #reset the index
 
     df_filtered["stimulus"] = stimulus
@@ -77,10 +80,12 @@ def subject_data(subject, file):
         if df_filtered["channel"][idx] == 0:
             df_filtered["channel"][idx] = df_filtered["channel"][idx-1]
 
+    #temp = pandas.concat([results_df, df_filtered], axis=0)
+    #temp.to_csv("results_df.csv")
+
     df_filtered.to_csv(
         path + f"/musicsyn/Results/{subject}/{subject}_data_{stimulus}.csv",
     )
-
 
 for subject in subjects:
     folder_path = f"{path}/musicsyn/Results/{subject}"
@@ -89,4 +94,5 @@ for subject in subjects:
     file_names = [f for f in os.listdir(folder_path) if f.endswith('.txt')]
 
     for file in file_names:
+        print(file)
         subject_data(subject, file)
