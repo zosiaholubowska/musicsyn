@@ -149,7 +149,7 @@ def select_file():
             if melody_file.startswith('test'):
                 p = 0.35
             print(p)
-            run(melody_file, 'p09', p)  ########### PARTICIPANT HERE ############
+            run(melody_file, 'p10', p)  ########### PARTICIPANT HERE ############
             print(f'That was melody {i + 1}.')
             user_input = input("Do you want to continue? (y/n): ")
             if user_input.lower() == 'n':
