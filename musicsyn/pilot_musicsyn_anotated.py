@@ -3,10 +3,13 @@ import itertools
 from numpy.random import default_rng
 import pandas
 import slab
-from balanced_sequence import balanced_sequence
-from good_luck import good_luck
+from musicsyn.balanced_sequence import balanced_sequence
+from musicsyn.good_luck import good_luck
 import random
 import freefield
+from musicsyn.read_data import read_data
+from musicsyn.analysis_pilot import create_df, plot_group, plot_single
+
 
 path = 'C://projects//musicsyn'
 randgenerator = default_rng()
@@ -36,6 +39,7 @@ def run(melody_file, subject, p):
     file = slab.ResultsFile(
         subject
     )  # here we name the results folder with subject name
+    file_name = file.name
     file.write(melody_file, tag=0)
     onsets, frequencies, durations, boundaries, changable_notes = read_melody(
         path + f"\stimuli\{melody_file}")
@@ -149,7 +153,7 @@ def select_file():
             if melody_file.startswith('test'):
                 p = 0.35
             print(p)
-            run(melody_file, 'p10', p)  ########### PARTICIPANT HERE ############
+            run(melody_file, 'p11', p)  ########### PARTICIPANT HERE ############
             print(f'That was melody {i + 1}.')
             user_input = input("Do you want to continue? (y/n): ")
             if user_input.lower() == 'n':

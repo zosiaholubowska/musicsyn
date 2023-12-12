@@ -6,10 +6,26 @@
   <component name="ChangeListManager">
     <list default="true" id="6a537621-e967-4204-8ef8-693965092810" name="Changes" comment="second round of pilot - corrections">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/combined_plot_test.png" beforeDir="false" afterPath="$PROJECT_DIR$/combined_plot_test.png" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/main.csv" beforeDir="false" afterPath="$PROJECT_DIR$/main.csv" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/combined_plot.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/combined_plot_test.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/distrib_all_data.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/distrib_by_condition.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/first_pilot_results.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/first_pilot_results.pptx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/first_pilot_results_out.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/main.csv" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/musicsyn/Results/p10/p10_2023-12-11-14-13-10.txt" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/musicsyn/analysis_pilot.py" beforeDir="false" afterPath="$PROJECT_DIR$/musicsyn/analysis_pilot.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/musicsyn/results.csv" beforeDir="false" afterPath="$PROJECT_DIR$/musicsyn/results.csv" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/musicsyn/familiarization.py" beforeDir="false" afterPath="$PROJECT_DIR$/musicsyn/familiarization.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/musicsyn/main.csv" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/musicsyn/pilot_musicsyn_anotated.py" beforeDir="false" afterPath="$PROJECT_DIR$/musicsyn/pilot_musicsyn_anotated.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/musicsyn/questions_after_pilot.xlsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/musicsyn/read_data.py" beforeDir="false" afterPath="$PROJECT_DIR$/musicsyn/read_data.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/musicsyn/results.csv" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/musicsyn/tmp.wav" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/second_pilot_results_out.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/second_pilot_results_test.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/single_plot.png" beforeDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -138,7 +154,15 @@
       <option name="project" value="LOCAL" />
       <updated>1702282837294</updated>
     </task>
-    <option name="localTasksCounter" value="11" />
+    <task id="LOCAL-00011" summary="second round of pilot - corrections">
+      <option name="closed" value="true" />
+      <created>1702298889373</created>
+      <option name="number" value="00011" />
+      <option name="presentableId" value="LOCAL-00011" />
+      <option name="project" value="LOCAL" />
+      <updated>1702298889373</updated>
+    </task>
+    <option name="localTasksCounter" value="12" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">

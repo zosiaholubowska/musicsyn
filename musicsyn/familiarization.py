@@ -1,11 +1,7 @@
 import time
-import subprocess
 import itertools
-import numpy
 from numpy.random import default_rng
-import matplotlib.pyplot as plt
 import pandas
-import slab
 from good_luck import good_luck
 import random
 import freefield
@@ -32,40 +28,8 @@ def read_sample(file):
     return onsets, frequencies, durations
 
 
-def expenv(n_samples):
-    """
-    It is to create more natural sound
-    """
-    t = numpy.linspace(
-        start=0, stop=1, num=n_samples
-    )  # returns evenly spaced numbers over a specified interval
-    return slab.Signal(numpy.exp(-(0.69 * 5) * t))  # what these numbers specify?
-
-
-def note(f0, duration):
-    """
-    This is to create actual sound
-    """
-    sig = slab.Sound.harmoniccomplex(f0, duration)
-    env = expenv(sig.n_samples)
-    sig = sig * env
-    return slab.Binaural(sig.ramp())
-
-
-def play(stim):
-    """
-    Plays a created note
-    """
-    stim.write("tmp.wav")
-    subprocess.Popen(["afplay", "tmp.wav"])
-
-
-
 def play_run(melody_file, subject):
-    file = slab.ResultsFile(
-        subject
-    )  # here we name the results folder with subject name
-    file.write(melody_file, tag=0)
+
     onsets, frequencies, durations, = read_sample(
         path + f"\stimuli\{melody_file}")  # reading the csv file with the information about the notes
 
@@ -81,7 +45,7 @@ def play_run(melody_file, subject):
     # durations.append(0.1)  ###
     i = 0
     curr_speaker = next(speakers)
-    file.write(curr_speaker.analog_channel, tag=0)
+
     start_time = time.time()  # creates a timestamp in Unix format
 
     try:
@@ -89,7 +53,6 @@ def play_run(melody_file, subject):
 
             if time.time() - start_time > onsets[i]:  # play the next note
 
-                file.write(frequencies[i], tag=f"{time.time() - start_time:.3f}")
                 freefield.write('f0', frequencies[i], ['RX81', 'RX82'])
 
                 duration = durations[i]  # duration in seconds
@@ -102,7 +65,7 @@ def play_run(melody_file, subject):
                 freefield.play()
 
                 i += 1
-            plt.pause(0.01)
+
     except IndexError:
         good_luck()
     except KeyError:
@@ -118,7 +81,7 @@ def select_file():
 
     for melody_file in fam:
         print(melody_file)
-        play_run(melody_file, 'p10')  ########### PARTICIPANT HERE ############
+        play_run(melody_file, 'p11')  ########### PARTICIPANT HERE ############
         print(f'That was melody {i + 1}.')
         user_input = input("Do you want to continue? (y/n): ")
         if user_input.lower() == 'n':
@@ -134,7 +97,7 @@ if __name__ == "__main__":
                  ['RX82', 'RX8', path + f'/data/rcx/piano.rcx'],
                  ['RP2', 'RP2', path + f'/data/rcx/button.rcx']]
     freefield.initialize('dome', device=proc_list)
-    freefield.set_logger('debug')
+    # freefield.set_logger('debug')
 
     select_file()
 
