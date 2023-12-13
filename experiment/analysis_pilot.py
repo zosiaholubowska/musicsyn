@@ -223,21 +223,21 @@ def plot_group(part):
         main['d_prime'] = pandas.to_numeric(main['d_prime'], errors='coerce')
 
         # Hit rate plot
-        plot_and_test(axes[0, 0], pairwise_hit_rate, main,'condition', 'hit_rate', 'Hit Rate', 0,1.2, 0.2)
-        plot_avg(axes[0, 0], main,'condition', 'hit_rate', 'Hit Rate', 0,1.2, 0.2)
+        plot_and_test(axes[0, 0], pairwise_hit_rate, main,'condition', 'hit_rate', 'Hit Rate', 0.5,1.2, 0.1)
+        plot_avg(axes[0, 0], main,'condition', 'hit_rate', 'Hit Rate', 0.5, 1.2, 0.1)
 
         # D-prime plot
-        plot_and_test(axes[0, 1], pairwise_d_prime, main,'condition', 'd_prime', 'D-prime', -3, 4, 1)
-        plot_avg(axes[0, 1], main,'condition', 'd_prime', 'D-prime', -3, 4, 1)
+        plot_and_test(axes[0, 1], pairwise_d_prime, main,'condition', 'd_prime', 'D-prime', -2, 3, 1)
+        plot_avg(axes[0, 1], main,'condition', 'd_prime', 'D-prime', -2, 3, 1)
 
         # F-score plot
-        plot_and_test(axes[1, 0], pairwise_ff1, main,'condition', 'ff1', 'F-score', 0, 1.2, 0.2)
-        plot_avg(axes[1, 0], main,'condition', 'ff1', 'F-score', 0, 1.2, 0.2)
+        plot_and_test(axes[1, 0], pairwise_ff1, main,'condition', 'ff1', 'F-score', 0.5, 1.2, 0.1)
+        plot_avg(axes[1, 0], main,'condition', 'ff1', 'F-score', 0.5, 1.2, 0.1)
 
         # Time difference plot
 
-        plot_and_test(axes[1, 1], pairwise_time_difference, mean_time_diff,'condition', 'time_difference', 'Time difference', 0.2, 1.1, 0.1)
-        plot_avg(axes[1, 1], mean_time_diff,'condition', 'time_difference', 'Time difference', 0.2, 1.1, 0.1)
+        plot_and_test(axes[1, 1], pairwise_time_difference, mean_time_diff,'condition', 'time_difference', 'Time difference', 0.4, 1, 0.1)
+        plot_avg(axes[1, 1], mean_time_diff,'condition', 'time_difference', 'Time difference', 0.4, 1, 0.1)
 
 
         plt.tight_layout(rect=[0, 0.03, 1, 0.95])
@@ -446,12 +446,13 @@ def plot_single(subject, part):
     #-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-
 
     palette = sns.color_palette(['#a4e0f5'], len(main['subject'].unique()))
-    def plot_sub(ax, data_plot, x, y, title):
+    def plot_sub(ax, data_plot, x, y, title, a, b, c):
         sns.lineplot(ax=ax, x=x, y=y, data=data_plot, hue='subject', palette=palette, marker='o', legend=False)
         ax.set_xticks([0, 1])
         ax.set_xticklabels(['boundary', 'no_boundary'])
         ax.set_xlim(-0.2, 1.2)
         ax.set_title(title)
+        ax.set_yticks(numpy.arange(a, b, c))
 
 
     # Set up subplots
@@ -461,20 +462,20 @@ def plot_single(subject, part):
     main['d_prime'] = pandas.to_numeric(main['d_prime'], errors='coerce')
 
     # Hit rate plot
-    plot_sub(axes[0, 0], sub_main,'condition', 'hit_rate', 'Hit Rate')
+    plot_sub(axes[0, 0], sub_main,'condition', 'hit_rate', 'Hit Rate', 0.5, 1.2, 0.1)
 
 
     # D-prime plot
-    plot_sub(axes[0, 1], sub_main,'condition', 'd_prime', 'D-prime')
+    plot_sub(axes[0, 1], sub_main,'condition', 'd_prime', 'D-prime', -2, 3, 1)
 
 
     # F-score plot
-    plot_sub(axes[1, 0], sub_main,'condition', 'ff1', 'F-score')
+    plot_sub(axes[1, 0], sub_main,'condition', 'ff1', 'F-score', 0.5, 1.2, 0.1)
 
 
     # Time difference plot
 
-    plot_sub(axes[1, 1], sub_time,'condition', 'time_difference', 'Time difference')
+    plot_sub(axes[1, 1], sub_time,'condition', 'time_difference', 'Time difference', 0.4, 1, 0.1)
 
 
 
