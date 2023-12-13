@@ -8,7 +8,7 @@ def read_data(subject, file_name):
     This is to create a dataframe with results and the sequence
     """
     path = os.getcwd()
-    data = slab.ResultsFile.read_file(path + f"/musicsyn/Results/{subject}/{file_name}")
+    data = slab.ResultsFile.read_file(path + f"/Results/{subject}/{file_name}")
 
     stimulus = data[0]['0'][:-4]
 
@@ -37,7 +37,7 @@ def read_data(subject, file_name):
     df_filtered["subject"] = subject
 
     seq = pandas.read_csv(
-        path + f"/musicsyn/Results/{subject}/{subject}_seq_{stimulus}.csv"
+        path + f"/Results/{subject}/{subject}_seq_{stimulus}.csv"
     )
 
     df_filtered['visual_cue'] = 0
@@ -55,5 +55,5 @@ def read_data(subject, file_name):
             df_filtered["channel"][idx] = df_filtered["channel"][idx - 1]
 
     df_filtered.to_csv(
-        path + f"/musicsyn/Results/{subject}/{subject}_data_{stimulus}.csv",
+        path + f"/Results/{subject}/{subject}_data_{stimulus}.csv",
     )

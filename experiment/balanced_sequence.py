@@ -114,6 +114,8 @@ def balanced_sequence(boundaries, changable_notes, subject, melody_file, p):
 
     if len(seq_boundaries_nochange_cues) > len(yes_boundaries_nochange):
         seq_boundaries_nochange_cues = seq_boundaries_nochange_cues[:len(yes_boundaries_nochange)]
+    elif len(seq_boundaries_nochange_cues) < len(yes_boundaries_nochange):
+        seq_boundaries_nochange_cues.append(1)
     yes_boundaries_nochange.insert(1, 'cue', seq_boundaries_nochange_cues)
 
     yes_boundaries = [yes_boundaries_change, yes_boundaries_nochange]  # we append two sequences into one df
@@ -177,7 +179,7 @@ def balanced_sequence(boundaries, changable_notes, subject, melody_file, p):
     final = final.reset_index(drop=True)
 
     final.to_csv(
-        path + f"/musicsyn/Results/{subject}/{subject}_seq_{melody_file}",
+        path + f"/experiment/Results/{subject}/{subject}_seq_{melody_file}",
     )
     # print(final.to_string())
     print("Total visual cues:")

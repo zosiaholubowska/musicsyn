@@ -8,11 +8,11 @@ from scipy.stats import  ttest_rel
 
 def create_df():
     path = os.getcwd()
-    subjects = [f for f in os.listdir(f"{path}/musicsyn/Results") if f.startswith("p")]
+    subjects = [f for f in os.listdir(f"{path}/Results") if f.startswith("p")]
     df = pandas.DataFrame()
 
     for subject in subjects:
-        folder_path = f"{path}/musicsyn/Results/{subject}"
+        folder_path = f"{path}/Results/{subject}"
 
         file_names = [f for f in os.listdir(folder_path) if "_data_" in f]
 
@@ -74,7 +74,7 @@ def create_df():
 
     #### SAVE RAW RESULTS AS .CSV
 
-    vc_data.to_csv(f'{path}/musicsyn/Results/results.csv')
+    vc_data.to_csv(f'{path}/Results/results.csv')
 
 
     #### CALCULATING D-PRIME
@@ -134,15 +134,15 @@ def create_df():
         main.at[i, "ff1"] = 2 / ((1 / main.at[i, "recall"]) + (1 / main.at[i, "precision"]))
 
     #### SAVE D-PRIME and F-SCORE INTO CSV
-    main.to_csv(f'{path}/musicsyn/Results/results_postprocessed.csv', index=False)
+    main.to_csv(f'{path}/Results/results_postprocessed.csv', index=False)
 
 
 def plot_group(part):
     while True:
         path = os.getcwd()
-        main = pandas.read_csv(path + f"/musicsyn/Results/results_postprocessed.csv")
+        main = pandas.read_csv(path + f"/Results/results_postprocessed.csv")
         main = main[main['part'].str.match(f'{part}')]
-        vc_data = pandas.read_csv(path + f"/musicsyn/Results/results.csv")
+        vc_data = pandas.read_csv(path + f"/Results/results.csv")
         vc_data = vc_data[vc_data['part'].str.match(f'{part}')]
 
         #### ALL VALUES #####
@@ -178,7 +178,7 @@ def plot_group(part):
         ax.set_ylabel('Raw Values')
         ax.set_xticks(bar_positions)
         ax.set_xticklabels([labels[category] for category in categories])
-        plt.savefig(f'{path}/musicsyn/plots/signal_theory.png', dpi=300)
+        plt.savefig(f'{path}/plots/signal_theory.png', dpi=300)
         plt.show()
 
         if part == 'training':
@@ -241,7 +241,7 @@ def plot_group(part):
 
 
         plt.tight_layout(rect=[0, 0.03, 1, 0.95])
-        plt.savefig(f'{path}/musicsyn/plots/main_results.png', dpi=300)
+        plt.savefig(f'{path}/plots/main_results.png', dpi=300)
         plt.show()
 
         #### PLOT - SIGNAL THEORY DISTRIBUTION
@@ -314,7 +314,7 @@ def plot_group(part):
 
         ax1.set_xticks(bar_positions_boundary + bar_width / 2)
         ax1.set_xticklabels([labels[category] for category in categories])
-        plt.savefig(f'{path}/musicsyn/plots/signal_theory_by_condition.png', dpi=300)
+        plt.savefig(f'{path}/plots/signal_theory_by_condition.png', dpi=300)
         plt.show()
 
         if part == 'main':
@@ -325,9 +325,9 @@ def plot_group(part):
 ######## SINGLE PARTICIPANT
 def plot_single(subject, part):
     path = os.getcwd()
-    main = pandas.read_csv(path + f"/musicsyn/Results/results_postprocessed.csv")
+    main = pandas.read_csv(path + f"/Results/results_postprocessed.csv")
     main = main[main['part'].str.match(f'{part}')]
-    vc_data = pandas.read_csv(path + f"/musicsyn/Results/results.csv")
+    vc_data = pandas.read_csv(path + f"/Results/results.csv")
     vc_data = vc_data[vc_data['part'].str.match(f'{part}')]
     categories = ['hit', 'miss', 'corr', 'fa']
     bar_width = 0.5
@@ -359,7 +359,7 @@ def plot_single(subject, part):
     ax.set_ylabel('Raw Values')
     ax.set_xticks(bar_positions)
     ax.set_xticklabels([labels[category] for category in categories])
-    plt.savefig(f'{path}/musicsyn/plots/{subject}_signal_theory.png', dpi=300)
+    plt.savefig(f'{path}/plots/{subject}_signal_theory.png', dpi=300)
     plt.show()
 
     #### CONDITION DIVISION
@@ -433,7 +433,7 @@ def plot_single(subject, part):
 
     ax1.set_xticks(bar_positions_boundary + bar_width / 2)
     ax1.set_xticklabels([labels[category] for category in categories])
-    plt.savefig(f'{path}/musicsyn/plots/{subject}_signal_theory_by_condition.png', dpi=300)
+    plt.savefig(f'{path}/plots/{subject}_signal_theory_by_condition.png', dpi=300)
     plt.show()
 
     #### PARAMETERS
@@ -480,7 +480,7 @@ def plot_single(subject, part):
 
 
     plt.tight_layout(rect=[0, 0.03, 1, 0.95])
-    plt.savefig(f'{path}/musicsyn/plots/{subject}_main_results.png', dpi=300)
+    plt.savefig(f'{path}/plots/{subject}_main_results.png', dpi=300)
     plt.show()
 
 

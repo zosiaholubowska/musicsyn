@@ -115,9 +115,9 @@ def run(melody_file, subject, p):
 
 
     except IndexError:
-        good_luck()
+        read_data(subject, file_name)
     except KeyError:
-        good_luck()
+        read_data(subject, file_name)
 
 
 def select_file():
@@ -153,7 +153,7 @@ def select_file():
             if melody_file.startswith('test'):
                 p = 0.35
             print(p)
-            run(melody_file, 'p11', p)  ########### PARTICIPANT HERE ############
+            run(melody_file, 'p00', p)  ########### PARTICIPANT HERE ############
             print(f'That was melody {i + 1}.')
             user_input = input("Do you want to continue? (y/n): ")
             if user_input.lower() == 'n':
@@ -162,6 +162,8 @@ def select_file():
                 print("Continuing...")
 
                 i += 1
+
+        create_df()
 
 
 if __name__ == "__main__":
