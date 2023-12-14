@@ -3,7 +3,7 @@ import pandas
 import os
 
 path = os.getcwd()
-subjects = [f for f in os.listdir(f"{path}/musicsyn/Results") if f.startswith("p")]
+subjects = [f for f in os.listdir(f"{path}/Results") if f.startswith("p")]
 
 #results_df = pandas.DataFrame(columns=['time', 'frequencies', 'channel', 'answer', 'prec_time', 'stimulus', 'subject', 'visual_cue','boundary', 'loc_change', 'changable_notes'])
 #results_df = pandas.read_csv("results_df.csv")
@@ -62,7 +62,7 @@ def subject_data(subject, file):
     df_filtered["subject"] = subject
 
     seq = pandas.read_csv(
-          path + f"/musicsyn/Results/{subject}/{subject}_seq_{stimulus}.csv"
+          path + f"/experiment/Results/{subject}/{subject}_seq_{stimulus}.csv"
         )
 
 
