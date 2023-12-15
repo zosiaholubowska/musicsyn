@@ -4,6 +4,9 @@ from scipy.stats import shapiro, levene, ttest_rel
 from analysis_pilot import create_df, plot_group, plot_single
 import matplotlib.pyplot as plt
 import seaborn as sns
+from analysis_pilot import create_df
+import numpy
+import seaborn as sns
 
 create_df()
 
@@ -16,7 +19,7 @@ main = main[main['part'].str.match(f'{part}')]
 vc_data = pandas.read_csv(path + f"/Results/results.csv")
 vc_data = vc_data[vc_data['part'].str.match(f'{part}')]
 
-#-#-#-# T-tEST
+#-#-#-#-#-#-#-# T-TEST #-#-#-#-#-#-#-#
 
 tstats = []
 pvalue = []
@@ -50,6 +53,137 @@ for m in measures:
 
 df = pandas.DataFrame(list(zip(measures, tstats, pvalue)),
                columns =['Measure', 'T-stats', 'p-value'])
+
+
+
+
+#-#-#-#-#-#-#-# Hit Rate with rhythm #-#-#-#-#-#-#-#
+
+
+path = os.getcwd()
+data = pandas.read_csv(path + f"/Results/results_raw.csv")
+
+data = data[data['stimulus'].str.match('stim')]
+data['signal_theory'] = ''
+
+data.loc[(data['loc_change'] == 1) & (data['answer'] == 1), 'signal_theory'] = 'hit'
+data.loc[(data['loc_change'] == 1) & (data['answer'] == 0), 'signal_theory'] = 'miss'
+data.loc[(data['loc_change'] == 0) & (data['answer'] == 0), 'signal_theory'] = 'corr'
+data.loc[(data['loc_change'] == 0) & (data['answer'] == 1), 'signal_theory'] = 'fa'
+
+data = data.reset_index(inplace=False)
+data = data.drop(columns='index')
+
+for idx in data.index:
+    if idx == 0:
+        data.loc[idx, 'prev_duration'] = 0
+    else:
+        data.loc[idx, 'prev_duration'] = data.loc[idx-1, 'duration']
+data_filtered = data[data['visual_cue'] == 1]
+counts = data_filtered.groupby(['boundary', 'prev_duration', 'subject', 'signal_theory']).size()
+counts = counts.to_frame()
+counts.reset_index(inplace=True)
+counts = counts.rename(columns={0: 'counts'})
+counts_pivot = counts.pivot(index=('subject','boundary', 'prev_duration'), columns='signal_theory', values='counts')
+counts_pivot.reset_index(inplace=True)
+
+counts_pivot = counts_pivot.fillna(0)
+
+for i in range(len(counts_pivot)):
+    counts_pivot.at[i, "hit_rate"] = counts_pivot.at[i, "hit"] / (counts_pivot.at[i, "hit"] + counts_pivot.at[i, "miss"])
+    counts_pivot.at[i, "false_rate"] = counts_pivot.at[i, "fa"] / (counts_pivot.at[i, "fa"] + counts_pivot.at[i, "corr"])
+
+counts_pivot = counts_pivot.fillna(0)
+
+counts_pivot["z_hit_rate"] = ""
+counts_pivot["z_false_rate"] = ""
+
+score_columns = ["hit_rate", "false_rate"]
+
+for col in score_columns:
+    temp = counts_pivot[col]
+    temp_targ = counts_pivot[f"z_{col}"]
+    mean = numpy.mean(temp)
+    sd = numpy.std(temp)
+
+    for idx in temp.index:
+        temp_targ[idx] = (temp[idx] - mean) / sd
+
+    counts_pivot[f"z_{col}"] = temp_targ
+
+counts_pivot['prev_duration'] = counts_pivot['prev_duration'].round(decimals=2)
+sns.pointplot(data=counts_pivot, x="prev_duration", y="hit_rate", hue="boundary")
+plt.savefig(f'{path}/plots/rhythm_and_hit_rate.png', dpi=300)
+
+g = sns.displot(data=data_filtered, x="prev_duration", col="boundary", binwidth=0.25)
+
+g.set(xticks=numpy.arange(0, 2.75, 0.25))
+plt.savefig(f'{path}/plots/density_of_rhythm.png', dpi=300)
+
+
+
+#-#-#-#-#-#-#-# Hit Rate with frequency #-#-#-#-#-#-#-#
+
+
+path = os.getcwd()
+data = pandas.read_csv(path + f"/Results/results_raw.csv")
+
+data = data[data['stimulus'].str.match('stim')]
+data['signal_theory'] = ''
+
+data.loc[(data['loc_change'] == 1) & (data['answer'] == 1), 'signal_theory'] = 'hit'
+data.loc[(data['loc_change'] == 1) & (data['answer'] == 0), 'signal_theory'] = 'miss'
+data.loc[(data['loc_change'] == 0) & (data['answer'] == 0), 'signal_theory'] = 'corr'
+data.loc[(data['loc_change'] == 0) & (data['answer'] == 1), 'signal_theory'] = 'fa'
+
+data = data.reset_index(inplace=False)
+data = data.drop(columns='index')
+
+for idx in data.index:
+    if idx == 0:
+        data.loc[idx, 'prev_freq'] = 0
+    else:
+        data.loc[idx, 'prev_freq'] = data.loc[idx-1, 'frequencies']
+data_filtered = data[data['visual_cue'] == 1]
+counts = data_filtered.groupby(['boundary', 'prev_freq', 'subject', 'signal_theory']).size()
+counts = counts.to_frame()
+counts.reset_index(inplace=True)
+counts = counts.rename(columns={0: 'counts'})
+counts_pivot = counts.pivot(index=('subject','boundary', 'prev_freq'), columns='signal_theory', values='counts')
+counts_pivot.reset_index(inplace=True)
+
+counts_pivot = counts_pivot.fillna(0)
+
+for i in range(len(counts_pivot)):
+    counts_pivot.at[i, "hit_rate"] = counts_pivot.at[i, "hit"] / (counts_pivot.at[i, "hit"] + counts_pivot.at[i, "miss"])
+    counts_pivot.at[i, "false_rate"] = counts_pivot.at[i, "fa"] / (counts_pivot.at[i, "fa"] + counts_pivot.at[i, "corr"])
+
+counts_pivot = counts_pivot.fillna(0)
+
+counts_pivot["z_hit_rate"] = ""
+counts_pivot["z_false_rate"] = ""
+
+score_columns = ["hit_rate", "false_rate"]
+
+for col in score_columns:
+    temp = counts_pivot[col]
+    temp_targ = counts_pivot[f"z_{col}"]
+    mean = numpy.mean(temp)
+    sd = numpy.std(temp)
+
+    for idx in temp.index:
+        temp_targ[idx] = (temp[idx] - mean) / sd
+
+    counts_pivot[f"z_{col}"] = temp_targ
+
+counts_pivot['prev_freq'] = counts_pivot['prev_freq'].round(decimals=2)
+sns.pointplot(data=counts_pivot, x="prev_freq", y="hit_rate", hue="boundary")
+plt.savefig(f'{path}/plots/frequency_and_hit_rate.png', dpi=300)
+
+sns.displot(data=data_filtered, x="prev_freq", col="boundary", binwidth=3)
+
+#g.set(xticks=numpy.arange(0, 2.75, 0.25))
+plt.savefig(f'{path}/plots/density_of_frequency.png', dpi=300)
 
 
 

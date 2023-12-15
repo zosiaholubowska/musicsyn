@@ -36,6 +36,8 @@ def create_df():
 
     df2["time_difference"] = df2["prec_time"] - df2["time"]
 
+    df2.to_csv(f'{path}/Results/results_raw.csv', index=False)
+
     #### PRINT DISTRIBUTION OF SIGNAL THEORY PER CONDITION
 
     condition_1 = df2[df2['boundary'] == 1]
