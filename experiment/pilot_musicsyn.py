@@ -8,13 +8,13 @@ import matplotlib.pyplot as plt
 import pandas
 import slab
 
+path = 'C://projects//musicsyn'
 plt.ion()
 randgenerator = default_rng()
-ils = pickle.load(open("ils.pickle", "rb"))  # load interaural level spectrum
-
+ils = pickle.load(open(path + f"/stimuli/ils.pickle", "rb"))  # load interaural level spectrum
 
 def read_melody(file):
-    score_data = pandas.read_csv(file, sep=";")
+    score_data = pandas.read_csv(file, sep=",")
     onsets = score_data.onset_sec.to_list()
     freq = score_data.freq.to_list()
     frequencies = [float(f.replace(",", ".")) for f in freq]
@@ -48,7 +48,7 @@ def play(stim):
 
 def run(melody_file, subject):
     file = slab.ResultsFile(subject)
-    onsets, frequencies, durations, boundaries = read_melody(melody_file)
+    onsets, frequencies, durations, boundaries = read_melody(path + f"/stimuli/{melody_file}")
     seq = make_deviant_sequence(boundaries)
     directions = itertools.cycle([0, 20])
     direction_jitter = 5
