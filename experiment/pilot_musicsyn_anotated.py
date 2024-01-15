@@ -81,10 +81,11 @@ def run(melody_file, subject, p):
             prev_response = response
 
             if time.time() - start_time > onsets[i]:  # play the next note
-
+                trig_value = 1 if i == 0 else 0
                 if seq["sequence"][i] == 1:
                     curr_speaker = next(speakers)  # toggle direction
                     file.write(curr_speaker.azimuth, tag=f"{time.time() - start_time:.3f}")
+                    trig_value = 2
                     print(f"direction change")
 
                 if seq["boundary"][i]:  # so if there is 1 in the boundaries list
@@ -109,7 +110,16 @@ def run(melody_file, subject, p):
                 [other_proc] = [item for item in [proc_list[0][0], proc_list[1][0]] if item != curr_speaker.analog_proc]
                 freefield.write('chan', 99, other_proc)
 
+                freefield.write(tag='trigcode', value=trig_value, processors='RX82')
+
                 freefield.play()
+                # trigger_time_zBusA = time.time()
+
+                # freefield.play(kind='zBusB', proc="RX82")
+                # trigger_time_zBusB = time.time()
+                # print("First tone triggered EEG")
+                # trigger_time_diff = trigger_time_zBusA - trigger_time_zBusB
+                # print("Trigger time diff:", trigger_time_diff)
 
                 i += 1
 
@@ -153,7 +163,7 @@ def select_file():
             if melody_file.startswith('test'):
                 p = 0.35
             print(p)
-            run(melody_file, 'p13', p)  ########### PARTICIPANT HERE ############
+            run(melody_file, 'test', p)  ########### PARTICIPANT HERE ############
             print(f'That was melody {i + 1}.')
             user_input = input("Do you want to continue? (y/n): ")
             if user_input.lower() == 'n':
@@ -167,8 +177,11 @@ def select_file():
 
 
 if __name__ == "__main__":
-    proc_list = [['RX81', 'RX8', path + f'/data/rcx/piano.rcx'],
-                 ['RX82', 'RX8', path + f'/data/rcx/piano.rcx'],
+    # proc_list = [['RX81', 'RX8', path + f'/data/rcx/piano.rcx'],
+    #             ['RX82', 'RX8', path + f'/data/rcx/piano.rcx'],
+    #              ['RP2', 'RP2', path + f'/data/rcx/button.rcx']]
+    proc_list = [['RX81', 'RX8', path + f'/data/rcx/piano_eeg.rcx'],
+                 ['RX82', 'RX8', path + f'/data/rcx/piano_eeg.rcx'],
                  ['RP2', 'RP2', path + f'/data/rcx/button.rcx']]
     freefield.initialize('dome', device=proc_list)
     # freefield.set_logger('debug')
