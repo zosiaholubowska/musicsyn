@@ -8,13 +8,13 @@ def notetofreq(note):
     a = 440
     return (a / 32) * (2 ** ((note - 9) / 12))
 
-os.chdir('/Users/zofiaholubowska/Documents/PhD/3_experiment/experiment/stimuli')
+os.chdir('/Users/zofiaholubowska/Documents/PhD/3_experiment/musicsyn/stimuli')
 
-files = ["sample_major.mid", "sample_minor.mid"]
+files = ["stim_maj_4.mid", "stim_min_4.mid"]
 
 for file in files:
 
-    mid = MidiFile("sample_major.mid")
+    mid = MidiFile(file)
 
 
     midi_dict_list = []
@@ -32,7 +32,7 @@ for file in files:
     columns_to_keep = ['type', 'time', 'note', 'velocity']  # Add other column names you want to keep
     midi_df = midi_df[columns_to_keep]
 
-    midi_df['time'] /= 240
+    midi_df['time'] /= 480
     midi_df['time'] = midi_df['time'].cumsum()
 
     midi_df['offset'] = 0

@@ -112,12 +112,15 @@ for col in score_columns:
     counts_pivot[f"z_{col}"] = temp_targ
 
 counts_pivot['prev_duration'] = counts_pivot['prev_duration'].round(decimals=2)
-sns.pointplot(data=counts_pivot, x="prev_duration", y="hit_rate", hue="boundary")
+counts_pivot['boundary'] = counts_pivot['boundary'].map({0: 'within_unit', 1: 'at_boundary'})
+g = sns.pointplot(data=counts_pivot, x="prev_duration",  y="hit_rate", hue="boundary", linestyles='none', dodge=True)
+g.set(xlabel ="Note duration", ylabel = "Hit Rate", title ='Rhythm control analysis')
 plt.savefig(f'{path}/plots/rhythm_and_hit_rate.png', dpi=300)
 
-g = sns.displot(data=data_filtered, x="prev_duration", col="boundary", binwidth=0.25)
+data_filtered['boundary'] = data_filtered['boundary'].map({0: 'within_unit', 1: 'at_boundary'})
+g = sns.displot(data=data_filtered, x="prev_duration", hue="boundary", hue_order=['within_unit', 'at_boundary'], binwidth=0.25)
+g.set(xlabel ="Note duration", title ='Rhythm control analysis')
 
-g.set(xticks=numpy.arange(0, 2.75, 0.25))
 plt.savefig(f'{path}/plots/density_of_rhythm.png', dpi=300)
 
 
@@ -145,11 +148,18 @@ for idx in data.index:
     else:
         data.loc[idx, 'prev_freq'] = data.loc[idx-1, 'frequencies']
 data_filtered = data[data['visual_cue'] == 1]
-counts = data_filtered.groupby(['boundary', 'prev_freq', 'subject', 'signal_theory']).size()
+
+for index, row in data_filtered.iterrows():
+    if row['frequencies'] < row['prev_freq']:
+        data_filtered.at[index, 'interval'] = row['prev_freq'] / row['frequencies']
+    else:
+        data_filtered.at[index, 'interval'] = row['frequencies'] / row['prev_freq']
+
+counts = data_filtered.groupby(['boundary', 'interval', 'subject', 'signal_theory']).size()
 counts = counts.to_frame()
 counts.reset_index(inplace=True)
 counts = counts.rename(columns={0: 'counts'})
-counts_pivot = counts.pivot(index=('subject','boundary', 'prev_freq'), columns='signal_theory', values='counts')
+counts_pivot = counts.pivot(index=('subject','boundary', 'interval'), columns='signal_theory', values='counts')
 counts_pivot.reset_index(inplace=True)
 
 counts_pivot = counts_pivot.fillna(0)
@@ -176,13 +186,17 @@ for col in score_columns:
 
     counts_pivot[f"z_{col}"] = temp_targ
 
-counts_pivot['prev_freq'] = counts_pivot['prev_freq'].round(decimals=2)
-sns.pointplot(data=counts_pivot, x="prev_freq", y="hit_rate", hue="boundary")
+
+counts_pivot['interval'] = counts_pivot['interval'].round(decimals=2)
+counts_pivot['boundary'] = counts_pivot['boundary'].map({0: 'within_unit', 1: 'at_boundary'})
+g = sns.pointplot(data=counts_pivot, x="interval", y="hit_rate", hue="boundary",linestyles="none", dodge=True)
+g.set(xlabel ="Interval", ylabel = "Hit Rate", title ='Interval jump control analysis')
 plt.savefig(f'{path}/plots/frequency_and_hit_rate.png', dpi=300)
 
-sns.displot(data=data_filtered, x="prev_freq", col="boundary", binwidth=3)
+data_filtered['boundary'] = data_filtered['boundary'].map({0: 'within_unit', 1: 'at_boundary'})
+g = sns.displot(data=data_filtered, x="interval", hue="boundary", hue_order=['within_unit', 'at_boundary'], binwidth=0.05)
 
-#g.set(xticks=numpy.arange(0, 2.75, 0.25))
+g.set(xticks=numpy.arange(1, 2.25, 0.2))
 plt.savefig(f'{path}/plots/density_of_frequency.png', dpi=300)
 
 
