@@ -8,6 +8,7 @@ import random
 import freefield
 from read_data import read_data
 from analysis_pilot import create_df, plot_group, plot_single
+from no_context_music import shuffle_melody, shuffle_rhythm
 
 
 path = 'C://projects//musicsyn'
@@ -34,7 +35,7 @@ def read_melody(file):
     return onsets, frequencies, durations, boundaries, changable_notes
 
 
-def run(melody_file, subject, p):
+def run(melody_file, subject, p, condition):
     file = slab.ResultsFile(
         subject
     )  # here we name the results folder with subject name
@@ -42,6 +43,12 @@ def run(melody_file, subject, p):
     file.write(melody_file, tag=0)
     onsets, frequencies, durations, boundaries, changable_notes = read_melody(
         path + f"\stimuli\{melody_file}")
+
+    if condition == 'rhythm':
+        durations, onsets = shuffle_rhythm(onsets, durations, boundaries)
+    elif condition == 'melody':
+        frequencies = shuffle_melody(frequencies, boundaries)
+
     print(boundaries)
     print(changable_notes)  # reading the csv file with the information about the notes
     seq = balanced_sequence(boundaries, changable_notes, subject, melody_file, p)
@@ -122,24 +129,20 @@ def run(melody_file, subject, p):
 
 
 def select_file():
-    # training
-    train = ['test1.csv', 'test2.csv', 'test3.csv', 'test4.csv', 'test5.csv']
-    random.shuffle(train)
 
-    # main task
-    main = ["stim_maj_1_a.csv", "stim_maj_2_a.csv", "stim_maj_3_a.csv",
+    music = ["stim_maj_1_a.csv", "stim_maj_2_a.csv", "stim_maj_3_a.csv",
             "stim_min_1_a.csv", "stim_min_2_a.csv", "stim_min_3_a.csv",
             "stim_maj_1_b.csv", "stim_maj_2_b.csv", "stim_maj_3_b.csv",
             "stim_min_1_b.csv", "stim_min_2_b.csv", "stim_min_3_b.csv"
             ]
-    random.shuffle(main)
+    random.shuffle(music)
 
-    music = [train, main]
+
 
 
 
     for m in music:
-        files = m
+        melody_file = m
         i = 0
 
         user_input = input("Do you want to start the new task? (y/n): ")
@@ -148,21 +151,15 @@ def select_file():
         elif user_input.lower() == 'y':
             print("Continuing...")
 
-        for melody_file in files:
-            print(melody_file)
-            p = 0.2
-            if melody_file.startswith('test'):
-                p = 0.35
-            print(p)
-            run(melody_file, 'test', p)  ########### PARTICIPANT HERE ############
-            print(f'That was melody {i + 1}.')
-            user_input = input("Do you want to continue? (y/n): ")
-            if user_input.lower() == 'n':
-                break
-            elif user_input.lower() == 'y':
-                print("Continuing...")
 
-                i += 1
+        print(melody_file)
+        p = 0.2
+
+        print(p)
+        run(melody_file, 'test', p, 'melody')  ########### PARTICIPANT HERE, CONDITION HERE ############
+        print(f'That was melody {i + 1}.')
+
+        i += 1
 
         create_df()
 

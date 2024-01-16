@@ -4,6 +4,7 @@ from numpy.random import default_rng
 import pandas
 import slab
 from balanced_sequence import balanced_sequence
+from good_luck import good_luck
 import random
 import freefield
 from read_data import read_data
@@ -60,45 +61,32 @@ def run(melody_file, subject, p):
     curr_speaker = next(speakers)
     file.write(curr_speaker.azimuth, tag=0)
     start_time = time.time()  # creates a timestamp in Unix format
-    prev_response = 0
 
-    led = False
+
     try:
         while time.time() - start_time < onsets[-1] + durations[-1]:
-            if led:
-                if time.time() - led_on > 1:
-                    freefield.write(tag='bitmask', value=0, processors='RX81')  # turn off LED
 
-            # button
-
-            response = freefield.read('response', 'RP2', 0)
-
-            if response > prev_response:
-                print('good')
-                file.write('p', tag=f'{time.time() - start_time:.3f}')
-
-            prev_response = response
 
             if time.time() - start_time > onsets[i]:  # play the next note
-
+                trig_value = 1 if i == 0 else 0
                 if seq["sequence"][i] == 1:
                     curr_speaker = next(speakers)  # toggle direction
                     file.write(curr_speaker.azimuth, tag=f"{time.time() - start_time:.3f}")
-
+                    trig_value = 2
                     print(f"direction change")
 
                 if seq["boundary"][i] and seq["sequence"][i]:  # so if there is 1 in the boundaries list
                     print(f"at boundary!")
-
+                    trig_value = 3
                 if seq["cue"][i] == 1:
                     led_on = time.time()
                     freefield.write(tag='bitmask', value=1, processors='RX81')  # illuminate LED
                     led = True
-                    print("########")
-                    print("########")
-                    print("visual cue!")
-                    print("########")
-                    print("########")
+                    # print("########")
+                    # print("########")
+                    # print("visual cue!")
+                    # print("########")
+                    # print("########")
 
                 file.write(frequencies[i], tag=f"{time.time() - start_time:.3f}")
                 freefield.write('f0', frequencies[i], ['RX81', 'RX82'])
@@ -110,7 +98,16 @@ def run(melody_file, subject, p):
                 [other_proc] = [item for item in [proc_list[0][0], proc_list[1][0]] if item != curr_speaker.analog_proc]
                 freefield.write('chan', 99, other_proc)
 
+                freefield.write(tag='trigcode', value=trig_value, processors='RX82')
+
                 freefield.play()
+                # trigger_time_zBusA = time.time()
+
+                # freefield.play(kind='zBusB', proc="RX82")
+                # trigger_time_zBusB = time.time()
+                # print("First tone triggered EEG")
+                # trigger_time_diff = trigger_time_zBusA - trigger_time_zBusB
+                # print("Trigger time diff:", trigger_time_diff)
 
                 i += 1
 
@@ -122,24 +119,16 @@ def run(melody_file, subject, p):
 
 
 def select_file():
-    # training
-    train = ['test1.csv', 'test2.csv', 'test3.csv', 'test4.csv', 'test5.csv']
-    random.shuffle(train)
 
-    # main task
-    main = ["stim_maj_1_a.csv", "stim_maj_2_a.csv", "stim_maj_3_a.csv",
+    music = ["stim_maj_1_a.csv", "stim_maj_2_a.csv", "stim_maj_3_a.csv",
             "stim_min_1_a.csv", "stim_min_2_a.csv", "stim_min_3_a.csv",
             "stim_maj_1_b.csv", "stim_maj_2_b.csv", "stim_maj_3_b.csv",
             "stim_min_1_b.csv", "stim_min_2_b.csv", "stim_min_3_b.csv"
             ]
-    random.shuffle(main)
-
-    music = [train, main]
-
-
+    random.shuffle(music)
 
     for m in music:
-        files = m
+        melody_file = m
         i = 0
 
         user_input = input("Do you want to start the new task? (y/n): ")
@@ -148,30 +137,23 @@ def select_file():
         elif user_input.lower() == 'y':
             print("Continuing...")
 
-        for melody_file in files:
-            print(melody_file)
-            p = 0.2
-            if melody_file.startswith('test'):
-                p = 0.35
-            print(p)
-            run(melody_file, 'test', p)  ########### PARTICIPANT HERE ############
-            print(f'That was melody {i + 1}.')
-            user_input = input("Do you want to continue? (y/n): ")
-            if user_input.lower() == 'n':
-                break
-            elif user_input.lower() == 'y':
-                print("Continuing...")
 
-                i += 1
+        print(melody_file)
+        p = 0.2
+        print(p)
+        run(melody_file, 'test', p)  ########### PARTICIPANT HERE ############
+        print(f'That was melody {i + 1}.')
+
+        i += 1
 
         create_df()
 
 
 if __name__ == "__main__":
-    proc_list = [['RX81', 'RX8', path + f'/data/rcx/piano.rcx'],
-                ['RX82', 'RX8', path + f'/data/rcx/piano.rcx'],
-                 ['RP2', 'RP2', path + f'/data/rcx/button.rcx']]
 
+    proc_list = [['RX81', 'RX8', path + f'/data/rcx/piano_eeg.rcx'],
+                 ['RX82', 'RX8', path + f'/data/rcx/piano_eeg.rcx'],
+                 ['RP2', 'RP2', path + f'/data/rcx/button.rcx']]
     freefield.initialize('dome', device=proc_list)
     # freefield.set_logger('debug')
 

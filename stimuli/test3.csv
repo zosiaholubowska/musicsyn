@@ -1,4 +1,4 @@
-onset_sec,duration,freq,offset,loc_change,boundary,changable_note
+onset_sec,duration,freq,offset,loc_change,boundary,changable_notes
 0,0.9,659.2551138,0.9,0,0,0
 1,0.9,246.9416506,1.9,1,0,1
 2,0.9,587.3295358,2.9,0,0,0
