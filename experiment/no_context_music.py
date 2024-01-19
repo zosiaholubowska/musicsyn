@@ -14,7 +14,7 @@ randgenerator = default_rng()
 
 
 def read_melody(file):
-    score_data = pandas.read_csv(file, sep=",")  # open the csv file with notes
+    score_data = pandas.read_csv(file, sep=";")  # open the csv file with notes
     onsets = score_data.onset_sec.to_list()  # list of onsets of consecutive notes
     frequencies = score_data.freq.to_list()  # frequencies of consecutive notes
     durations = score_data.duration.to_list()  # note durations
