@@ -10,7 +10,9 @@ def notetofreq(note):
 
 os.chdir('/Users/zofiaholubowska/Documents/PhD/3_experiment/musicsyn/stimuli')
 
-files = ["stim_maj_4.mid", "stim_min_4.mid"]
+files = ["stim_maj_4.mid", "stim_min_4.mid",
+         "stim_maj_5.mid", "stim_min_5.mid",
+         "stim_maj_6.mid", "stim_min_6.mid"]
 
 for file in files:
 

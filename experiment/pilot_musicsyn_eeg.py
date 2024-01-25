@@ -126,10 +126,10 @@ def select_file():
             "stim_min_1_b.csv", "stim_min_2_b.csv", "stim_min_3_b.csv"
             ]
     random.shuffle(music)
-
+    i = 0
     for m in music:
         melody_file = m
-        i = 0
+
 
         user_input = input("Do you want to start the new task? (y/n): ")
         if user_input.lower() == 'n':
