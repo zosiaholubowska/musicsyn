@@ -67,7 +67,7 @@ def run(melody_file, subject, p):
         while time.time() - start_time < onsets[-1] + durations[-1]:
             if led:
                 if time.time() - led_on > 1:
-                    freefield.write(tag='bitmask', value=0, processors='RX81')  # turn off LED
+                    freefield.write(tag='bitmask', value=speaker2.digital_channel, processors='RX81')  # turn off LED
 
             # button
 
