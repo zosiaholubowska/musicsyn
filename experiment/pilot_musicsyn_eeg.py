@@ -68,7 +68,12 @@ def run(melody_file, subject, p):
 
 
             if time.time() - start_time > onsets[i]:  # play the next note
-                trig_value = 1 if i == 0 else 0
+
+                trig_value = 1 if seq['changable_notes'][i] == 1 else 0
+
+                if i == 0:
+                    trig_value = 5
+
                 if seq["sequence"][i] == 1:
                     curr_speaker = next(speakers)  # toggle direction
                     file.write(curr_speaker.azimuth, tag=f"{time.time() - start_time:.3f}")
@@ -78,15 +83,9 @@ def run(melody_file, subject, p):
                 if seq["boundary"][i] and seq["sequence"][i]:  # so if there is 1 in the boundaries list
                     print(f"at boundary!")
                     trig_value = 3
-                if seq["cue"][i] == 1:
-                    led_on = time.time()
-                    freefield.write(tag='bitmask', value=1, processors='RX81')  # illuminate LED
-                    led = True
-                    # print("########")
-                    # print("########")
-                    # print("visual cue!")
-                    # print("########")
-                    # print("########")
+
+                if seq["boundary"][i] and seq["sequence"][i] == 0:  # so if there is 1 in the boundaries list
+                    trig_value = 4
 
                 file.write(frequencies[i], tag=f"{time.time() - start_time:.3f}")
                 freefield.write('f0', frequencies[i], ['RX81', 'RX82'])
