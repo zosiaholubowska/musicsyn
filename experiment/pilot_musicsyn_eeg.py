@@ -119,10 +119,10 @@ def run(melody_file, subject, p):
 
 def select_file():
 
-    music = ["stim_maj_1_a.csv", "stim_maj_2_a.csv", "stim_maj_3_a.csv",
-            "stim_min_1_a.csv", "stim_min_2_a.csv", "stim_min_3_a.csv",
-            "stim_maj_1_b.csv", "stim_maj_2_b.csv", "stim_maj_3_b.csv",
-            "stim_min_1_b.csv", "stim_min_2_b.csv", "stim_min_3_b.csv"
+    music = ["stim_maj_1.csv", "stim_maj_2.csv", "stim_maj_3.csv",
+            "stim_min_1.csv", "stim_min_2.csv", "stim_min_3.csv",
+            "stim_maj_4.csv", "stim_maj_5.csv", "stim_maj_6.csv",
+            "stim_min_4.csv", "stim_min_5.csv", "stim_min_6.csv"
             ]
     random.shuffle(music)
     i = 0
