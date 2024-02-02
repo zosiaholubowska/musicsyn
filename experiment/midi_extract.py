@@ -8,11 +8,13 @@ def notetofreq(note):
     a = 440
     return (a / 32) * (2 ** ((note - 9) / 12))
 
-os.chdir('/Users/zofiaholubowska/Documents/PhD/3_experiment/musicsyn/stimuli')
+os.chdir('/Users/zofiaholubowska/Documents/studia/magisterka/bodzce/stimuli - final')
 
-files = ["stim_maj_4.mid", "stim_min_4.mid",
-         "stim_maj_5.mid", "stim_min_5.mid",
-         "stim_maj_6.mid", "stim_min_6.mid"]
+files = ["stim_irreg_maj_1.mid", "stim_irreg_min_1.mid",
+        "stim_irreg_maj_2.mid", "stim_irreg_min_2.mid",
+         "stim_reg_maj_1.mid", "stim_reg_min_1.mid",
+         "stim_reg_maj_2.mid", "stim_reg_min_2.mid",
+         ]
 
 for file in files:
 
