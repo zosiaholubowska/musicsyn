@@ -3,7 +3,7 @@ import pandas
 import numpy
 import os
 
-def read_data(subject, file_name):
+def read_data(subject, file_name, condition):
     """
     This is to create a dataframe with results and the sequence
     """
@@ -11,12 +11,13 @@ def read_data(subject, file_name):
     data = slab.ResultsFile.read_file(path + f"/Results/{subject}/{file_name}")
 
     stimulus = data[0]['0'][:-4]
+    condition = data[1]['1']
 
     timestamps = [float(list(d.keys())[0]) for d in data]
     frequencies = [list(d.values())[0] for d in data]
 
     df = pandas.DataFrame({'time': timestamps, 'frequencies': frequencies})
-    df1 = df.iloc[1:]
+    df1 = df.iloc[2:]
     df1["channel"] = 0
     df1["answer"] = 0
     df1["prec_time"] = 0
@@ -35,9 +36,10 @@ def read_data(subject, file_name):
 
     df_filtered["stimulus"] = stimulus
     df_filtered["subject"] = subject
+    df_filtered['condition'] = condition
 
     seq = pandas.read_csv(
-        path + f"/Results/{subject}/{subject}_seq_{stimulus}.csv"
+        path + f"/Results/{subject}/{subject}_seq_{stimulus}_{condition}.csv"
     )
 
     df_filtered['visual_cue'] = 0
@@ -55,5 +57,5 @@ def read_data(subject, file_name):
             df_filtered["channel"][idx] = df_filtered["channel"][idx - 1]
 
     df_filtered.to_csv(
-        path + f"/Results/{subject}/{subject}_data_{stimulus}.csv",
+        path + f"/Results/{subject}/{subject}_data_{stimulus}_{condition}.csv",
     )
