@@ -14,11 +14,11 @@ randgenerator = default_rng()
 
 
 def read_melody(file):
-    score_data = pandas.read_csv(file, sep=";")  # open the csv file with notes
+    score_data = pandas.read_csv(file, sep=",") # open the csv file with notes
     onsets = score_data.onset_sec.to_list()  # list of onsets of consecutive notes
     frequencies = score_data.freq.to_list()  # frequencies of consecutive notes
     durations = score_data.duration.to_list()  # note durations
-    changable_notes = score_data.changable_note.to_list()  # if at note is possible to change direction
+    changable_notes = score_data.changable_notes.to_list()  # if at note is possible to change direction
     boundaries = (score_data.boundary.to_list()) # 0 or 1 indication if the note is the beginning of a new phrase
 
     return onsets, frequencies, durations, boundaries, changable_notes
