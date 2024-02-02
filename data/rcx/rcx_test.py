@@ -10,8 +10,8 @@ rp.ConnectRX8('GB', 1)
 
 # load circuit
 rp.ClearCOF()
-rp.LoadCOF(path / 'data' / 'rcx' / 'proto_.rcx')
-# rp.LoadCOF(path / 'data' / 'rcx' / 'fail.rcx')
+rp.LoadCOF(path / 'RCX_files' / 'rcx' / 'proto_.rcx')
+# rp.LoadCOF(path / 'RCX_files' / 'rcx' / 'fail.rcx')
 rp.Run()
 
 # set tag values

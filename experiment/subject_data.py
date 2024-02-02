@@ -9,10 +9,10 @@ def subject_data(subject, file, melody_file):
 
 
     file_name = file.name
-    data = slab.ResultsFile.read_file(f'C:\projects\musicsyn\musicsyn\Results\{subject}\{file_name}')
+    RCX_files = slab.ResultsFile.read_file(f'C:\projects\musicsyn\musicsyn\Results\{subject}\{file_name}')
 
-    timestamps = [float(list(d.keys())[0]) for d in data]
-    frequencies = [list(d.values())[0] for d in data]
+    timestamps = [float(list(d.keys())[0]) for d in RCX_files]
+    frequencies = [list(d.values())[0] for d in RCX_files]
     responses = numpy.zeros_like(frequencies)
 
 
@@ -50,16 +50,16 @@ def subject_data(subject, file, melody_file):
 
     seq = pandas.read_csv(f'C:\projects\musicsyn\musicsyn\Results/{subject}/{subject}_seq_{melody_file}')
 
-    data = seq.join(freq["Responses"])
-    data = data.join(freq["Frequency"])
-    data = data.join(freq["Timestamp"])
+    RCX_files = seq.join(freq["Responses"])
+    RCX_files = RCX_files.join(freq["Frequency"])
+    RCX_files = RCX_files.join(freq["Timestamp"])
 
 
 
-    data = data.drop(columns=["idx"])
-    data = data.loc[:, ~data.columns.str.contains("^Unnamed")]
-    data = data[["Frequency", "Timestamp", "boundary", "sequence", "cue", "Responses", ]]
-    data = data.rename(
+    RCX_files = RCX_files.drop(columns=["idx"])
+    RCX_files = RCX_files.loc[:, ~RCX_files.columns.str.contains("^Unnamed")]
+    RCX_files = RCX_files[["Frequency", "Timestamp", "boundary", "sequence", "cue", "Responses", ]]
+    RCX_files = RCX_files.rename(
         columns={
             "boundary": "Boundary",
             "sequence": "Location_change",
@@ -67,7 +67,7 @@ def subject_data(subject, file, melody_file):
         }
     )
 
-    data.to_csv(f'C:\projects\musicsyn\musicsyn\Results\{subject}\{subject}_data_{melody_file}')
+    RCX_files.to_csv(f'C:\projects\musicsyn\musicsyn\Results\{subject}\{subject}_data_{melody_file}')
 
     """
 

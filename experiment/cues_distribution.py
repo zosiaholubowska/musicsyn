@@ -1,7 +1,7 @@
 import pandas
 import matplotlib.pyplot as plt
 
-# Assuming your DataFrame is named 'data'
+# Assuming your DataFrame is named 'RCX_files'
 # Modify the path if needed
 subject = "FH"
 melody_file = "stim_maj_1"

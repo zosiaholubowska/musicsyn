@@ -2,7 +2,7 @@ import pandas as pandas
 import matplotlib.pyplot as plt
 import numpy as np
 
-# Read the data
+# Read the RCX_files
 subject = "AP"
 file = f"/Users/zofiaholubowska/Documents/PhD/experiment/musicsyn/Results/{subject}/{subject}_data.csv"
 data = pandas.read_csv(file, sep=",")

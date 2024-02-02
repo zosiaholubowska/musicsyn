@@ -20,7 +20,7 @@ samplerate = 44828
 def read_melody(file):
     """
     This function reads a csv file with the description of notes
-    - score data (from csv file)
+    - score RCX_files (from csv file)
     - note onsets
     - note frequencies
     - note durations
@@ -165,9 +165,9 @@ def select_file():
 
 
 if __name__ == "__main__":
-    proc_list = [['RX81', 'RX8', path + f'/data/rcx/piano.rcx'],
-                ['RX82', 'RX8', path + f'/data/rcx/piano.rcx'],
-                 ['RP2', 'RP2', path + f'/data/rcx/button.rcx']]
+    proc_list = [['RX81', 'RX8', path + f'/RCX_files/rcx/piano.rcx'],
+                ['RX82', 'RX8', path + f'/RCX_files/rcx/piano.rcx'],
+                 ['RP2', 'RP2', path + f'/RCX_files/rcx/button.rcx']]
 
     freefield.initialize('dome', device=proc_list)
     # freefield.set_logger('debug')
