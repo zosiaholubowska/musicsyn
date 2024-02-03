@@ -484,6 +484,46 @@ def plot_single(subject, condition):
     plt.savefig(f'{path}/plots/{subject}_main_results.png', dpi=300)
     plt.show()
 
+    sub_main = main[(df['subject'] == subject)]
+    vc_data_filtered = vc_data[vc_data['answer'] == 1]
+    vc_data_filtered['state'] = numpy.where(vc_data_filtered['boundary'] == 0, 'no_boundary', 'boundary')
+    mean_time_diff = vc_data_filtered.groupby(['subject', 'state', 'condition'])['time_difference'].mean().reset_index()
+    sub_time = mean_time_diff[(mean_time_diff['subject'] == subject)]
+
+    # -#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-
+
+    palette = sns.color_palette(['#a4e0f5'], len(main['subject'].unique()))
+
+    def plot_sub(ax, data_plot, x, y, title, a, b, c):
+        sns.lineplot(ax=ax, x=x, y=y, data=data_plot, hue='subject', palette='tab10', marker='o')
+        ax.set_xticks([0, 1])
+        ax.set_xticklabels(['boundary', 'no_boundary'])
+        ax.set_xlim(-0.2, 1.2)
+        ax.set_title(title)
+        ax.set_yticks(numpy.arange(a, b, c))
+
+    # Set up subplots
+    fig, axes = plt.subplots(2, 2, figsize=(12, 10))
+    fig.suptitle('Pilot - preliminary results')
+    main['ff1'] = pandas.to_numeric(main['ff1'], errors='coerce')
+    main['d_prime'] = pandas.to_numeric(main['d_prime'], errors='coerce')
+
+    # Hit rate plot
+    plot_sub(axes[0, 0], sub_main, 'state', 'hit_rate', 'Hit Rate', 0.5, 1.2, 0.1)
+
+    # D-prime plot
+    plot_sub(axes[0, 1], sub_main, 'state', 'd_prime', 'D-prime', -2, 3, 1)
+
+    # F-score plot
+    plot_sub(axes[1, 0], sub_main, 'state', 'ff1', 'F-score', 0.5, 1.2, 0.1)
+
+    # Time difference plot
+    plot_sub(axes[1, 1], sub_time, 'state', 'time_difference', 'Time difference', 0.4, 1, 0.1)
+
+    plt.tight_layout(rect=[0, 0.03, 1, 0.95])
+    plt.savefig(f'{path}/plots/{subject}_main_results.png', dpi=300)
+    plt.show()
+
 # def plot_all():
 #
 #     path = os.getcwd()

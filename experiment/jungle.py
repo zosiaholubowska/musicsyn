@@ -17,12 +17,12 @@ freefield.initialize('dome', device=proc_list)
 
 speaker_idxs = random.sample(range(46), 8)
 speakers = freefield.pick_speakers(speaker_idxs)
-sound_file_names = os.listdir(DIR / "stimuli" / "jungle")
+sound_file_names = os.listdir('C://projects//musicsyn//stimuli//jungle')
 
 for i in range(len(sound_file_names)):
     speaker = speakers[i]
     sound = slab.Sound(DIR/ "stimuli" / "jungle" / sound_file_names[i])
-    sound.data = sound.data[:]
+    sound.data = sound.data[:80000]
     sound.level = 80 if sound_file_names[i] != 'sirene.mp3' else 90
     freefield.write(tag=f"data{i+1}", value=sound.data.flatten(), processors=speaker.analog_proc)
     freefield.write(tag=f"chan{i+1}", value=speaker.analog_channel, processors=speaker.analog_proc)
