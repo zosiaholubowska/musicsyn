@@ -8,13 +8,9 @@ def notetofreq(note):
     a = 440
     return (a / 32) * (2 ** ((note - 9) / 12))
 
-os.chdir('/Users/zofiaholubowska/Documents/studia/magisterka/bodzce/stimuli - final')
+os.chdir('/Users/zofiaholubowska/Documents/PhD/3_experiments/musicsyn/stimuli')
 
-files = ["stim_irreg_maj_1.mid", "stim_irreg_min_1.mid",
-        "stim_irreg_maj_2.mid", "stim_irreg_min_2.mid",
-         "stim_reg_maj_1.mid", "stim_reg_min_1.mid",
-         "stim_reg_maj_2.mid", "stim_reg_min_2.mid",
-         ]
+files = ['stim_maj_4.mid', 'stim_min_4.mid', 'stim_min_5.mid']
 
 for file in files:
 
@@ -51,7 +47,7 @@ for file in files:
     midi_df['freq'] = midi_df['note'].apply(notetofreq)
     midi_df.rename(columns={'time': 'onset_sec'}, inplace=True)
     fl = file[:-4]
-    midi_df.to_csv(f'{fl}.csv')
+    midi_df.to_csv(f'{fl}_new.csv')
 
 
 

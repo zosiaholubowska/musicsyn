@@ -97,7 +97,7 @@ def shuffle_melody(frequencies, boundaries):
 
 def run(melody_file, subject, condition):
     file = slab.ResultsFile(subject)
-    onsets, frequencies, durations, boundaries, changable_notes = read_melody(f"/Users/zofiaholubowska/Documents/PhD/3_experiment/musicsyn/stimuli/{melody_file}")
+    onsets, frequencies, durations, boundaries, changable_notes = read_melody(f"/Users/zofiaholubowska/Documents/PhD/3_experiments/musicsyn/stimuli/{melody_file}")
 
     if condition == 'rhythm':
         durations, onsets = shuffle_rhythm(onsets, durations, boundaries)

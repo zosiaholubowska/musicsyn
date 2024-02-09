@@ -1,80 +1,53 @@
-import pandas as pandas
+import pandas
 import matplotlib.pyplot as plt
-import numpy as np
+import numpy
+from analysis_pilot import create_df, plot_group, plot_single
+import os
+import seaborn as sns
 
-# Read the RCX_files
-subject = "AP"
-file = f"/Users/zofiaholubowska/Documents/PhD/experiment/musicsyn/Results/{subject}/{subject}_data.csv"
-data = pandas.read_csv(file, sep=",")
+# import the data
 
-boundaries_data = data[data['Boundary'] == 1].copy()
-sum_bound_loc = (sum(boundaries_data["Location_change"]))
-sum_bound_cue = (sum(boundaries_data["Visual_cue"]))
-noboundaries_data = data[data['Boundary'] == 0].copy()
-sum_nobound_loc = (sum(noboundaries_data["Location_change"]))
-sum_nobound_cue = (sum(noboundaries_data["Visual_cue"]))
+path = os.getcwd()
+main = pandas.read_csv(path + f"/Results/results_postprocessed.csv")
+vc_data = pandas.read_csv(path + f"/Results/results.csv")
 
-print(data)
-print(sum_bound_loc)
-print(sum_bound_cue)
-print(sum_nobound_loc)
-print(sum_nobound_cue)
-# Iterate through each row
-for index, row in data.iterrows():
-    # Check if Visual_cue is 1
-    if row['Visual_cue'] == 1:
-        # Check for response in the window of 1.5 seconds
-        window_condition = (data['Timestamp'] >= row['Timestamp']) & (data['Timestamp'] <= row['Timestamp'] + 1.5)
-        if any((data.loc[window_condition, 'Responses'] == 1)):
-            # If there is a response in the window, set the Response value for the current row to 1
-            data.at[index, 'Responses'] = 1
+# add participant's type
+main_piv = main.pivot(index='subject', columns='state', values='d_prime')
+pivot_df = main.pivot(index=['subject', 'condition', ], columns='state', values='d_prime').reset_index()
+pivot_df = pivot_df[pivot_df['condition'].str.match('main')]
+pivot_df['diff'] = pivot_df['boundary'] - pivot_df['no_boundary']
+pivot_df['type'] = pivot_df['diff'].apply(lambda x: 'increase' if x < 0 else 'decrease')
+subject_type_map = dict(zip(pivot_df['subject'], pivot_df['type']))
+main['type'] = main['subject'].map(subject_type_map)
 
-filtered_data = data[data['Visual_cue'] == 1].copy()
 
-# Create a new column 'Signal_theory' based on conditions for filtered_data
-filtered_data['Signal_theory'] = 'Unknown'
+## plot the d-prime values for each participant
+grid = sns.FacetGrid(main, col="subject", hue="condition", palette="colorblind",
+                     col_wrap=4, height=1.5)
+grid.map(plt.plot, "state", "d_prime", marker="o")
+grid.set(yticks=[-3, 3],ylim=(-3.5, 3.5))
 
-# Set 'Signal_theory' based on conditions for filtered_data
-filtered_data.loc[(filtered_data['Location_change'] == 1) & (filtered_data['Responses'] == 1), 'Signal_theory'] = 'hit'
-filtered_data.loc[(filtered_data['Location_change'] == 1) & (filtered_data['Responses'] == 0), 'Signal_theory'] = 'miss'
-filtered_data.loc[(filtered_data['Location_change'] == 0) & (filtered_data['Responses'] == 0), 'Signal_theory'] = 'corr'
-filtered_data.loc[(filtered_data['Location_change'] == 0) & (filtered_data['Responses'] == 1), 'Signal_theory'] = 'fa'
+grid.fig.tight_layout(w_pad=1)
+grid.add_legend()
 
-counts_all = filtered_data['Signal_theory'].value_counts()
+## average plot for all participants
 
-# Count occurrences based on 'Signal_theory' with 1 in the 'Boundary' column
-counts_boundary = filtered_data[filtered_data['Boundary'] == 1]['Signal_theory'].value_counts()
+fig, axes = plt.subplots(2, 3, figsize=(15, 10))
+fig.suptitle('Comparison between three conditions - d-prime')
 
-# Count occurrences based on 'Signal_theory' with 0 in the 'Boundary' column
-counts_noboundary = filtered_data[filtered_data['Boundary'] == 0]['Signal_theory'].value_counts()
+palette = sns.color_palette(['#a4e0f5'], len(main['subject'].unique()))
 
-print(counts_all)
-print(counts_boundary)
-print(counts_noboundary)
+conditions = ['main', 'rhythm', 'melody', 'main', 'rhythm', 'melody']
+types = ['increase', 'increase', 'increase', 'decrease', 'decrease', 'decrease']
 
-# Create a bar plot for each category based on 'Boundary' and 'Signal_theory'
-categories = ['hit', 'miss', 'corr', 'fa']
-bar_width = 0.35
+for ax, condition, type in zip(axes.flat, conditions, types):  # Fixed the loop and renamed the variable 'type'
+    data = main[(main['condition'] == condition) & (main['type'] == type)]
+    sns.lineplot(ax=ax, x="state", y="d_prime", data=data, hue='subject', palette=palette, marker='o', legend=False)
+    ax.set_xticks([0, 1])  # Changed from axes[0] to ax
+    ax.set_xticklabels(['boundary', 'no_boundary'])
+    ax.set_xlim(-0.2, 1.2)  # Changed from axes[0] to ax
+    ax.set_title(f"{condition} - {type}")  # Added condition and type_value to the title
+    sns.lineplot(ax=ax, x="state", y="d_prime", data=data, color='#008EBF', marker='o', legend=False)
 
-fig, ax = plt.subplots(figsize=(10, 6))
 
-bar_positions_boundary = np.arange(len(categories))
-bar_positions_noboundary = bar_positions_boundary + bar_width
 
-# Updated color names
-colors = {'boundary': 'mediumseagreen', 'noboundary': 'lightcoral'}
-
-for category_index, category in enumerate(categories):
-    counts_boundary_1 = counts_boundary[category] if category in counts_boundary else 0
-    counts_noboundary_1 = counts_noboundary[category] if category in counts_noboundary else 0
-
-    ax.bar(bar_positions_boundary[category_index], counts_boundary_1, width=bar_width, label=f'{category} - Boundary 1', color=colors['boundary'])
-    ax.bar(bar_positions_noboundary[category_index], counts_noboundary_1, width=bar_width, label=f'{category} - Boundary 0', color=colors['noboundary'])
-
-# Rename labels
-labels = {'hit': 'Hit Rate', 'fa': 'False Alarm', 'corr': 'Correct Rejection', 'miss': 'Miss'}
-
-ax.set_xticks(bar_positions_boundary + bar_width / 2)
-ax.set_xticklabels([labels[category] for category in categories])
-ax.legend(labels=['Boundary', 'No Boundary'])
-plt.show()
