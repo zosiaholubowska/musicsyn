@@ -1,4 +1,3 @@
-import sys
 import time
 import itertools
 from numpy.random import default_rng
@@ -36,24 +35,23 @@ def read_melody(file):
     return onsets, frequencies, durations, boundaries, changable_notes
 
 
-def run(melody_file, subject, condition):
+def run(melody_file, subject, p, condition):
     file = slab.ResultsFile(
         subject
     )  # here we name the results folder with subject name
     file_name = file.name
     file.write(melody_file, tag=0)
-    file.write(condition, tag=1)
     onsets, frequencies, durations, boundaries, changable_notes = read_melody(
         path + f"\stimuli\{melody_file}")
 
-    seq = balanced_sequence(boundaries, changable_notes, subject, melody_file, 0.2, condition)
-
-    # create control conditions
-    if condition == 'melody':
-        frequencies = shuffle_melody(frequencies, boundaries)
-    elif condition == 'rhythm':
+    if condition == 'rhythm':
         durations, onsets = shuffle_rhythm(onsets, durations, boundaries)
+    elif condition == 'melody':
+        frequencies = shuffle_melody(frequencies, boundaries)
 
+    print(boundaries)
+    print(changable_notes)  # reading the csv file with the information about the notes
+    seq = balanced_sequence(boundaries, changable_notes, subject, melody_file, p)
 
     directions = [15, 23, 31]
     [speaker1] = freefield.pick_speakers(directions[0])
@@ -101,7 +99,7 @@ def run(melody_file, subject, condition):
 
                 if seq["cue"][i] == 1:
                     led_on = time.time()
-                    freefield.write(tag='bitmask', value=speaker2.digital_channel, processors='RX81')  # illuminate LED
+                    freefield.write(tag='bitmask', value=1, processors='RX81')  # illuminate LED
                     led = True
                     print("########")
                     print("########")
@@ -125,51 +123,51 @@ def run(melody_file, subject, condition):
 
 
     except IndexError:
-        read_data(subject, file_name, condition)
+        read_data(subject, file_name)
     except KeyError:
-        read_data(subject, file_name, condition)
+        read_data(subject, file_name)
 
 
 def select_file():
 
-    conditions = ['main', 'rhythm', 'melody']
+    music = ["stim_maj_1_a.csv", "stim_maj_2_a.csv", "stim_maj_3_a.csv",
+            "stim_min_1_a.csv", "stim_min_2_a.csv", "stim_min_3_a.csv",
+            "stim_maj_1_b.csv", "stim_maj_2_b.csv", "stim_maj_3_b.csv",
+            "stim_min_1_b.csv", "stim_min_2_b.csv", "stim_min_3_b.csv"
+            ]
+    random.shuffle(music)
 
-    files = ["stim_maj_1.csv",
-            "stim_min_1.csv"]
 
-    random.shuffle(files)
 
-    i = 0
 
-    user_input = input("Do you want to start the new task? (y/n): ")
-    if user_input.lower() == 'n':
-        sys.exit()
-    elif user_input.lower() == 'y':
-        print("Continuing...")
 
-    for condition in conditions:
-        print(condition)
+    for m in music:
+        melody_file = m
+        i = 0
 
-        for melody_file in files:
-            print(melody_file)
+        user_input = input("Do you want to start the new task? (y/n): ")
+        if user_input.lower() == 'n':
+            break
+        elif user_input.lower() == 'y':
+            print("Continuing...")
 
-            run(melody_file, 'p_Aaron', condition)  ########### PARTICIPANT HERE ############
-            print(f'That was melody {i + 1}.')
-            user_input = input("Do you want to continue? (y/n): ")
-            if user_input.lower() == 'n':
-                break
-            elif user_input.lower() == 'y':
-                print("Continuing...")
 
-                i += 1
+        print(melody_file)
+        p = 0.2
 
-    create_df()
+        print(p)
+        run(melody_file, 'test', p, 'melody')  ########### PARTICIPANT HERE, CONDITION HERE ############
+        print(f'That was melody {i + 1}.')
+
+        i += 1
+
+        create_df()
 
 
 if __name__ == "__main__":
-    proc_list = [['RX81', 'RX8', path + f'/data/rcx/piano.rcx'],
-                ['RX82', 'RX8', path + f'/data/rcx/piano.rcx'],
-                 ['RP2', 'RP2', path + f'/data/rcx/button.rcx']]
+    proc_list = [['RX81', 'RX8', path + f'/RCX_files/rcx/piano.rcx'],
+                ['RX82', 'RX8', path + f'/RCX_files/rcx/piano.rcx'],
+                 ['RP2', 'RP2', path + f'/RCX_files/rcx/button.rcx']]
 
     freefield.initialize('dome', device=proc_list)
     # freefield.set_logger('debug')
