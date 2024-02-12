@@ -3,7 +3,7 @@ import pandas
 import numpy
 import os
 
-def read_data(subject, file_name, condition):
+def read_data(subject, file_name):
     """
     This is to create a dataframe with results and the sequence
     """
@@ -18,9 +18,9 @@ def read_data(subject, file_name, condition):
 
     df = pandas.DataFrame({'time': timestamps, 'frequencies': frequencies})
     df1 = df.iloc[2:]
-    df1["channel"] = 0
-    df1["answer"] = 0
-    df1["prec_time"] = 0
+    df1.loc[:, "channel"] = 0
+    df1.loc[:, "answer"] = 0
+    df1.loc[:, "prec_time"] = 0
 
     for idx in df1.index:
         if (df1["frequencies"][idx] == 17.5) or (df1["frequencies"][idx] == -17.5):
@@ -59,3 +59,45 @@ def read_data(subject, file_name, condition):
     df_filtered.to_csv(
         path + f"/Results/{subject}/{subject}_data_{stimulus}_{condition}.csv",
     )
+
+    df_dprime = df_filtered.copy()
+
+
+    for index, row in df_dprime.iterrows():
+        if row['visual_cue'] == 1:
+            # Check for response in the window of 1.1 seconds
+            window_condition = (df_dprime['time'] >= row['time']) & (df_dprime['time'] <= row['time'] + 1.1)
+            found_index = df_dprime.index[window_condition & (df_dprime['answer'] == 1)].tolist()
+
+            if any((df_dprime.loc[window_condition, 'answer'] == 1)):
+                # If there is a response in the window, set the Response value for the current row to 1
+                df_dprime.at[index, 'answer'] = 1
+                df_dprime.at[index, 'prec_time'] = df_dprime['prec_time'][found_index[0]]
+
+    df_dprime = df_dprime.loc[df_dprime["visual_cue"]==1]
+    df_dprime['signal_theory'] = ''
+
+    df_dprime.loc[(df_dprime['loc_change'] == 1) & (df_dprime['answer'] == 1), 'signal_theory'] = 'hit'
+    df_dprime.loc[(df_dprime['loc_change'] == 1) & (df_dprime['answer'] == 0), 'signal_theory'] = 'miss'
+    df_dprime.loc[(df_dprime['loc_change'] == 0) & (df_dprime['answer'] == 0), 'signal_theory'] = 'corr'
+    df_dprime.loc[(df_dprime['loc_change'] == 0) & (df_dprime['answer'] == 1), 'signal_theory'] = 'fa'
+
+    df_dprime_grouped = df_dprime.groupby(['subject','signal_theory']).size().unstack(fill_value=0)
+
+    if 'fa' not in df_dprime_grouped.columns:
+        df_dprime_grouped['fa'] = 0
+
+    if 'hit' not in df_dprime_grouped.columns:
+        df_dprime_grouped['hit'] = 0
+
+    if 'miss' not in df_dprime_grouped.columns:
+        df_dprime_grouped['miss'] = 0
+
+    if 'corr' not in df_dprime_grouped.columns:
+        df_dprime_grouped['corr'] = 0
+
+    df_dprime_grouped.reset_index(inplace=True)
+
+    df_dprime_grouped.at[0, "hit_rate"] = df_dprime_grouped.at[0, "hit"] / (df_dprime_grouped.at[0, "hit"] + df_dprime_grouped.at[0, "miss"])
+    print(df_dprime_grouped.at[0, "hit_rate"])
+

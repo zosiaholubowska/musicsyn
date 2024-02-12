@@ -34,7 +34,7 @@ def read_melody(file):
     return onsets, frequencies, durations, boundaries, changable_notes
 
 
-def run(melody_file, subject, p):
+def run(melody_file, subject, p, condition):
     file = slab.ResultsFile(
         subject
     )  # here we name the results folder with subject name
@@ -122,9 +122,32 @@ def run(melody_file, subject, p):
 
 
 def select_file():
+    participant = "participant" ########### PARTICIPANT HERE ############
     # training
     train = ['test1.csv', 'test2.csv', 'test3.csv', 'test4.csv', 'test5.csv']
     random.shuffle(train)
+
+    i = 0
+
+    user_input = input("Do you want to start the new task? (y/n): ")
+    if user_input.lower() == 'n':
+        sys.exit()
+    elif user_input.lower() == 'y':
+        print("Continuing...")
+
+    for t in train:
+        print(t)
+        p = 0.35
+        condition = 'main'
+        run(t, participant, p, condition)
+        print(f'That was melody {i + 1}.')
+        user_input = input("Do you want to continue? (y/n): ")
+        if user_input.lower() == 'n':
+            break
+        elif user_input.lower() == 'y':
+            print("Continuing...")
+
+            i += 1
 
     # main task
     main = ["stim_maj_1.csv", "stim_maj_2.csv", "stim_maj_3.csv",
@@ -134,27 +157,22 @@ def select_file():
             ]
     random.shuffle(main)
 
-    music = [train, main]
+    conditions = ['main', 'rhythm', 'melody']
+    random.shuffle(conditions)
 
+    user_input = input("Do you want to start the new task? (y/n): ")
+    if user_input.lower() == 'n':
+        sys.exit()
+    elif user_input.lower() == 'y':
+        print("Continuing...")
 
-
-    for m in music:
-        files = m
+    for condition in conditions:
+        print(condition)
         i = 0
-
-        user_input = input("Do you want to start the new task? (y/n): ")
-        if user_input.lower() == 'n':
-            break
-        elif user_input.lower() == 'y':
-            print("Continuing...")
-
-        for melody_file in files:
+        for melody_file in music:
             print(melody_file)
             p = 0.2
-            if melody_file.startswith('test'):
-                p = 0.35
-            print(p)
-            run(melody_file, 'test', p)  ########### PARTICIPANT HERE ############
+            run(melody_file, participant, p, condition)
             print(f'That was melody {i + 1}.')
             user_input = input("Do you want to continue? (y/n): ")
             if user_input.lower() == 'n':
