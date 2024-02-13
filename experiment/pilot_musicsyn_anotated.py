@@ -9,6 +9,7 @@ import freefield
 from read_data import read_data
 from analysis_pilot import create_df, plot_group, plot_single
 from no_context_music import shuffle_melody, shuffle_rhythm
+import os
 
 
 path = 'C://projects//musicsyn'
@@ -130,7 +131,14 @@ def run(melody_file, subject, p, condition):
 
 
 def select_file():
-    participant = "participant" ########### PARTICIPANT HERE ############
+    subjects = [f for f in os.listdir(f"{path}/experiment/Results")]
+    participant = "participant"  ########### PARTICIPANT HERE ############
+
+    if participant in subjects:
+        print(subjects)
+        new_participant = input("OVERWRITE!- new participant's name: ")
+        participant = new_participant
+
     # training
     train = ['test1.csv', 'test2.csv', 'test3.csv', 'test4.csv', 'test5.csv']
     random.shuffle(train)

@@ -9,10 +9,11 @@ import freefield
 from read_data import read_data
 from analysis_pilot import create_df, plot_group, plot_single
 from no_context_music import shuffle_melody, shuffle_rhythm
-import sys
+import os
 
 
 path = 'C://projects//musicsyn'
+path = os.getcwd()
 randgenerator = default_rng()
 
 samplerate = 44828
@@ -119,6 +120,14 @@ def run(melody_file, subject, p, condition):
 
 
 def select_file():
+    subjects = [f for f in os.listdir(f"{path}/experiment/Results")]
+    participant = "participant"  ########### PARTICIPANT HERE ############
+
+    if participant in subjects:
+        print(subjects)
+        new_participant = input("OVERWRITE!- new participant's name: ")
+        participant = new_participant
+
     conditions = ['main', 'rhythm', 'melody']
     random.shuffle(conditions)
 
