@@ -3,12 +3,12 @@ import itertools
 from numpy.random import default_rng
 import pandas
 import slab
-from balanced_sequence import balanced_sequence
+from experiment.balanced_sequence import balanced_sequence
 import random
 import freefield
-from read_data import read_data
-from analysis_pilot import create_df, plot_group, plot_single
-from no_context_music import shuffle_melody, shuffle_rhythm
+from experiment.read_data import read_data
+from experiment.analysis_pilot import create_df, plot_group, plot_single
+from experiment.no_context_music import shuffle_melody, shuffle_rhythm
 import os
 
 

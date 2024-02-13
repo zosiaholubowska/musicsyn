@@ -3,13 +3,14 @@ import itertools
 from numpy.random import default_rng
 import pandas
 import slab
-from balanced_sequence import balanced_sequence
+from experiment.balanced_sequence import balanced_sequence
 import random
 import freefield
-from read_data import read_data
-from analysis_pilot import create_df, plot_group, plot_single
-from no_context_music import shuffle_melody, shuffle_rhythm
+from experiment.read_data import read_data
+from experiment.analysis_pilot import create_df, plot_group, plot_single
+from experiment.no_context_music import shuffle_melody, shuffle_rhythm
 import os
+import sys
 
 
 path = 'C://projects//musicsyn'
@@ -37,9 +38,7 @@ def read_melody(file):
 
 
 def run(melody_file, subject, p, condition):
-    file = slab.ResultsFile(
-        subject
-    )  # here we name the results folder with subject name
+    file = slab.ResultsFile(subject)  # here we name the results folder with subject name
     file_name = file.name
     file.write(melody_file, tag=0)
     file.write(condition, tag=1)
@@ -76,7 +75,7 @@ def run(melody_file, subject, p, condition):
         while time.time() - start_time < onsets[-1] + durations[-1]:
             if led:
                 if time.time() - led_on > 1:
-                    freefield.write(tag='bitmask', value=speaker2.digital_channel, processors='RX81')  # turn off LED
+                    freefield.write(tag='bitmask', value=0, processors='RX81')  # turn off LED
 
             # button
 
@@ -101,7 +100,7 @@ def run(melody_file, subject, p, condition):
 
                 if seq["cue"][i] == 1:
                     led_on = time.time()
-                    freefield.write(tag='bitmask', value=1, processors='RX81')  # illuminate LED
+                    freefield.write(tag='bitmask', value=speaker2.digital_channel, processors='RX81')  # illuminate LED
                     led = True
                     print("########")
                     print("########")
@@ -131,13 +130,14 @@ def run(melody_file, subject, p, condition):
 
 
 def select_file():
-    subjects = [f for f in os.listdir(f"{path}/experiment/Results")]
-    participant = "participant"  ########### PARTICIPANT HERE ############
+    subjects = [f for f in os. listdir(f'{path}/Results')]
+    participant = 'part'
 
     if participant in subjects:
         print(subjects)
-        new_participant = input("OVERWRITE!- new participant's name: ")
-        participant = new_participant
+        new_participant = input('OVERWRITE! - change name:')
+
+    participant = new_participant
 
     # training
     train = ['test1.csv', 'test2.csv', 'test3.csv', 'test4.csv', 'test5.csv']
@@ -185,7 +185,7 @@ def select_file():
     for condition in conditions:
         print(condition)
         i = 0
-        for melody_file in music:
+        for melody_file in main:
             print(melody_file)
             p = 0.2
             run(melody_file, participant, p, condition)

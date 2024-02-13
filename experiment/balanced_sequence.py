@@ -179,7 +179,7 @@ def balanced_sequence(boundaries, changable_notes, subject, melody_file, p, cond
     final = final.reset_index(drop=True)
 
     final.to_csv(
-        path + f"/experiment/Results/{subject}/{subject}_seq_{melody_file[:-4]}_{condition}.csv",
+        path + f"/Results/{subject}/{subject}_seq_{melody_file[:-4]}_{condition}.csv",
     )
     # print(final.to_string())
     print("Total visual cues:")
