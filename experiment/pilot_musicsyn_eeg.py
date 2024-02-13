@@ -4,12 +4,12 @@ from numpy.random import default_rng
 import pandas
 import slab
 from balanced_sequence import balanced_sequence
-from good_luck import good_luck
 import random
 import freefield
 from read_data import read_data
 from analysis_pilot import create_df, plot_group, plot_single
 from no_context_music import shuffle_melody, shuffle_rhythm
+import sys
 
 
 path = 'C://projects//musicsyn'
@@ -42,11 +42,12 @@ def run(melody_file, subject, p, condition):
     )  # here we name the results folder with subject name
     file_name = file.name
     file.write(melody_file, tag=0)
+    file.write(condition, tag=1)
     onsets, frequencies, durations, boundaries, changable_notes = read_melody(
         path + f"\stimuli\{melody_file}")
     print(boundaries)
     print(changable_notes)  # reading the csv file with the information about the notes
-    seq = balanced_sequence(boundaries, changable_notes, subject, melody_file, p)
+    seq = balanced_sequence(boundaries, changable_notes, subject, melody_file, p, condition)
 
     # create control conditions
     if condition == 'melody':
@@ -87,11 +88,11 @@ def run(melody_file, subject, p, condition):
                     trig_value = 2
                     print(f"direction change")
 
-                if seq["boundary"][i] and seq["sequence"][i]:  # so if there is 1 in the boundaries list
+                if seq["boundary"][i] and seq["sequence"][i]:
                     print(f"at boundary!")
                     trig_value = 3
 
-                if seq["boundary"][i] and seq["sequence"][i] == 0:  # so if there is 1 in the boundaries list
+                if seq["boundary"][i] and seq["sequence"][i] == 0:
                     trig_value = 4
 
                 file.write(frequencies[i], tag=f"{time.time() - start_time:.3f}")
@@ -107,13 +108,6 @@ def run(melody_file, subject, p, condition):
                 freefield.write(tag='trigcode', value=trig_value, processors='RX82')
 
                 freefield.play()
-                # trigger_time_zBusA = time.time()
-
-                # freefield.play(kind='zBusB', proc="RX82")
-                # trigger_time_zBusB = time.time()
-                # print("First tone triggered EEG")
-                # trigger_time_diff = trigger_time_zBusA - trigger_time_zBusB
-                # print("Trigger time diff:", trigger_time_diff)
 
                 i += 1
 
@@ -136,14 +130,14 @@ def select_file():
     random.shuffle(music)
     i = 0
 
-    user_input = input("Do you want to start the new task? (y/n): ")
-    if user_input.lower() == 'n':
-        sys.exit()
-    elif user_input.lower() == 'y':
-        print("Continuing...")
-
     for condition in conditions:
         print(condition)
+        user_input = input("Do you want to start the new task? (y/n): ")
+
+        if user_input.lower() == 'n':
+            break
+        elif user_input.lower() == 'y':
+            print("Continuing...")
 
         for melody_file in music:
             print(melody_file)

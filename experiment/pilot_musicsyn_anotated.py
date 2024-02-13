@@ -8,6 +8,7 @@ import random
 import freefield
 from read_data import read_data
 from analysis_pilot import create_df, plot_group, plot_single
+from no_context_music import shuffle_melody, shuffle_rhythm
 
 
 path = 'C://projects//musicsyn'
@@ -40,11 +41,18 @@ def run(melody_file, subject, p, condition):
     )  # here we name the results folder with subject name
     file_name = file.name
     file.write(melody_file, tag=0)
+    file.write(condition, tag=1)
     onsets, frequencies, durations, boundaries, changable_notes = read_melody(
         path + f"\stimuli\{melody_file}")
     print(boundaries)
     print(changable_notes)  # reading the csv file with the information about the notes
-    seq = balanced_sequence(boundaries, changable_notes, subject, melody_file, p)
+    seq = balanced_sequence(boundaries, changable_notes, subject, melody_file, p, condition)
+
+    # create control conditions
+    if condition == 'melody':
+        frequencies = shuffle_melody(frequencies, boundaries)
+    elif condition == 'rhythm':
+        durations, onsets = shuffle_rhythm(onsets, durations, boundaries)
 
     directions = [15, 23, 31]
     [speaker1] = freefield.pick_speakers(directions[0])
