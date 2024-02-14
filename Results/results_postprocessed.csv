@@ -1,0 +1,9 @@
+subject,condition,corr,miss,fa,hit,state,hit_rate,false_rate,z_hit_rate,z_false_rate,d_prime,precision,recall,ff1
+part,main,3,4,0,0,boundary,0.0,0.0,,,,,0.0,
+participant,main,13,23,0,0,boundary,0.0,0.0,,,,,0.0,
+participant,melody,21,21,0,0,boundary,0.0,0.0,,,,,0.0,
+participant,rhythm,15,20,0,0,boundary,0.0,0.0,,,,,0.0,
+part,main,2,0,0,0,no_boundary,,0.0,,,,,,
+participant,main,27,45,0,0,no_boundary,0.0,0.0,,,,,0.0,
+participant,melody,34,38,0,0,no_boundary,0.0,0.0,,,,,0.0,
+participant,rhythm,29,46,0,0,no_boundary,0.0,0.0,,,,,0.0,
