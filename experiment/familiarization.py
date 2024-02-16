@@ -2,9 +2,10 @@ import time
 import itertools
 from numpy.random import default_rng
 import pandas
-from good_luck import good_luck
+from experiment.good_luck import good_luck
 import random
 import freefield
+import sys
 
 path = 'C://projects//musicsyn'
 randgenerator = default_rng()
@@ -79,9 +80,15 @@ def select_file():
 
     i = 0
 
+    user_input = input("Do you want to start the new task? (y/n): ")
+    if user_input.lower() == 'n':
+        sys.exit()
+    elif user_input.lower() == 'y':
+        print("Continuing...")
+
     for melody_file in fam:
         print(melody_file)
-        play_run(melody_file, 'p11')  ########### PARTICIPANT HERE ############
+        play_run(melody_file, 'sub02')  ########### PARTICIPANT HERE ############
         print(f'That was melody {i + 1}.')
         user_input = input("Do you want to continue? (y/n): ")
         if user_input.lower() == 'n':
@@ -93,9 +100,9 @@ def select_file():
 
 
 if __name__ == "__main__":
-    proc_list = [['RX81', 'RX8', path + f'/RCX_files/rcx/piano.rcx'],
-                 ['RX82', 'RX8', path + f'/RCX_files/rcx/piano.rcx'],
-                 ['RP2', 'RP2', path + f'/RCX_files/rcx/button.rcx']]
+    proc_list = [['RX81', 'RX8', path + f'/data/rcx/piano.rcx'],
+                 ['RX82', 'RX8', path + f'/data/rcx/piano.rcx'],
+                 ['RP2', 'RP2', path + f'/data/rcx/button.rcx']]
     freefield.initialize('dome', device=proc_list)
     # freefield.set_logger('debug')
 

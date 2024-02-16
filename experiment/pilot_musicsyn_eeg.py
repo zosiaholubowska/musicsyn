@@ -120,8 +120,8 @@ def run(melody_file, subject, p, condition):
 
 
 def select_file():
-    subjects = [f for f in os.listdir(f"{path}/experiment/Results")]
-    participant = "participant"  ########### PARTICIPANT HERE ############
+    subjects = [f for f in os.listdir(f"{path}/Results")]
+    participant = "sub02_eeg"  ########### PARTICIPANT HERE ############
 
     if participant in subjects:
         print(subjects)
@@ -151,7 +151,7 @@ def select_file():
         for melody_file in music:
             print(melody_file)
             p = 0.2
-            run(melody_file, 'participant', p, condition)  ########### PARTICIPANT HERE ############
+            run(melody_file, participant, p, condition)  ########### PARTICIPANT HERE ############
             print(f'That was melody {i + 1}.')
             user_input = input("Do you want to continue? (y/n): ")
             if user_input.lower() == 'n':

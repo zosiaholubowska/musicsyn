@@ -131,13 +131,8 @@ def run(melody_file, subject, p, condition):
 
 def select_file():
     subjects = [f for f in os. listdir(f'{path}/Results')]
-    participant = 'part'
+    participant = 'sub02'
 
-    if participant in subjects:
-        print(subjects)
-        new_participant = input('OVERWRITE! - change name:')
-
-    participant = new_participant
 
     # training
     train = ['test1.csv', 'test2.csv', 'test3.csv', 'test4.csv', 'test5.csv']

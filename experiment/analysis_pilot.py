@@ -8,7 +8,7 @@ from scipy.stats import  ttest_rel
 
 def create_df():
     path = os.getcwd()
-    subjects = [f for f in os.listdir(f"{path}/Results") if f.startswith("p")]
+    subjects = [f for f in os.listdir(f"{path}/Results") if f.startswith("sub")]
     df = pandas.DataFrame()
 
     for subject in subjects:
