@@ -120,8 +120,8 @@ def run(melody_file, subject, p, condition):
 
 
 def select_file():
-    subjects = [f for f in os.listdir(f"{path}/experiment/Results")]
-    participant = "sub01"  ########### PARTICIPANT HERE ############
+    subjects = [f for f in os.listdir(f"{path}/Results")]
+    participant = "sub02_eeg"  ########### PARTICIPANT HERE ############
 
     if participant in subjects:
         print(subjects)
