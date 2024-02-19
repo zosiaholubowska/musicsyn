@@ -17,7 +17,7 @@ path = 'C://projects//musicsyn'
 randgenerator = default_rng()
 
 samplerate = 44828
-
+pandas.options.mode.chained_assignment = None
 
 def read_melody(file):
     """

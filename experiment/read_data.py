@@ -36,7 +36,7 @@ def read_data(subject, file_name):
 
     df_filtered["stimulus"] = stimulus
     df_filtered["subject"] = subject
-    df_filtered['condition'] = condition
+    df_filtered["condition"] = condition
 
     seq = pandas.read_csv(
         path + f"/Results/{subject}/{subject}_seq_{stimulus}_{condition}.csv"
@@ -99,5 +99,12 @@ def read_data(subject, file_name):
     df_dprime_grouped.reset_index(inplace=True)
 
     df_dprime_grouped.at[0, "hit_rate"] = df_dprime_grouped.at[0, "hit"] / (df_dprime_grouped.at[0, "hit"] + df_dprime_grouped.at[0, "miss"])
-    print(df_dprime_grouped.at[0, "hit_rate"])
+    df_dprime_grouped.at[0, "false_alarm_rate"] = df_dprime_grouped.at[0, "fa"] / (
+                df_dprime_grouped.at[0, "fa"] + df_dprime_grouped.at[0, "corr"])
+    hr = df_dprime_grouped.at[0, "hit_rate"]
+    far = df_dprime_grouped.at[0, "false_alarm_rate"]
+    dp = hr-far
+    print(f"Current hit rate: {hr}")
+    print(f"Current d-prime: {dp}")
+
 

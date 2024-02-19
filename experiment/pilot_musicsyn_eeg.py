@@ -11,6 +11,7 @@ from experiment.analysis_pilot import create_df, plot_group, plot_single
 from experiment.no_context_music import shuffle_melody, shuffle_rhythm
 import os
 
+pandas.options.mode.chained_assignment = None
 
 path = 'C://projects//musicsyn'
 path = os.getcwd()
@@ -137,7 +138,7 @@ def select_file():
             "stim_min_4.csv", "stim_min_5.csv", "stim_min_6.csv"
             ]
     random.shuffle(music)
-    i = 0
+
 
     for condition in conditions:
         print(condition)
@@ -148,10 +149,11 @@ def select_file():
         elif user_input.lower() == 'y':
             print("Continuing...")
 
+        i = 0
         for melody_file in music:
             print(melody_file)
             p = 0.2
-            run(melody_file, participant, p, condition)  ########### PARTICIPANT HERE ############
+            run(melody_file, participant, p, condition)
             print(f'That was melody {i + 1}.')
             user_input = input("Do you want to continue? (y/n): ")
             if user_input.lower() == 'n':

@@ -6,16 +6,16 @@ import os
 We can use the file of one of the stimuli to test the function
 """
 """
-file = ("stim_min_3_a.csv")
+file = ("stim_min_3.csv")
 os.chdir('C://projects//musicsyn/stimuli')
 
 def read_melody(file):
-    score_data = pandas.read_csv(file, sep=";")  # open the csv file with notes
+    score_data = pandas.read_csv(file, sep=",")  # open the csv file with notes
     onsets = score_data.onset_sec.to_list()  # list of onsets of consecutive notes
     frequencies = score_data.freq.to_list()  # frequencies of consecutive notes
     durations = score_data.duration.to_list()  # note durations
     boundaries = score_data.boundary.to_list()  # 0 or 1 indication if the note is the beginning of a new phrase
-    changable_notes = score_data.changable_note.to_list() #if at note is possible to change direction
+    changable_notes = score_data.changable_notes.to_list() #if at note is possible to change direction
     onsets.append(onsets[-1] + durations[-1] + 0.1)  # I add a dummy note here
     durations.append(0.1)  # I add a dummy note here
     return onsets, frequencies, durations, boundaries, changable_notes
@@ -71,7 +71,7 @@ def balanced_sequence(boundaries, changable_notes, subject, melody_file, p, cond
     changable_no_boundaries.insert(1, 'sequence', seq_noboundaries)
 
     unchangable_no_boundaries = no_boundaries.loc[no_boundaries['changable_notes'] == 0]
-    unchangable_no_boundaries['sequence'] = 0
+    unchangable_no_boundaries.loc[:, 'sequence'] = 0
 
     sequence = [unchangable_no_boundaries, changable_no_boundaries]  # we append two sequences into one df
     sequence = pandas.concat(sequence)
@@ -96,7 +96,7 @@ def balanced_sequence(boundaries, changable_notes, subject, melody_file, p, cond
 
     temp_arr = np.array(
         [0] * round((0.5 * len(yes_boundaries_change))) + [1] * round((0.5 * len(yes_boundaries_change))))
-    np.random.shuffle(temp_arr)  # we give 60% chance to location change, when there is a phrase boundary
+    np.random.shuffle(temp_arr)
     seq_boundaries_change_cues = temp_arr.tolist()
 
     if len(seq_boundaries_change_cues) > len(yes_boundaries_change):
@@ -127,7 +127,7 @@ def balanced_sequence(boundaries, changable_notes, subject, melody_file, p, cond
     p_nbound_cues = (n_changes - n_boundary_cues) / n_changable
 
     no_boundaries_unchangable = temp_seq.loc[(temp_seq['boundary'] == 0) & (temp_seq['changable_notes'] == 0)]
-    no_boundaries_unchangable['cue'] = 0
+    no_boundaries_unchangable.loc[:, 'cue'] = 0
     no_boundaries_changable = temp_seq.loc[(temp_seq['boundary'] == 0) & (temp_seq['changable_notes'] == 1)]
 
     no_boundaries_change = no_boundaries_changable.loc[no_boundaries_changable['sequence'] == 1]
@@ -181,24 +181,12 @@ def balanced_sequence(boundaries, changable_notes, subject, melody_file, p, cond
     final.to_csv(
         path + f"/Results/{subject}/{subject}_seq_{melody_file[:-4]}_{condition}.csv",
     )
-    # print(final.to_string())
-    print("Total visual cues:")
-    print(sum(final["cue"]))
-    print("Total location changes:")
-    print(sum(final["sequence"]))
-    print("Boundary with change:")
-    print(final[(final['boundary'] == 1) & (final['sequence'] == 1)].shape[0])
-    print(final[(final['boundary'] == 1) & (final['sequence'] == 1) & (final['cue'] == 1)].shape[0])
-    print("Boundary with no change:")
-    print(final[(final['boundary'] == 1) & (final['sequence'] == 0)].shape[0])
-    print(final[(final['boundary'] == 1) & (final['sequence'] == 0) & (final['cue'] == 1)].shape[0])
-    print("No boundary with change:")
-    print(final[(final['boundary'] == 0) & (final['sequence'] == 1)].shape[0])
-    print(final[(final['boundary'] == 0) & (final['sequence'] == 1) & (final['cue'] == 1)].shape[0])
-    print("No boundary with no change:")
-    print(final[(final['boundary'] == 0) & (final['changable_notes'] == 1) & (final['sequence'] == 0)].shape[0])
-    print(final[(final['boundary'] == 0) & (final['changable_notes'] == 1) & (final['sequence'] == 0) & (
-            final['cue'] == 1)].shape[0])
+    a=sum(final["cue"])
+    print(f"Total visual cues: {a}")
+    b = sum(final["sequence"])
+    print(f"Total location changes: {b}")
+
     return final
 
 # balanced_sequence(boundaries, changable_notes, "test", file, cond)
+
