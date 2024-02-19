@@ -47,8 +47,6 @@ def run(melody_file, subject, p, condition):
     file.write(condition, tag=1)
     onsets, frequencies, durations, boundaries, changable_notes = read_melody(
         path + f"\stimuli\{melody_file}")
-    print(boundaries)
-    print(changable_notes)  # reading the csv file with the information about the notes
     seq = balanced_sequence(boundaries, changable_notes, subject, melody_file, p, condition)
 
     # create control conditions
@@ -91,7 +89,7 @@ def run(melody_file, subject, p, condition):
                     print(f"direction change")
 
                 if seq["boundary"][i] and seq["sequence"][i]:
-                    print(f"at boundary!")
+                    print(f"phrase boundary")
                     trig_value = 3
 
                 if seq["boundary"][i] and seq["sequence"][i] == 0:
@@ -122,7 +120,7 @@ def run(melody_file, subject, p, condition):
 
 def select_file():
     subjects = [f for f in os.listdir(f"{path}/Results")]
-    participant = "sub02_eeg"  ########### PARTICIPANT HERE ############
+    participant = "test"  ########### PARTICIPANT HERE ############
 
     if participant in subjects:
         print(subjects)

@@ -44,8 +44,6 @@ def run(melody_file, subject, p, condition):
     file.write(condition, tag=1)
     onsets, frequencies, durations, boundaries, changable_notes = read_melody(
         path + f"\stimuli\{melody_file}")
-    print(boundaries)
-    print(changable_notes)  # reading the csv file with the information about the notes
     seq = balanced_sequence(boundaries, changable_notes, subject, melody_file, p, condition)
 
     # create control conditions
@@ -82,7 +80,7 @@ def run(melody_file, subject, p, condition):
             response = freefield.read('response', 'RP2', 0)
 
             if response > prev_response:
-                print('good')
+                print('button pressed')
                 file.write('p', tag=f'{time.time() - start_time:.3f}')
 
             prev_response = response
@@ -96,17 +94,13 @@ def run(melody_file, subject, p, condition):
                     print(f"direction change")
 
                 if seq["boundary"][i] and seq["sequence"][i]:  # so if there is 1 in the boundaries list
-                    print(f"at boundary!")
+                    print(f"phrase boundary")
 
                 if seq["cue"][i] == 1:
                     led_on = time.time()
                     freefield.write(tag='bitmask', value=speaker2.digital_channel, processors='RX81')  # illuminate LED
                     led = True
-                    print("########")
-                    print("########")
                     print("visual cue!")
-                    print("########")
-                    print("########")
 
                 file.write(frequencies[i], tag=f"{time.time() - start_time:.3f}")
                 freefield.write('f0', frequencies[i], ['RX81', 'RX82'])
@@ -131,7 +125,7 @@ def run(melody_file, subject, p, condition):
 
 def select_file():
     subjects = [f for f in os. listdir(f'{path}/Results')]
-    participant = 'sub02'
+    participant = 'test'
 
 
     # training
