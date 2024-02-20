@@ -124,8 +124,8 @@ def run(melody_file, subject, p, condition):
 
 
 def select_file():
-    subjects = [f for f in os. listdir(f'{path}/Results')]
-    participant = 'test'
+
+    participant = 'sub04'
 
 
     # training
