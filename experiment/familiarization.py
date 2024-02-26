@@ -88,7 +88,7 @@ def select_file():
 
     for melody_file in fam:
         print(melody_file)
-        play_run(melody_file, 'sub05')  ########### PARTICIPANT HERE ############
+        play_run(melody_file, 'sub06')  ########### PARTICIPANT HERE ############
         print(f'That was melody {i + 1}.')
         user_input = input("Do you want to continue? (y/n): ")
         if user_input.lower() == 'n':
