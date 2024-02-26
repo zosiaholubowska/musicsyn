@@ -38,6 +38,17 @@ def read_data(subject, file_name):
     df_filtered["subject"] = subject
     df_filtered["condition"] = condition
 
+    # Find the index of the year
+    year_index = file_name.find('202')
+
+    # Extracting date and hour
+    date = file_name[year_index: year_index+10]
+    hour = file_name[year_index+11 : -4]
+
+    # Add date and hour columns to the DataFrame
+    df_filtered['date'] = date
+    df_filtered['hour'] = hour
+
     seq = pandas.read_csv(
         path + f"/Results/{subject}/{subject}_seq_{stimulus}_{condition}.csv"
     )

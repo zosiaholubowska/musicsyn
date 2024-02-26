@@ -37,13 +37,51 @@ def create_df():
     df2 = df.iloc[:, 1:]
 
     df2["time_difference"] = df2["prec_time"] - df2["time"]
+    df2.loc[df2['stimulus'].str.startswith('test'), 'block'] = 'training'
+    df2.loc[df2['stimulus'].str.startswith('stim'), 'block'] = 'experiment'
 
-    df2.to_csv(f'{path}/Results/results_raw.csv', index=False)
+    df2.loc[df2['block'].str.startswith('train'), 'condition'] = 'train'
+
+    df2_sorted = df2.sort_values(by=['subject', 'hour'])
+
+    # Enumerating condition_number and trial_number within each group
+    df2_sorted['condition_number'] = df2_sorted.groupby(['subject', 'block', 'condition']).cumcount() + 1
+    df2_sorted['trial_number'] = df2_sorted.groupby(['subject', 'block', 'condition', 'hour']).cumcount() + 1
+    df2_sorted['condition_n'] = ''
+    df2_sorted['trial_n'] = ''
+    df2_sorted = df2_sorted.reset_index()
+
+    df_raw = pandas.DataFrame()
+
+    for subject in subjects:
+        temp_df = df2_sorted[df2_sorted["subject"] == subject]
+
+        i=0
+        for index, row in temp_df.iterrows():
+            if row['condition_number'] == 1:
+                i += 1
+                temp_df.loc[index, 'condition_n'] = i
+
+            else:
+                temp_df.loc[index, 'condition_n'] = temp_df.loc[index - 1, 'condition_n']
+        i = 0
+        for index, row in temp_df.iterrows():
+            if row['trial_number'] == 1:
+                i += 1
+                temp_df.loc[index, 'trial_n'] = i
+
+            else:
+                temp_df.loc[index, 'trial_n'] = temp_df.loc[index - 1, 'trial_n']
+
+        df_raw = pandas.concat([df_raw, temp_df])
+    df_raw = df_raw.reset_index()
+
+    df_raw.to_csv(f'{path}/Results/results_raw.csv', index=False)
 
     #### PRINT DISTRIBUTION OF SIGNAL THEORY PER CONDITION
 
-    condition_1 = df2[df2['boundary'] == 1]
-    condition_0 = df2[df2['boundary'] == 0]
+    condition_1 = df_raw[df_raw['boundary'] == 1]
+    condition_0 = df_raw[df_raw['boundary'] == 0]
 
     # Creating contingency table for condition 1
     table_condition_1 = pandas.crosstab(index=condition_1['loc_change'], columns=condition_1['visual_cue'])
@@ -60,7 +98,7 @@ def create_df():
 
     #### FILTER FOR CUED INSTANCES
 
-    vc_data = df2[df2['visual_cue'] == 1].copy()
+    vc_data = df_raw[df_raw['visual_cue'] == 1].copy()
 
 
     vc_data['signal_theory'] = ''
@@ -207,24 +245,26 @@ def plot_group(condition, block):
 
     palette = sns.color_palette(['#a4e0f5'], len(main['subject'].unique()))
 
-    def plot_and_test(ax, data, data_plot, x, y, title, a, b, c):
+    def plot_and_test(ax, data, data_plot, x, y, title, a, b, c, d, e):
         sns.lineplot(ax=ax, x=x, y=y, data=data_plot, hue='subject', palette=palette, marker='o', legend=False)
         ax.set_xticks([0, 1])
         ax.set_xticklabels(['boundary', 'no_boundary'])
         ax.set_xlim(-0.2, 1.2)
         ax.set_title(title)
         ax.set_yticks(numpy.arange(a, b, c))
+        ax.set_ylim(d, e)
 
         t_stat, p_value = ttest_rel(data.iloc[:, 0], data.iloc[:, 1], nan_policy='omit')
         ax.text(0.5, 0.9, f't(7)= {t_stat:.4f} \np = {p_value:.4f}', transform=ax.transAxes, ha='center')
 
-    def plot_avg(ax, data_plot, x, y, title, a, b, c):
+    def plot_avg(ax, data_plot, x, y, title, a, b, c, d, e):
         sns.lineplot(ax=ax, x=x, y=y, data=data_plot, color='#008EBF', marker='o', legend=False)
         ax.set_xticks([0, 1])
         ax.set_xticklabels(['at boundary', 'within unit'])
         ax.set_xlim(-0.2, 1.2)
         ax.set_title(title)
         ax.set_yticks(numpy.arange(a, b, c))
+        ax.set_ylim(d, e)
 
     # Set up subplots
     fig, axes = plt.subplots(2, 2, figsize=(12, 10))
@@ -233,22 +273,22 @@ def plot_group(condition, block):
     main['d_prime'] = pandas.to_numeric(main['d_prime'], errors='coerce')
 
     # Hit rate plot
-    plot_and_test(axes[0, 0], pairwise_hit_rate, main, 'state', 'hit_rate', 'Hit Rate', 0.5, 1.2, 0.1)
-    plot_avg(axes[0, 0], main, 'state', 'hit_rate', 'Hit Rate', 0.5, 1.2, 0.1)
+    plot_and_test(axes[0, 0], pairwise_hit_rate, main, 'state', 'hit_rate', 'Hit Rate', 0.5, 1.01, 0.1, 0.45, 1.1)
+    plot_avg(axes[0, 0], main, 'state', 'hit_rate', 'Hit Rate', 0.5, 1.01, 0.1, 0.45, 1.1)
 
     # D-prime plot
-    plot_and_test(axes[0, 1], pairwise_d_prime, main, 'state', 'd_prime', 'D-prime', -2, 3, 1)
-    plot_avg(axes[0, 1], main, 'state', 'd_prime', 'D-prime', -2, 3, 1)
+    plot_and_test(axes[0, 1], pairwise_d_prime, main, 'state', 'd_prime', 'D-prime', -2, 3, 1, -2.1, 2.5)
+    plot_avg(axes[0, 1], main, 'state', 'd_prime', 'D-prime', -2, 3, 1, -2.1, 2.5)
 
     # F-score plot
-    plot_and_test(axes[1, 0], pairwise_ff1, main, 'state', 'ff1', 'F-score', 0.5, 1.2, 0.1)
-    plot_avg(axes[1, 0], main, 'state', 'ff1', 'F-score', 0.5, 1.2, 0.1)
+    plot_and_test(axes[1, 0], pairwise_ff1, main, 'state', 'ff1', 'F-score', 0.5, 1.01, 0.1, 0.45, 1.1)
+    plot_avg(axes[1, 0], main, 'state', 'ff1', 'F-score', 0.5, 1.01, 0.1, 0.45, 1.1)
 
     # Time difference plot
 
     plot_and_test(axes[1, 1], pairwise_time_difference, mean_time_diff, 'state', 'time_difference',
-                  'Time difference', 0.4, 1, 0.1)
-    plot_avg(axes[1, 1], mean_time_diff, 'state', 'time_difference', 'Time difference', 0.4, 1, 0.1)
+                  'Time difference', 0.4, 1, 0.1, 0.4, 1)
+    plot_avg(axes[1, 1], mean_time_diff, 'state', 'time_difference', 'Time difference', 0.4, 1, 0.1, 0.4, 1)
 
     plt.tight_layout(rect=[0, 0.03, 1, 0.95])
     plt.savefig(f'{path}/plots/{condition}_{block}_results.png', dpi=300)
@@ -459,13 +499,14 @@ def plot_single(subject, condition, block):
 
     palette = sns.color_palette(['#a4e0f5'], len(main['subject'].unique()))
 
-    def plot_sub(ax, data_plot, x, y, title, a, b, c):
+    def plot_sub(ax, data_plot, x, y, title, a, b, c, d, e):
         sns.lineplot(ax=ax, x=x, y=y, data=data_plot, hue='condition', palette='tab10', marker='o')
         ax.set_xticks([0, 1])
         ax.set_xticklabels(['boundary', 'no_boundary'])
         ax.set_xlim(-0.2, 1.2)
         ax.set_title(title)
         ax.set_yticks(numpy.arange(a, b, c))
+        ax.set_ylim(d, e)
 
     # Set up subplots
     fig, axes = plt.subplots(2, 2, figsize=(12, 10))
@@ -474,16 +515,16 @@ def plot_single(subject, condition, block):
     main['d_prime'] = pandas.to_numeric(main['d_prime'], errors='coerce')
 
     # Hit rate plot
-    plot_sub(axes[0, 0], sub_main, 'state', 'hit_rate', 'Hit Rate', 0.5, 1.2, 0.1)
+    plot_sub(axes[0, 0], sub_main, 'state', 'hit_rate', 'Hit Rate', 0.5, 1.01, 0.1, 0.45, 1.1)
 
     # D-prime plot
-    plot_sub(axes[0, 1], sub_main, 'state', 'd_prime', 'D-prime', -2, 3, 1)
+    plot_sub(axes[0, 1], sub_main, 'state', 'd_prime', 'D-prime', -2, 3, 1, -2.1, 2.5)
 
     # F-score plot
-    plot_sub(axes[1, 0], sub_main, 'state', 'ff1', 'F-score', 0.5, 1.2, 0.1)
+    plot_sub(axes[1, 0], sub_main, 'state', 'ff1', 'F-score', 0.5, 1.01, 0.1, 0.45, 1.1)
 
     # Time difference plot
-    plot_sub(axes[1, 1], sub_time, 'state', 'time_difference', 'Time difference', 0.4, 1, 0.1)
+    plot_sub(axes[1, 1], sub_time, 'state', 'time_difference', 'Time difference', 0.4, 1, 0.1, 0.4, 1)
 
     plt.tight_layout(rect=[0, 0.03, 1, 0.95])
     plt.savefig(f'{path}/plots/{subject}_main_results.png', dpi=300)
@@ -499,13 +540,14 @@ def plot_single(subject, condition, block):
 
     palette = sns.color_palette(['#a4e0f5'], len(main['subject'].unique()))
 
-    def plot_sub(ax, data_plot, x, y, title, a, b, c):
+    def plot_sub(ax, data_plot, x, y, title, a, b, c, d, e):
         sns.lineplot(ax=ax, x=x, y=y, data=data_plot, marker='o')
         ax.set_xticks([0, 1])
         ax.set_xticklabels(['boundary', 'no_boundary'])
         ax.set_xlim(-0.2, 1.2)
         ax.set_title(title)
         ax.set_yticks(numpy.arange(a, b, c))
+        ax.set_ylim(d, e)
 
     # Set up subplots
     fig, axes = plt.subplots(2, 2, figsize=(12, 10))
@@ -514,17 +556,20 @@ def plot_single(subject, condition, block):
     main['d_prime'] = pandas.to_numeric(main['d_prime'], errors='coerce')
 
     # Hit rate plot
-    plot_sub(axes[0, 0], sub_main, 'state', 'hit_rate', 'Hit Rate', 0.5, 1.2, 0.1)
+    plot_sub(axes[0, 0], sub_main, 'state', 'hit_rate', 'Hit Rate', 0.5, 1.01, 0.1, 0.45, 1.1)
 
     # D-prime plot
-    plot_sub(axes[0, 1], sub_main, 'state', 'd_prime', 'D-prime', -2, 3, 1)
+    plot_sub(axes[0, 1], sub_main, 'state', 'd_prime', 'D-prime', -2, 3, 1, -2.1, 2.5)
 
     # F-score plot
-    plot_sub(axes[1, 0], sub_main, 'state', 'ff1', 'F-score', 0.5, 1.2, 0.1)
+    plot_sub(axes[1, 0], sub_main, 'state', 'ff1', 'F-score', 0.5, 1.01, 0.1, 0.45, 1.1)
 
     # Time difference plot
-    plot_sub(axes[1, 1], sub_time, 'state', 'time_difference', 'Time difference', 0.4, 1, 0.1)
+    plot_sub(axes[1, 1], sub_time, 'state', 'time_difference', 'Time difference', 0.4, 1, 0.1, 0.4, 1)
 
     plt.tight_layout(rect=[0, 0.03, 1, 0.95])
     plt.savefig(f'{path}/plots/{subject}_main_results.png', dpi=300)
     plt.show()
+
+
+
