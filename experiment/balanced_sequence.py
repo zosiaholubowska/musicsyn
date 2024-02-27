@@ -95,7 +95,7 @@ def balanced_sequence(boundaries, changable_notes, subject, melody_file, p, cond
     yes_boundaries_change = temp_seq.loc[(temp_seq['sequence'] == 1) & (temp_seq['boundary'] == 1)]
 
     temp_arr = np.array(
-        [0] * round((0.70 * len(yes_boundaries_change))) + [1] * round((0.30 * len(yes_boundaries_change))))
+        [0] * round((0.30 * len(yes_boundaries_change))) + [1] * round((0.70 * len(yes_boundaries_change))))
     np.random.shuffle(temp_arr)
     seq_boundaries_change_cues = temp_arr.tolist()
 

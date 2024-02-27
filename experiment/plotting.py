@@ -137,8 +137,6 @@ for subject in subjects:
 
     vc_cum = pandas.concat([vc_cum, temp_df])
 
-vc_cum_unstack = vc_cum.unstack().reset_index()
-
 for idx in vc_cum.index:
     vc_cum.at[idx, "hit_rate"] = vc_cum.at[idx, "hit"] / (vc_cum.at[idx, "hit"] + vc_cum.at[idx, "miss"])
     vc_cum.at[idx, "false_alarm_rate"] = vc_cum.at[idx, "fa"] / (vc_cum.at[idx, "fa"] + vc_cum.at[idx, "corr"])
@@ -146,5 +144,5 @@ for idx in vc_cum.index:
     far = vc_cum.at[idx, "false_alarm_rate"]
     dp = hr - far
 
-sns.set_theme(style="whitegrid")
-sns.lineplot(data=vc_cum, palette="tab10", linewidth=2.5)
+vc_cum_melt = pandas.melt(vc_cum, id_vars=["subject", 'condition', 'condition_n', 'trial_n'], value_vars=["hit_rate"])
+sns.lineplot(data=vc_cum_melt, x="trial_n", y="value")

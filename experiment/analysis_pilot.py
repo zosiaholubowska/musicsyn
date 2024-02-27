@@ -236,10 +236,8 @@ def plot_group(condition, block):
     pairwise_d_prime = main.pivot(index='subject', columns='state', values='d_prime')
     pairwise_ff1 = main.pivot(index='subject', columns='state', values='ff1')
     pairwise_hit_rate = main.pivot(index='subject', columns='state', values='hit_rate')
-    vc_data_filtered = vc_data[vc_data['answer'] == 1]
-    vc_data_filtered['state'] = numpy.where(vc_data_filtered['boundary'] == 0, 'no_boundary', 'boundary')
-    mean_time_diff = vc_data_filtered.groupby(['subject', 'state'])['time_difference'].mean().reset_index()
-    pairwise_time_difference = mean_time_diff.pivot(index='subject', columns='state', values='time_difference')
+    pairwise_false_rate = main.pivot(index='subject', columns='state', values='false_rate')
+
 
     # -#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-
 
@@ -276,19 +274,17 @@ def plot_group(condition, block):
     plot_and_test(axes[0, 0], pairwise_hit_rate, main, 'state', 'hit_rate', 'Hit Rate', 0.5, 1.01, 0.1, 0.45, 1.1)
     plot_avg(axes[0, 0], main, 'state', 'hit_rate', 'Hit Rate', 0.5, 1.01, 0.1, 0.45, 1.1)
 
+    # False alarm rate plot
+    plot_and_test(axes[0, 1], pairwise_false_rate, main, 'state', 'false_rate', 'False Alarm Rate', 0.2, 1.01, 0.1, 0.15, 1.1)
+    plot_avg(axes[0, 1], main, 'state', 'hit_rate', 'False Alarm Rate', 0.2, 1.01, 0.1, 0.15, 1.1)
+
     # D-prime plot
-    plot_and_test(axes[0, 1], pairwise_d_prime, main, 'state', 'd_prime', 'D-prime', -2, 3, 1, -2.1, 2.5)
-    plot_avg(axes[0, 1], main, 'state', 'd_prime', 'D-prime', -2, 3, 1, -2.1, 2.5)
+    plot_and_test(axes[1, 1], pairwise_d_prime, main, 'state', 'd_prime', 'D-prime', -4, 3, 1, -4.1, 2.5)
+    plot_avg(axes[1, 1], main, 'state', 'd_prime', 'D-prime', -4, 3, 1, -4.1, 2.5)
 
     # F-score plot
     plot_and_test(axes[1, 0], pairwise_ff1, main, 'state', 'ff1', 'F-score', 0.5, 1.01, 0.1, 0.45, 1.1)
     plot_avg(axes[1, 0], main, 'state', 'ff1', 'F-score', 0.5, 1.01, 0.1, 0.45, 1.1)
-
-    # Time difference plot
-
-    plot_and_test(axes[1, 1], pairwise_time_difference, mean_time_diff, 'state', 'time_difference',
-                  'Time difference', 0.4, 1, 0.1, 0.4, 1)
-    plot_avg(axes[1, 1], mean_time_diff, 'state', 'time_difference', 'Time difference', 0.4, 1, 0.1, 0.4, 1)
 
     plt.tight_layout(rect=[0, 0.03, 1, 0.95])
     plt.savefig(f'{path}/plots/{condition}_{block}_results.png', dpi=300)
@@ -489,11 +485,7 @@ def plot_single(subject, condition, block):
     #### PARAMETERS
     sub_main = df[(df['subject'] == subject)]
     sub_main = sub_main[(sub_main['block'] == block)]
-    vc_data_filtered = vc_df[vc_df['answer'] == 1]
-    vc_data_filtered = vc_data_filtered[(vc_data_filtered['block'] == block)]
-    vc_data_filtered['state'] = numpy.where(vc_data_filtered['boundary'] == 0, 'no_boundary', 'boundary')
-    mean_time_diff = vc_data_filtered.groupby(['subject', 'state', 'condition'])['time_difference'].mean().reset_index()
-    sub_time = mean_time_diff[(mean_time_diff['subject'] == subject)]
+
 
     #-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-
 
@@ -517,24 +509,21 @@ def plot_single(subject, condition, block):
     # Hit rate plot
     plot_sub(axes[0, 0], sub_main, 'state', 'hit_rate', 'Hit Rate', 0.5, 1.01, 0.1, 0.45, 1.1)
 
+    # False alarm rate plot
+    plot_sub(axes[0, 1], sub_main, 'state', 'false_rate', 'False Alarm Rate', 0.2, 1.01, 0.1, 0.15, 1.1)
+
     # D-prime plot
-    plot_sub(axes[0, 1], sub_main, 'state', 'd_prime', 'D-prime', -2, 3, 1, -2.1, 2.5)
+    plot_sub(axes[1, 1], sub_main, 'state', 'd_prime', 'D-prime', -4, 3, 1, -4.1, 2.5)
 
     # F-score plot
     plot_sub(axes[1, 0], sub_main, 'state', 'ff1', 'F-score', 0.5, 1.01, 0.1, 0.45, 1.1)
-
-    # Time difference plot
-    plot_sub(axes[1, 1], sub_time, 'state', 'time_difference', 'Time difference', 0.4, 1, 0.1, 0.4, 1)
 
     plt.tight_layout(rect=[0, 0.03, 1, 0.95])
     plt.savefig(f'{path}/plots/{subject}_main_results.png', dpi=300)
     plt.show()
 
     sub_main = main[(main['subject'] == subject)]
-    vc_data_filtered = vc_data[vc_data['answer'] == 1]
-    vc_data_filtered['state'] = numpy.where(vc_data_filtered['boundary'] == 0, 'no_boundary', 'boundary')
-    mean_time_diff = vc_data_filtered.groupby(['subject', 'state', 'condition'])['time_difference'].mean().reset_index()
-    sub_time = mean_time_diff[(mean_time_diff['subject'] == subject)]
+
 
     # -#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-
 
@@ -558,14 +547,14 @@ def plot_single(subject, condition, block):
     # Hit rate plot
     plot_sub(axes[0, 0], sub_main, 'state', 'hit_rate', 'Hit Rate', 0.5, 1.01, 0.1, 0.45, 1.1)
 
+    # False alarm rate plot
+    plot_sub(axes[0, 1], sub_main, 'state', 'false_rate', 'False Alarm Rate', 0.2, 1.01, 0.1, 0.15, 1.1)
+
     # D-prime plot
-    plot_sub(axes[0, 1], sub_main, 'state', 'd_prime', 'D-prime', -2, 3, 1, -2.1, 2.5)
+    plot_sub(axes[1, 1], sub_main, 'state', 'd_prime', 'D-prime', -4, 3, 1, -4.1, 2.5)
 
     # F-score plot
     plot_sub(axes[1, 0], sub_main, 'state', 'ff1', 'F-score', 0.5, 1.01, 0.1, 0.45, 1.1)
-
-    # Time difference plot
-    plot_sub(axes[1, 1], sub_time, 'state', 'time_difference', 'Time difference', 0.4, 1, 0.1, 0.4, 1)
 
     plt.tight_layout(rect=[0, 0.03, 1, 0.95])
     plt.savefig(f'{path}/plots/{subject}_main_results.png', dpi=300)
