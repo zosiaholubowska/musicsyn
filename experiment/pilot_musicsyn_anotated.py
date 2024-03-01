@@ -125,7 +125,7 @@ def run(melody_file, subject, p, condition):
 
 def select_file():
 
-    participant = 'sub06'
+    participant = 'sub07'
 
 
     # training
@@ -140,19 +140,19 @@ def select_file():
     elif user_input.lower() == 'y':
         print("Continuing...")
 
-    for t in train:
-        print(t)
-        p = 0.35
-        condition = 'main'
-        run(t, participant, p, condition)
-        print(f'That was melody {i + 1}.')
-        user_input = input("Do you want to continue? (y/n): ")
-        if user_input.lower() == 'n':
-            break
-        elif user_input.lower() == 'y':
-            print("Continuing...")
-
-            i += 1
+    # for t in train:
+    #     print(t)
+    #     p = 0.35
+    #     condition = 'main'
+    #     run(t, participant, p, condition)
+    #     print(f'That was melody {i + 1}.')
+    #     user_input = input("Do you want to continue? (y/n): ")
+    #     if user_input.lower() == 'n':
+    #         break
+    #     elif user_input.lower() == 'y':
+    #         print("Continuing...")
+    #
+    #         i += 1
 
     # main task
     main = ["stim_maj_1.csv", "stim_maj_2.csv", "stim_maj_3.csv",
