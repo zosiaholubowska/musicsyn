@@ -125,7 +125,7 @@ def run(melody_file, subject, p, condition):
 
 def select_file():
 
-    participant = 'sub09'
+    participant = 'sub10'
 
 
     # training
