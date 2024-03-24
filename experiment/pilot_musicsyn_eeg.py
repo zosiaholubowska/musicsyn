@@ -120,7 +120,7 @@ def run(melody_file, subject, p, condition):
 
 def select_file():
     subjects = [f for f in os.listdir(f"{path}/Results")]
-    participant = "sub14_eeg"  ########### PARTICIPANT HERE ############
+    participant = "sub18_eeg"  ########### PARTICIPANT HERE ############
 
     if participant in subjects:
         print(subjects)
@@ -170,7 +170,7 @@ if __name__ == "__main__":
                  ['RX82', 'RX8', path + f'/data/rcx/piano_eeg.rcx'],
                  ['RP2', 'RP2', path + f'/data/rcx/button.rcx']]
     freefield.initialize('dome', device=proc_list)
-    # freefield.set_logger('debug')
+    freefield.set_logger('warning')
 
     select_file()
 

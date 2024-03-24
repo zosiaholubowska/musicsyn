@@ -88,7 +88,7 @@ def select_file():
 
     for melody_file in fam:
         print(melody_file)
-        play_run(melody_file, 'sub17')  ########### PARTICIPANT HERE ############
+        play_run(melody_file, 'sub18')  ########### PARTICIPANT HERE ############
         print(f'That was melody {i + 1}.')
         user_input = input("Do you want to continue? (y/n): ")
         if user_input.lower() == 'n':
@@ -104,7 +104,7 @@ if __name__ == "__main__":
                  ['RX82', 'RX8', path + f'/data/rcx/piano.rcx'],
                  ['RP2', 'RP2', path + f'/data/rcx/button.rcx']]
     freefield.initialize('dome', device=proc_list)
-    # freefield.set_logger('debug')
+    freefield.set_logger('warning')
 
     select_file()
 
