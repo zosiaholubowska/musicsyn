@@ -5,12 +5,13 @@ import matplotlib.pyplot as plt
 import seaborn as sns
 from scipy.stats import  ttest_rel
 
-
 def create_df():
     path = os.getcwd()
     subjects = [f for f in os.listdir(f"{path}/Results") if f.startswith("sub")]
     subjects_eeg = [i for i in subjects if "eeg" in i ]
     subjects = list(set(subjects) - set(subjects_eeg))
+    old = ['sub01', 'sub02', 'sub03', 'sub04', 'sub05']
+    subjects = list(set(subjects) - set(old))
     df = pandas.DataFrame()
 
     for subject in subjects:
@@ -50,6 +51,7 @@ def create_df():
     df2_sorted['condition_n'] = ''
     df2_sorted['trial_n'] = ''
     df2_sorted = df2_sorted.reset_index()
+    df2_sorted = df2_sorted.iloc[:, 1:]
 
     df_raw = pandas.DataFrame()
 
@@ -75,7 +77,9 @@ def create_df():
 
         df_raw = pandas.concat([df_raw, temp_df])
     df_raw = df_raw.reset_index()
-
+    df_raw = df_raw.iloc[:, 1:]
+    #worst_melodies = ['stim_min_4', 'stim_min_5', 'stim_min_6', 'stim_maj_4', 'stim_maj_5', 'stim_maj_6']
+    #df_raw = df_raw[df_raw["stimulus"] == 'stim_maj_2']
     df_raw.to_csv(f'{path}/Results/results_raw.csv', index=False)
 
     #### PRINT DISTRIBUTION OF SIGNAL THEORY PER CONDITION
@@ -187,49 +191,12 @@ def create_df():
 def plot_group(condition, block):
 
     path = os.getcwd()
-    main = pandas.read_csv(path + f"/Results/results_postprocessed.csv")
-    main = main[main['condition'].str.match(f'{condition}')]
-    main = main[main['block'].str.match(f'{block}')]
+    df = pandas.read_csv(path + f"/Results/results_postprocessed.csv")
+    df = df[df['block'].str.match(f'{block}')]
+    main = df[df['condition'].str.match(f'{condition}')]
     vc_data = pandas.read_csv(path + f"/Results/results.csv")
     vc_data = vc_data[vc_data['condition'].str.match(f'{condition}')]
     vc_data = vc_data[vc_data['block'].str.match(f'{block}')]
-
-    #### ALL VALUES #####
-
-    categories = ['hit', 'miss', 'corr', 'fa']
-    bar_width = 0.5
-
-    fig, ax = plt.subplots(figsize=(10, 8))
-
-    counts = vc_data['signal_theory'].value_counts()
-    total = len(vc_data)
-
-    percentages = counts / total * 100
-
-    bar_positions = numpy.arange(len(categories)) + bar_width / 2  # Adjusted to center bars with ticks
-
-    colors = {'all_data': '#008EBF'}
-
-    for category_index, category in enumerate(categories):
-        counts_1 = counts[category] if category in counts else 0
-        percentages_1 = percentages[category] if category in percentages else 0
-
-        # Plot raw values
-        ax.bar(bar_positions[category_index], counts_1, width=bar_width, label=f'{percentages_1:.2f}%',
-               color=colors['all_data'])
-
-        # Add labels above each bar with the exact values and percentages
-        ax.text(bar_positions[category_index], counts_1, f'{percentages_1:.2f}%', ha='center', va='bottom')
-
-    # Rename labels
-    labels = {'hit': 'Hit', 'fa': 'False Alarm', 'corr': 'Correct Rejection', 'miss': 'Miss'}
-
-    ax.set_ylabel('Raw Values')
-    ax.set_xticks(bar_positions)
-    ax.set_xticklabels([labels[category] for category in categories])
-    ax.set_title('Types of answers in the group')
-    plt.savefig(f'{path}/plots/{condition}_signal_theory.png', dpi=300)
-    plt.show()
 
 
     #### RESHAPE THE DF FOR THE PAIR-WISE COMPARISON
@@ -239,7 +206,7 @@ def plot_group(condition, block):
     pairwise_false_rate = main.pivot(index='subject', columns='state', values='false_rate')
 
 
-    # -#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-
+    #-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#
 
     palette = sns.color_palette(['#a4e0f5'], len(main['subject'].unique()))
 
@@ -275,8 +242,8 @@ def plot_group(condition, block):
     plot_avg(axes[0, 0], main, 'state', 'hit_rate', 'Hit Rate', 0.5, 1.01, 0.1, 0.45, 1.1)
 
     # False alarm rate plot
-    plot_and_test(axes[0, 1], pairwise_false_rate, main, 'state', 'false_rate', 'False Alarm Rate', 0.2, 1.01, 0.1, 0.15, 1.1)
-    plot_avg(axes[0, 1], main, 'state', 'hit_rate', 'False Alarm Rate', 0.2, 1.01, 0.1, 0.15, 1.1)
+    plot_and_test(axes[0, 1], pairwise_false_rate, main, 'state', 'false_rate', 'False Alarm Rate', 0.1, 1.01, 0.1, 0.01, 1.1)
+    plot_avg(axes[0, 1], main, 'state', 'false_rate', 'False Alarm Rate', 0.1, 1.01, 0.1, 0.01, 1.1)
 
     # D-prime plot
     plot_and_test(axes[1, 1], pairwise_d_prime, main, 'state', 'd_prime', 'D-prime', -4, 3, 1, -4.1, 2.5)
@@ -290,81 +257,36 @@ def plot_group(condition, block):
     plt.savefig(f'{path}/plots/{condition}_{block}_results.png', dpi=300)
     plt.show()
 
-    #### PLOT - SIGNAL THEORY DISTRIBUTION
+    def plot_conditions(ax, data_plot, x, y, title, a, b, c, d, e):
+        sns.lineplot(ax=ax, x=x, y=y, data=data_plot, hue='condition', palette='tab10', marker='o')
+        ax.set_xticks([0, 1])
+        ax.set_xticklabels(['boundary', 'no_boundary'])
+        ax.set_xlim(-0.2, 1.2)
+        ax.set_title(title)
+        ax.set_yticks(numpy.arange(a, b, c))
+        ax.set_ylim(d, e)
 
-    counts_boundary = vc_data[vc_data['boundary'] == 1]['signal_theory'].value_counts()
-    print(counts_boundary)
+    # Set up subplots
+    fig, axes = plt.subplots(2, 2, figsize=(12, 10))
+    fig.suptitle(f'preliminary results')
+    main['ff1'] = pandas.to_numeric(main['ff1'], errors='coerce')
+    main['d_prime'] = pandas.to_numeric(main['d_prime'], errors='coerce')
 
-    counts_noboundary = vc_data[vc_data['boundary'] == 0]['signal_theory'].value_counts()
-    print(counts_noboundary)
+    # Hit rate plot
+    plot_conditions(axes[0, 0], df, 'state', 'hit_rate', 'Hit Rate', 0.5, 1.01, 0.1, 0.45, 1.1)
 
-    # Calculate percentages
-    total_boundary = len(vc_data[vc_data['boundary'] == 1])
-    total_noboundary = len(vc_data[vc_data['boundary'] == 0])
+    # False alarm rate plot
+    plot_conditions(axes[0, 1], df, 'state', 'false_rate', 'False Alarm Rate', 0.2, 1.01, 0.1, 0.15, 1.1)
 
-    percentages_boundary = counts_boundary / total_boundary * 100
-    percentages_noboundary = counts_noboundary / total_noboundary * 100
+    # D-prime plot
+    plot_conditions(axes[1, 1], df, 'state', 'd_prime', 'D-prime', -4, 3, 1, -4.1, 2.5)
 
-    categories = ['hit', 'miss', 'corr', 'fa']
-    bar_width = 0.35
+    # F-score plot
+    plot_conditions(axes[1, 0], df, 'state', 'ff1', 'F-score', 0.5, 1.01, 0.1, 0.45, 1.1)
 
-    fig, (ax1, ax2) = plt.subplots(2, 1, figsize=(10, 12), sharex=False)
-
-    bar_positions_boundary = numpy.arange(len(categories))
-    bar_positions_noboundary = bar_positions_boundary + bar_width
-
-    # Updated color names
-    colors = {'boundary': 'skyblue', 'noboundary': 'cornflowerblue'}
-
-    for category_index, category in enumerate(categories):
-        counts_boundary_1 = counts_boundary[category] if category in counts_boundary else 0
-        counts_noboundary_1 = counts_noboundary[category] if category in counts_noboundary else 0
-
-        # Plot raw values on the upper subplot
-        ax1.bar(bar_positions_boundary[category_index], counts_boundary_1, width=bar_width,
-                label=f'{category} - Boundary',
-                color=colors['boundary'])
-        ax1.bar(bar_positions_noboundary[category_index], counts_noboundary_1, width=bar_width,
-                label=f'{category} - No Boundary', color=colors['noboundary'])
-
-        percentages_boundary_1 = percentages_boundary[category] if category in percentages_boundary else 0
-        percentages_noboundary_1 = percentages_noboundary[category] if category in percentages_noboundary else 0
-
-        # Plot percentage values on the lower subplot
-        ax2.bar(bar_positions_boundary[category_index], percentages_boundary_1, width=bar_width,
-                label=f'{category} - Boundary', color=colors['boundary'])
-        ax2.bar(bar_positions_noboundary[category_index], percentages_noboundary_1, width=bar_width,
-                label=f'{category} - No Boundary', color=colors['noboundary'])
-
-        # Add labels above each bar with the exact values
-        ax1.text(bar_positions_boundary[category_index], counts_boundary_1, f'{counts_boundary_1}', ha='center',
-                 va='bottom')
-        ax1.text(bar_positions_noboundary[category_index], counts_noboundary_1, f'{counts_noboundary_1}', ha='center',
-                 va='bottom')
-
-        ax2.text(bar_positions_boundary[category_index], percentages_boundary_1, f'{percentages_boundary_1:.2f}%',
-                 ha='center', va='bottom')
-        ax2.text(bar_positions_noboundary[category_index], percentages_noboundary_1, f'{percentages_noboundary_1:.2f}%',
-                 ha='center', va='bottom')
-
-    # Rename labels
-    labels = {'hit': 'Hit Rate', 'fa': 'False Alarm', 'corr': 'Correct Rejection', 'miss': 'Miss'}
-
-    ax1.legend(labels=['Boundary', 'No Boundary'])
-    ax1.set_ylabel('Raw Values')
-
-    ax2.legend(labels=['Boundary', 'No Boundary'])
-    ax2.set_ylabel('Percentage')
-
-    ax2.set_xticks(bar_positions_boundary + bar_width / 2)
-    ax2.set_xticklabels([labels[category] for category in categories])
-
-    ax1.set_xticks(bar_positions_boundary + bar_width / 2)
-    ax1.set_xticklabels([labels[category] for category in categories])
-    plt.savefig(f'{path}/plots/{condition}_signal_theory_by_condition.png', dpi=300)
+    plt.tight_layout(rect=[0, 0.03, 1, 0.95])
+    plt.savefig(f'{path}/plots/condition_comparison.png', dpi=300)
     plt.show()
-
-
 
 ######## SINGLE PARTICIPANT
 def plot_single(subject, condition, block):
@@ -375,112 +297,6 @@ def plot_single(subject, condition, block):
     vc_df = pandas.read_csv(path + f"/Results/results.csv")
     vc_data = vc_df[vc_df['condition'].str.match(f'{condition}')]
     vc_data = vc_data[vc_data['block'].str.match(f'{block}')]
-    categories = ['hit', 'miss', 'corr', 'fa']
-    bar_width = 0.5
-
-    fig, ax = plt.subplots(figsize=(10, 8))
-    sub = vc_data[(vc_data['subject'] == subject)]
-    counts = sub['signal_theory'].value_counts()
-    total = len(sub)
-
-    percentages = counts / total * 100
-
-    bar_positions = numpy.arange(len(categories)) + bar_width / 2  # Adjusted to center bars with ticks
-
-    colors = {'all_data': 'royalblue'}
-
-    for category_index, category in enumerate(categories):
-        counts_1 = counts[category] if category in counts else 0
-        percentages_1 = percentages[category] if category in percentages else 0
-
-        # Plot raw values
-        ax.bar(bar_positions[category_index], counts_1, width=bar_width, label=f'{percentages_1:.2f}%', color=colors['all_data'])
-
-        # Add labels above each bar with the exact values and percentages
-        ax.text(bar_positions[category_index], counts_1, f'{percentages_1:.2f}%', ha='center', va='bottom')
-
-    # Rename labels
-    labels = {'hit': 'Hit Rate', 'fa': 'False Alarm', 'corr': 'Correct Rejection', 'miss': 'Miss'}
-
-    ax.set_ylabel('Raw Values')
-    ax.set_xticks(bar_positions)
-    ax.set_xticklabels([labels[category] for category in categories])
-    plt.savefig(f'{path}/plots/{subject}_signal_theory.png', dpi=300)
-    plt.show()
-
-    #### CONDITION DIVISION
-
-
-    counts_boundary = sub[sub['boundary'] == 1]['signal_theory'].value_counts()
-    print(counts_boundary)
-
-    counts_noboundary = sub[sub['boundary'] == 0]['signal_theory'].value_counts()
-    print(counts_noboundary)
-
-    # Calculate percentages
-    total_boundary = len(sub[sub['boundary'] == 1])
-    total_noboundary = len(sub[sub['boundary'] == 0])
-
-    percentages_boundary = counts_boundary / total_boundary * 100
-    percentages_noboundary = counts_noboundary / total_noboundary * 100
-
-    categories = ['hit', 'miss', 'corr', 'fa']
-    bar_width = 0.35
-
-    fig, (ax1, ax2) = plt.subplots(2, 1, figsize=(10, 12), sharex=False)
-
-    bar_positions_boundary = numpy.arange(len(categories))
-    bar_positions_noboundary = bar_positions_boundary + bar_width
-
-    # Updated color names
-    colors = {'boundary': 'skyblue', 'noboundary': 'cornflowerblue'}
-
-    for category_index, category in enumerate(categories):
-        counts_boundary_1 = counts_boundary[category] if category in counts_boundary else 0
-        counts_noboundary_1 = counts_noboundary[category] if category in counts_noboundary else 0
-
-        # Plot raw values on the upper subplot
-        ax1.bar(bar_positions_boundary[category_index], counts_boundary_1, width=bar_width, label=f'{category} - Boundary',
-                color=colors['boundary'])
-        ax1.bar(bar_positions_noboundary[category_index], counts_noboundary_1, width=bar_width,
-                label=f'{category} - No Boundary', color=colors['noboundary'])
-
-        percentages_boundary_1 = percentages_boundary[category] if category in percentages_boundary else 0
-        percentages_noboundary_1 = percentages_noboundary[category] if category in percentages_noboundary else 0
-
-        # Plot percentage values on the lower subplot
-        ax2.bar(bar_positions_boundary[category_index], percentages_boundary_1, width=bar_width,
-                label=f'{category} - Boundary', color=colors['boundary'])
-        ax2.bar(bar_positions_noboundary[category_index], percentages_noboundary_1, width=bar_width,
-                label=f'{category} - No Boundary', color=colors['noboundary'])
-
-        # Add labels above each bar with the exact values
-        ax1.text(bar_positions_boundary[category_index], counts_boundary_1, f'{counts_boundary_1}', ha='center',
-                 va='bottom')
-        ax1.text(bar_positions_noboundary[category_index], counts_noboundary_1, f'{counts_noboundary_1}', ha='center',
-                 va='bottom')
-
-        ax2.text(bar_positions_boundary[category_index], percentages_boundary_1, f'{percentages_boundary_1:.2f}%',
-                 ha='center', va='bottom')
-        ax2.text(bar_positions_noboundary[category_index], percentages_noboundary_1, f'{percentages_noboundary_1:.2f}%',
-                 ha='center', va='bottom')
-
-    # Rename labels
-    labels = {'hit': 'Hit Rate', 'fa': 'False Alarm', 'corr': 'Correct Rejection', 'miss': 'Miss'}
-
-    ax1.legend(labels=['Boundary', 'No Boundary'])
-    ax1.set_ylabel('Raw Values')
-
-    ax2.legend(labels=['Boundary', 'No Boundary'])
-    ax2.set_ylabel('Percentage')
-
-    ax2.set_xticks(bar_positions_boundary + bar_width / 2)
-    ax2.set_xticklabels([labels[category] for category in categories])
-
-    ax1.set_xticks(bar_positions_boundary + bar_width / 2)
-    ax1.set_xticklabels([labels[category] for category in categories])
-    plt.savefig(f'{path}/plots/{subject}_signal_theory_by_condition.png', dpi=300)
-    plt.show()
 
     #### PARAMETERS
     sub_main = df[(df['subject'] == subject)]
@@ -559,6 +375,3 @@ def plot_single(subject, condition, block):
     plt.tight_layout(rect=[0, 0.03, 1, 0.95])
     plt.savefig(f'{path}/plots/{subject}_main_results.png', dpi=300)
     plt.show()
-
-
-

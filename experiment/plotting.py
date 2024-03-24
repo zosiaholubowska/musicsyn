@@ -146,3 +146,6 @@ for idx in vc_cum.index:
 
 vc_cum_melt = pandas.melt(vc_cum, id_vars=["subject", 'condition', 'condition_n', 'trial_n'], value_vars=["hit_rate"])
 sns.lineplot(data=vc_cum_melt, x="trial_n", y="value")
+
+gg.to_csv(f'{path}/Results/gg.csv')
+avg_d_prime.to_csv(f'{path}/Results/avg_d_prime.csv')
