@@ -125,7 +125,7 @@ def run(melody_file, subject, p, condition):
 
 def select_file():
 
-    participant = 'sub17'
+    participant = 'sub19'
 
 
     # training
@@ -196,7 +196,7 @@ if __name__ == "__main__":
                  ['RP2', 'RP2', path + f'/data/rcx/button.rcx']]
 
     freefield.initialize('dome', device=proc_list)
-    # freefield.set_logger('debug')
+    freefield.set_logger('warning')
 
     select_file()
 
