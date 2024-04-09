@@ -52,7 +52,7 @@ def run(melody_file, subject, p, condition):
     elif condition == 'rhythm':
         durations, onsets = shuffle_rhythm(onsets, durations, boundaries)
 
-    directions = [15, 23, 31]
+    directions = [15, 23, 31] if condition != 'blank' else [23, 23, 23,]
     [speaker1] = freefield.pick_speakers(directions[0])
     [speaker2] = freefield.pick_speakers(directions[1])
     [speaker3] = freefield.pick_speakers(directions[2])
@@ -125,7 +125,7 @@ def run(melody_file, subject, p, condition):
 
 def select_file():
 
-    participant = 'sub19'
+    participant = 'test'
 
 
     # training
@@ -164,6 +164,7 @@ def select_file():
 
     conditions = ['main', 'rhythm', 'melody']
     random.shuffle(conditions)
+    conditions.append('blank')
 
     user_input = input("Do you want to start the new task? (y/n): ")
     if user_input.lower() == 'n':

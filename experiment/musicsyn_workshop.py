@@ -1,22 +1,23 @@
-import sys
 import time
 import itertools
 from numpy.random import default_rng
 import pandas
 import slab
-from balanced_sequence import balanced_sequence
+from experiment.balanced_sequence import balanced_sequence
 import random
 import freefield
-from read_data import read_data
-from analysis_pilot import create_df, plot_group, plot_single
-from no_context_music import shuffle_melody, shuffle_rhythm
+from experiment.read_data import read_data
+from experiment.analysis_pilot import create_df, plot_group, plot_single
+from experiment.no_context_music import shuffle_melody, shuffle_rhythm
+import os
+import sys
 
 
 path = 'C://projects//musicsyn'
 randgenerator = default_rng()
 
 samplerate = 44828
-
+pandas.options.mode.chained_assignment = None
 
 def read_melody(file):
     """
@@ -36,24 +37,20 @@ def read_melody(file):
     return onsets, frequencies, durations, boundaries, changable_notes
 
 
-def run(melody_file, subject, condition):
-    file = slab.ResultsFile(
-        subject
-    )  # here we name the results folder with subject name
+def run(melody_file, subject, p, condition):
+    file = slab.ResultsFile(subject)  # here we name the results folder with subject name
     file_name = file.name
     file.write(melody_file, tag=0)
     file.write(condition, tag=1)
     onsets, frequencies, durations, boundaries, changable_notes = read_melody(
         path + f"\stimuli\{melody_file}")
-
-    seq = balanced_sequence(boundaries, changable_notes, subject, melody_file, 0.2, condition)
+    seq = balanced_sequence(boundaries, changable_notes, subject, melody_file, p, condition)
 
     # create control conditions
     if condition == 'melody':
         frequencies = shuffle_melody(frequencies, boundaries)
     elif condition == 'rhythm':
         durations, onsets = shuffle_rhythm(onsets, durations, boundaries)
-
 
     directions = [15, 23, 31]
     [speaker1] = freefield.pick_speakers(directions[0])
@@ -83,7 +80,7 @@ def run(melody_file, subject, condition):
             response = freefield.read('response', 'RP2', 0)
 
             if response > prev_response:
-                print('good')
+                print('button pressed')
                 file.write('p', tag=f'{time.time() - start_time:.3f}')
 
             prev_response = response
@@ -97,17 +94,13 @@ def run(melody_file, subject, condition):
                     print(f"direction change")
 
                 if seq["boundary"][i] and seq["sequence"][i]:  # so if there is 1 in the boundaries list
-                    print(f"at boundary!")
+                    print(f"phrase boundary")
 
                 if seq["cue"][i] == 1:
                     led_on = time.time()
                     freefield.write(tag='bitmask', value=speaker2.digital_channel, processors='RX81')  # illuminate LED
                     led = True
-                    print("########")
-                    print("########")
                     print("visual cue!")
-                    print("########")
-                    print("########")
 
                 file.write(frequencies[i], tag=f"{time.time() - start_time:.3f}")
                 freefield.write('f0', frequencies[i], ['RX81', 'RX82'])
@@ -125,21 +118,23 @@ def run(melody_file, subject, condition):
 
 
     except IndexError:
-        read_data(subject, file_name, condition)
+        read_data(subject, file_name)
     except KeyError:
-        read_data(subject, file_name, condition)
+        read_data(subject, file_name)
 
 
 def select_file():
 
+    participant = 'part_01'
+
+    # main task
+    main = ["stim_maj_1.csv", "stim_maj_2.csv",
+            "stim_min_1.csv", "stim_min_2.csv",
+            ]
+    random.shuffle(main)
+
     conditions = ['main', 'rhythm', 'melody']
-
-    files = ["stim_maj_1.csv",
-            "stim_min_1.csv"]
-
-    random.shuffle(files)
-
-    i = 0
+    random.shuffle(conditions)
 
     user_input = input("Do you want to start the new task? (y/n): ")
     if user_input.lower() == 'n':
@@ -149,11 +144,11 @@ def select_file():
 
     for condition in conditions:
         print(condition)
-
-        for melody_file in files:
+        i = 0
+        for melody_file in main:
             print(melody_file)
-
-            run(melody_file, 'p_Aaron', condition)  ########### PARTICIPANT HERE ############
+            p = 0.2
+            run(melody_file, participant, p, condition)
             print(f'That was melody {i + 1}.')
             user_input = input("Do you want to continue? (y/n): ")
             if user_input.lower() == 'n':
@@ -164,6 +159,7 @@ def select_file():
                 i += 1
 
     create_df()
+    plot_single('part_01', 'main')
 
 
 if __name__ == "__main__":
@@ -172,7 +168,7 @@ if __name__ == "__main__":
                  ['RP2', 'RP2', path + f'/data/rcx/button.rcx']]
 
     freefield.initialize('dome', device=proc_list)
-    # freefield.set_logger('debug')
+    freefield.set_logger('warning')
 
     select_file()
 
