@@ -7,7 +7,7 @@ from scipy.stats import  ttest_rel
 
 def create_df():
     path = os.getcwd()
-    subjects = [f for f in os.listdir(f"{path}/Results") if f.startswith("sub")]
+    subjects = [f for f in os.listdir(f"{path}/Results") if f.startswith(("sub", "part"))]
     subjects_eeg = [i for i in subjects if "eeg" in i ]
     subjects = list(set(subjects) - set(subjects_eeg))
     old = ['sub01', 'sub02', 'sub03', 'sub04', 'sub05']
@@ -335,7 +335,7 @@ def plot_single(subject, condition, block):
     plot_sub(axes[1, 0], sub_main, 'state', 'ff1', 'F-score', 0.5, 1.01, 0.1, 0.45, 1.1)
 
     plt.tight_layout(rect=[0, 0.03, 1, 0.95])
-    plt.savefig(f'{path}/plots/{subject}_main_results.png', dpi=300)
+    plt.savefig(f'{path}/plots/{subject}_condition_results.png', dpi=300)
     plt.show()
 
     sub_main = main[(main['subject'] == subject)]
