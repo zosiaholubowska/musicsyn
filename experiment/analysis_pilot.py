@@ -7,7 +7,7 @@ from scipy.stats import  ttest_rel
 
 def create_df():
     path = os.getcwd()
-    subjects = [f for f in os.listdir(f"{path}/Results") if f.startswith(("sub", "part"))]
+    subjects = [f for f in os.listdir(f"{path}/Results") if f.startswith("sub")]
     subjects_eeg = [i for i in subjects if "eeg" in i ]
     subjects = list(set(subjects) - set(subjects_eeg))
     old = ['sub01', 'sub02', 'sub03', 'sub04', 'sub05']
@@ -117,6 +117,17 @@ def create_df():
 
     vc_data.loc[vc_data['stimulus'].str.startswith('test'), 'block'] = 'training'
     vc_data.loc[vc_data['stimulus'].str.startswith('stim'), 'block'] = 'experiment'
+
+    vc_data = vc_data.sort_index()
+    vc_data = vc_data.reset_index()
+    vc_data = vc_data.iloc[:, 1:]
+
+    for i in range(len(vc_data)):
+        if vc_data.loc[i, "condition"] == "blank":
+            if vc_data.loc[i, "signal_theory"] == "hit":
+                vc_data.loc[i, "signal_theory"] = "fa"
+            elif vc_data.loc[i, "signal_theory"] == "miss":
+                vc_data.loc[i, "signal_theory"] = "corr"
 
     #### SAVE RAW RESULTS AS .CSV
 
@@ -238,12 +249,12 @@ def plot_group(condition, block):
     main['d_prime'] = pandas.to_numeric(main['d_prime'], errors='coerce')
 
     # Hit rate plot
-    plot_and_test(axes[0, 0], pairwise_hit_rate, main, 'state', 'hit_rate', 'Hit Rate', 0.5, 1.01, 0.1, 0.45, 1.1)
-    plot_avg(axes[0, 0], main, 'state', 'hit_rate', 'Hit Rate', 0.5, 1.01, 0.1, 0.45, 1.1)
+    plot_and_test(axes[0, 0], pairwise_hit_rate, main, 'state', 'hit_rate', 'Hit Rate', 0.0, 1.01, 0.1, 0.0, 1.1)
+    plot_avg(axes[0, 0], main, 'state', 'hit_rate', 'Hit Rate', 0.0, 1.01, 0.1, 0.0, 1.1)
 
     # False alarm rate plot
-    plot_and_test(axes[0, 1], pairwise_false_rate, main, 'state', 'false_rate', 'False Alarm Rate', 0.1, 1.01, 0.1, 0.01, 1.1)
-    plot_avg(axes[0, 1], main, 'state', 'false_rate', 'False Alarm Rate', 0.1, 1.01, 0.1, 0.01, 1.1)
+    plot_and_test(axes[0, 1], pairwise_false_rate, main, 'state', 'false_rate', 'False Alarm Rate', 0.0, 1.01, 0.1, 0.0, 1.1)
+    plot_avg(axes[0, 1], main, 'state', 'false_rate', 'False Alarm Rate', 0.0, 1.01, 0.1, 0.0, 1.1)
 
     # D-prime plot
     plot_and_test(axes[1, 1], pairwise_d_prime, main, 'state', 'd_prime', 'D-prime', -4, 3, 1, -4.1, 2.5)
@@ -273,10 +284,10 @@ def plot_group(condition, block):
     main['d_prime'] = pandas.to_numeric(main['d_prime'], errors='coerce')
 
     # Hit rate plot
-    plot_conditions(axes[0, 0], df, 'state', 'hit_rate', 'Hit Rate', 0.5, 1.01, 0.1, 0.45, 1.1)
+    plot_conditions(axes[0, 0], df, 'state', 'hit_rate', 'Hit Rate', 0.0, 1.01, 0.1, 0.0, 1.1)
 
     # False alarm rate plot
-    plot_conditions(axes[0, 1], df, 'state', 'false_rate', 'False Alarm Rate', 0.2, 1.01, 0.1, 0.15, 1.1)
+    plot_conditions(axes[0, 1], df, 'state', 'false_rate', 'False Alarm Rate', 0.0, 1.01, 0.1, 0.0, 1.1)
 
     # D-prime plot
     plot_conditions(axes[1, 1], df, 'state', 'd_prime', 'D-prime', -4, 3, 1, -4.1, 2.5)
@@ -323,10 +334,10 @@ def plot_single(subject, condition, block):
     main['d_prime'] = pandas.to_numeric(main['d_prime'], errors='coerce')
 
     # Hit rate plot
-    plot_sub(axes[0, 0], sub_main, 'state', 'hit_rate', 'Hit Rate', 0.5, 1.01, 0.1, 0.45, 1.1)
+    plot_sub(axes[0, 0], sub_main, 'state', 'hit_rate', 'Hit Rate', 0.0, 1.01, 0.1, 0.0, 1.1)
 
     # False alarm rate plot
-    plot_sub(axes[0, 1], sub_main, 'state', 'false_rate', 'False Alarm Rate', 0.2, 1.01, 0.1, 0.15, 1.1)
+    plot_sub(axes[0, 1], sub_main, 'state', 'false_rate', 'False Alarm Rate', 0.0, 1.01, 0.1, 0.0, 1.1)
 
     # D-prime plot
     plot_sub(axes[1, 1], sub_main, 'state', 'd_prime', 'D-prime', -4, 3, 1, -4.1, 2.5)
@@ -361,10 +372,10 @@ def plot_single(subject, condition, block):
     main['d_prime'] = pandas.to_numeric(main['d_prime'], errors='coerce')
 
     # Hit rate plot
-    plot_sub(axes[0, 0], sub_main, 'state', 'hit_rate', 'Hit Rate', 0.5, 1.01, 0.1, 0.45, 1.1)
+    plot_sub(axes[0, 0], sub_main, 'state', 'hit_rate', 'Hit Rate', 0.0, 1.01, 0.1, 0.0, 1.1)
 
     # False alarm rate plot
-    plot_sub(axes[0, 1], sub_main, 'state', 'false_rate', 'False Alarm Rate', 0.2, 1.01, 0.1, 0.15, 1.1)
+    plot_sub(axes[0, 1], sub_main, 'state', 'false_rate', 'False Alarm Rate', 0.0, 1.01, 0.1, 0.0, 1.1)
 
     # D-prime plot
     plot_sub(axes[1, 1], sub_main, 'state', 'd_prime', 'D-prime', -4, 3, 1, -4.1, 2.5)
