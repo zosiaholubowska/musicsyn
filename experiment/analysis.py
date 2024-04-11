@@ -61,8 +61,8 @@ main['ff1'] = pandas.to_numeric(main['ff1'], errors='coerce')
 main['d_prime'] = pandas.to_numeric(main['d_prime'], errors='coerce')
 
 # Hit rate plot
-plot_and_test(axes[0, 0], pairwise_hit_rate, main, 'state', 'hit_rate', 'Hit Rate', 0.5, 1.01, 0.1, 0.45, 1.1)
-plot_avg(axes[0, 0], main, 'state', 'hit_rate', 'Hit Rate', 0.5, 1.01, 0.1, 0.45, 1.1)
+plot_and_test(axes[0, 0], pairwise_hit_rate, main, 'state', 'hit_rate', 'Hit Rate', 0.0, 1.01, 0.1, 0.0, 1.1)
+plot_avg(axes[0, 0], main, 'state', 'hit_rate', 'Hit Rate', 0.0, 1.01, 0.1, 0.0, 1.1)
 
 # False alarm rate plot
 plot_and_test(axes[0, 1], pairwise_false_rate, main, 'state', 'false_rate', 'False Alarm Rate', 0.1, 1.01, 0.1, 0.01, 1.1)
@@ -524,3 +524,11 @@ plt.tight_layout()
 
 # Show the plot
 plt.show()
+
+
+# 8. ANALYSIS OF A FAKE TRIAL - BLANK
+
+main = vc[vc['condition'].str.match('blank')]
+drop = main[['subject', 'boundary', 'visual_cue', 'answer']]
+main_grouped = drop.groupby(['subject', 'boundary']).sum().reset_index()
+main_grouped['percentage'] = main_grouped['answer'] / main_grouped['visual_cue']
